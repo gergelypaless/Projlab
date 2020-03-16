@@ -22,6 +22,7 @@ public abstract class Character
     private bool hasBullet;
     private IceBlock block: IceBlock;
     private Item inventory: Item;
+    
     public void Move(Direction d)
     {
     }
