@@ -1,5 +1,6 @@
+package project;
 
-public class UnstableBlock extends IceBlock
+public class EmptyBlock extends IceBlock
 {
     public void Accept(Character c)
     {

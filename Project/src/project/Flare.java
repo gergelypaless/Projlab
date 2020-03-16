@@ -1,5 +1,6 @@
+package project;
 
-public class Rope implements Item
+public class Flare implements Item
 {
     public void Use(IceBlock block)
     {

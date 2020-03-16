@@ -1,5 +1,6 @@
+package project;
 
-public class Suit implements Item
+public class Food implements Item
 {
     public void Use(IceBlock block)
     {

@@ -1,3 +1,4 @@
+package project;
 
 public class Explorer extends Character
 {

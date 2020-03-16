@@ -1,3 +1,4 @@
+package project;
 
 public class StableBlock extends IceBlock
 {

@@ -1,16 +1,7 @@
-
+package project;
 
 public abstract class Character
 {
-    private int energy;
-    private int health;
-    private boolean isInWater;
-    private boolean hasSuit;
-    private boolean hasFlare;
-    private boolean hasBullet;
-    private IceBlock block;
-    private Item inventory;
-    
     public void Move(Direction d)
     {
     }
@@ -66,4 +57,13 @@ public abstract class Character
     public void SetHasBullet()
     {
     }
+    
+    private int energy;
+    private int health;
+    private boolean isInWater;
+    private boolean hasSuit;
+    private boolean hasFlare;
+    private boolean hasBullet;
+    private IceBlock block;
+    private Item inventory;
 }

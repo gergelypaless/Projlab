@@ -1,12 +1,7 @@
+package project;
 
 public class Game
 {
-    private boolean isWin;
-    private boolean isLost;
-    private IceMap map;
-    private Character characters;
-    private Character currentlyMovingCharacter;
-    
     public void NextRound()
     {
     }
@@ -22,4 +17,10 @@ public class Game
     private void SnowStorm()
     {
     }
+    
+    private boolean isWin;
+    private boolean isLost;
+    private IceMap map;
+    private Character characters;
+    private Character currentlyMovingCharacter;
 }

@@ -1,3 +1,4 @@
+package project;
 
 public class Main
 {
@@ -5,5 +6,4 @@ public class Main
 	{
 	
 	}
-	
 }

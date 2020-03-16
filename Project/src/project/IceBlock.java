@@ -1,11 +1,7 @@
+package project;
 
 public abstract class IceBlock
 {
-    private int amountOfSnow;
-    private int stability;
-    private Character characters;
-    private Item item;
-    
     public void SetNeighbour(Direction d, IceBlock block)
     {
     }
@@ -47,4 +43,9 @@ public abstract class IceBlock
     {
         return null;
     }
+    
+    private int amountOfSnow;
+    private int stability;
+    private Character characters;
+    private Item item;
 }

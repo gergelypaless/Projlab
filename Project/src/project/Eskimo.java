@@ -1,3 +1,4 @@
+package project;
 
 public class Eskimo extends Character
 {

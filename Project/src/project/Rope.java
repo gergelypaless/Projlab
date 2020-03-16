@@ -1,5 +1,6 @@
+package project;
 
-public class Gun implements Item
+public class Rope implements Item
 {
     public void Use(IceBlock block)
     {

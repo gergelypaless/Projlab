@@ -1,8 +1,7 @@
+package project;
 
 public class IceMap
 {
-    private IceBlock blocks;
-    
     public void SetNeighboursOnTheMap()
     {
     }
@@ -11,4 +10,6 @@ public class IceMap
     {
         return null;
     }
+    
+    private IceBlock blocks;
 }
