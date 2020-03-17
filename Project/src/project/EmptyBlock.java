@@ -1,12 +1,25 @@
 package project;
 
+import java.util.logging.Logger;
+
 public class EmptyBlock extends IceBlock
 {
-    public void Accept(Character c)
+    private static final Logger LOGGER = Logger.getLogger( EmptyBlock.class.getName() );
+    
+    public EmptyBlock(int amountOfSnow, int stability)
     {
+        super(amountOfSnow, stability);
     }
     
-    public void Remove(Character c)
+    public void accept(Character c)
     {
+        LOGGER.fine("EmptyBlock accepting");
+        getCharacters().add(c);
+    }
+    
+    public void remove(Character c)
+    {
+        LOGGER.fine("EmptyBlock removing");
+        getCharacters().remove(c);
     }
 }

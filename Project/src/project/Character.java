@@ -1,7 +1,16 @@
 package project;
 
+import java.util.logging.Logger;
+
 public abstract class Character
 {
+    private static final Logger LOGGER = Logger.getLogger( Character.class.getName() );
+    
+    public Character(int ID)
+    {
+        this.ID = ID;
+    }
+    
     public void Move(Direction d)
     {
     }
@@ -18,44 +27,49 @@ public abstract class Character
     {
     }
     
-    public abstract void UseAbility();
+    public abstract void useAbility();
     
     public void SetHasSuit()
     {
     }
     
-    public boolean IsDrowning()
+    public boolean isDrowning()
     {
-        return false;
+        return isInWater && !hasSuit;
     }
     
-    public void UseItem()
+    public void useItem()
     {
     }
     
-    public abstract void ChangeHealth(int value);
+    public abstract void changeHealth(int value);
     
-    public int GetHealth()
+    public int getHealth()
     {
         return 0;
     }
     
-    public boolean HasFlare()
+    public boolean hasFlare()
     {
         return false;
     }
     
-    public void SetHasFlare()
+    public void setHasFlare()
     {
     }
     
-    public boolean HasBullet()
+    public boolean hasBullet()
     {
         return false;
     }
     
-    public void SetHasBullet()
+    public void setHasBullet()
     {
+    }
+    
+    public int getID()
+    {
+        return ID;
     }
     
     private int energy;
@@ -63,7 +77,10 @@ public abstract class Character
     private boolean isInWater;
     private boolean hasSuit;
     private boolean hasFlare;
+    
     private boolean hasBullet;
+    
+    private int ID;
     private IceBlock block;
     private Item inventory;
 }

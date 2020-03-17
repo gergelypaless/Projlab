@@ -1,7 +1,11 @@
 package project;
 
+import java.util.logging.Logger;
+
 public class Flare implements Item
 {
+    private static final Logger LOGGER = Logger.getLogger( Flare.class.getName() );
+    
     public void Use(IceBlock block)
     {
     }

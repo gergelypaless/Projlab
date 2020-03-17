@@ -1,17 +1,27 @@
 package project;
 
+import java.util.logging.Logger;
+
 public class Eskimo extends Character
 {
-    public void UseAbility()
+    private static final Logger LOGGER = Logger.getLogger(Eskimo.class.getName());
+    
+    public Eskimo(int ID)
+    {
+        super(ID);
+        LOGGER.finest("Eskimo constructor");
+    }
+    
+    public void useAbility()
     {
     }
     
-    private boolean PlaceIgloo()
+    private boolean placeIgloo()
     {
         return false;
     }
     
-    public void ChangeHealth(int value)
+    public void changeHealth(int value)
     {
     }
 }
