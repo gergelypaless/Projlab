@@ -27,6 +27,8 @@ public class Game
         map = new IceMap(15, 15, getNumOfPlayers());
         map.setNeighboursOnTheMap();
         
+        System.out.println("");
+        
         currentlyMovingCharacter = characters.get(0);
     
         Random random = new Random();
@@ -63,7 +65,7 @@ public class Game
         // a játékos lép
         while (true)
         {
-            
+        
         }
     }
     
