@@ -9,7 +9,6 @@ public class Bullet implements CollectableItem
     public void InteractWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Bullet");
-        
         c.setHasBullet();
     }
 }

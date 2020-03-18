@@ -76,15 +76,19 @@ public class IceMap
         LOGGER.fine("Creating blocks");
         blocks = new ArrayList<>();
         ArrayList<IceBlock> aBlock = new ArrayList<>();
-        aBlock.add(new StableBlock(0, 0));
+        aBlock.add(new EmptyBlock(0, 0));
         blocks.add(aBlock);
     }
     
     private void placeCharacters(ArrayList<Character> characters)
     {
         LOGGER.fine("Placing characters");
-        blocks.get(0).get(0).accept(characters.get(0));
-        characters.get(0).setIceBlock(blocks.get(0).get(0));
+        
+        for (Character character : characters)
+        {
+            blocks.get(0).get(0).accept(character);
+            character.setIceBlock(blocks.get(0).get(0));
+        }
     }
     
     public void setNeighboursOnTheMap()

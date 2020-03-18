@@ -38,11 +38,12 @@ public abstract class IceBlock
     public int getStability()
     {
         LOGGER.finest("Stability getter");
-        return stability;
+        return 3; // should return stability
     }
     
     public void changeAmountOfSnow(int i)
     {
+        LOGGER.fine("Changing amount of snow by " + i);
     }
     
     public abstract void accept(Character c);
@@ -101,6 +102,7 @@ public abstract class IceBlock
     
     public boolean hasIgloo()
     {
+        LOGGER.finest("Has igloo getter");
         return false;
     }
     

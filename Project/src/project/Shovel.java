@@ -9,6 +9,7 @@ public class Shovel implements CollectableItem, UsableItem
     public void Use(IceBlock block)
     {
         LOGGER.fine("Using Shovel");
+        block.changeAmountOfSnow(-2);
     }
     
     public void InteractWithCharacter(Character c)

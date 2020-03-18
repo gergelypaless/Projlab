@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.*;
 
 public class Game
@@ -60,70 +61,29 @@ public class Game
         }
     }
     
-    public void newGame()
-    {
-        LOGGER.fine("New game");
-    
-        try
-        {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String input;
-    
-            chooseCharacter(reader);
-    
-            
-            
-            /*Random random = new Random();
-            ArrayList<ArrayList<IceBlock>> blocks = map.getBlocks();
-            int x = random.nextInt(blocks.size());
-            int y = random.nextInt(blocks.get(0).size());
-            while (blocks.get(x).get(y).getStability() == 0)
-            {
-                y = random.nextInt(blocks.size());
-                x = random.nextInt(blocks.get(0).size());
-            }
-            blocks.get(y).get(x).accept(currentlyMovingCharacter);
-            currentlyMovingCharacter.setIceBlock(blocks.get(y).get(x));*/
-    
-            //LOGGER.finer("Our player is on (" + x + ", " + y + ")");
-            
-            nextRound();
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    private void chooseCharacter(BufferedReader reader) throws IOException
-    {
-        LOGGER.fine("Choosing character");
-        
-        String input;
-        System.out.println("Which character? (eskimo/explorer)");
-        input = reader.readLine();
-        if (input.equals("eskimo"))
-        {
-            currentlyMovingCharacter = new Eskimo();
-        }
-        else if (input.equals("explorer"))
-        {
-            currentlyMovingCharacter = new Explorer();
-        }
-    }
-    
     public void nextRound() throws IOException
     {
         LOGGER.fine("Changing round");
-    
-        snowStorm();
         
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
     
         currentlyMovingCharacter = characters.get(0);
         // a játékos lép
-        while (true)
+        
+        Random random = new Random();
+        int numOfTurns = characters.size();
+        for (int i = 0; i < numOfTurns; ++i)
         {
+            LOGGER.fine("Next player");
+            
+            if (random.nextInt(2) == 0)
+                snowStorm();
+            
+            currentlyMovingCharacter = characters.get(i);
+            
+            LOGGER.fine("You have " + (numOfTurns - i) + " turns left. Player" + (i + 1));
+            
             System.out.println("What direction should i move? (up/down/left/right)");
             input = reader.readLine();
             if (input.equals("up"))
@@ -134,25 +94,30 @@ public class Game
                 currentlyMovingCharacter.move(Direction.LEFT);
             if (input.equals("right"))
                 currentlyMovingCharacter.move(Direction.RIGHT);
-         
+    
             if (checkDrowning(reader)) return;
-            
+    
             currentlyMovingCharacter.useAbility();
+            currentlyMovingCharacter.clear();
             currentlyMovingCharacter.pickUp();
     
-            System.out.println("Which item to use? " + currentlyMovingCharacter.getInventory().size() + ". (0, 1, 2... stb)");
-            input = reader.readLine();
-            int index = Integer.parseInt(input);
-            currentlyMovingCharacter.useItem(index);
-            
-            currentlyMovingCharacter.clear();
+            if (currentlyMovingCharacter.getInventory().size() > 0)
+            {
+                System.out.println("Which item to use? You have " + currentlyMovingCharacter.getInventory().size() + " item. (0, 1, 2... stb; press x to not use any)");
+                input = reader.readLine();
+                int index = Integer.parseInt(input);
+                currentlyMovingCharacter.useItem(index);
+                
+                if (isWin)
+                    return;
+            }
         }
     }
     
     private boolean checkDrowning(BufferedReader reader) throws IOException
     {
         String input;
-        System.out.println("Player drowning? (y/n)");
+        System.out.println("Should player drowning? (y/n) Player is " + (currentlyMovingCharacter.isDrowning() ? "" : "not ") + "drowning at the moment!");
         input = reader.readLine();
         if (input.equals("y"))
         {
@@ -162,28 +127,43 @@ public class Game
         return false;
     }
     
-    public void moveCurrentCharacter(Direction d)
-    {
-        LOGGER.fine("Moving current character");
-        currentlyMovingCharacter.move(d);
-    }
-    
     public void win()
     {
+        LOGGER.fine("You win!!!");
+        isWin = true;
     }
     
     public void lose()
     {
         LOGGER.fine("End of the game");
+        isLost = true;
     }
     
     public int getNumOfPlayers()
     {
-        return 1;
+        return characters.size();
     }
     
     private void snowStorm()
     {
+        LOGGER.fine("Snow storm is now!");
+    
+        for (Character c : characters)
+        {
+            if (c.isInIgloo())
+                c.changeHealth(-1);
+        }
+        
+        ArrayList<ArrayList<IceBlock>> blocks = map.getBlocks();
+        for (int i = 0; i < blocks.size(); ++i)
+        {
+            for (int j = 0; j < blocks.get(0).size(); ++j)
+            {
+                blocks.get(i).get(j).changeAmountOfSnow(1);
+            }
+        }
+        
+        
     }
     
     private boolean isWin;

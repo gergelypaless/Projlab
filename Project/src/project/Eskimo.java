@@ -20,6 +20,10 @@ public class Eskimo extends Character
     public void useAbility()
     {
         LOGGER.fine("Using character's ability");
+    
+        energy--;
+        LOGGER.fine("Energy decreased to " + energy);
+        
         placeIgloo();
     }
     
@@ -32,7 +36,10 @@ public class Eskimo extends Character
     
     public void changeHealth(int value)
     {
-        LOGGER.fine("Changing health to: " + getHealth());
+        LOGGER.fine("Changing health by: " + value);
+    
+        energy--;
+        LOGGER.fine("Energy decreased to " + energy);
         
     }
 }

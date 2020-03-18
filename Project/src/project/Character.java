@@ -10,15 +10,16 @@ public abstract class Character
     public Character(int ID)
     {
         this.ID = ID;
+        this.energy = 5;
         inventory = new ArrayList<>();
     }
     
     public void move(Direction d)
     {
         LOGGER.fine("Moving in direction: " + d.toString());
-        
-        /*block.remove(this);
-        block.getNeighbours();*/
+    
+        energy--;
+        LOGGER.fine("Energy decreased to " + energy);
         
         if (isInWater)
             LOGGER.fine("Next player's turn");
@@ -26,6 +27,11 @@ public abstract class Character
     
     public void clear()
     {
+        LOGGER.fine("Clearing...");
+        block.changeAmountOfSnow(-1);
+    
+        energy--;
+        LOGGER.fine("Energy decreased to " + energy);
     }
     
     public void pickUp()
@@ -47,10 +53,12 @@ public abstract class Character
     public void setHasSuit()
     {
         LOGGER.fine("Character has a suit now!");
+        hasSuit = true;
     }
     
     public boolean isDrowning()
     {
+        LOGGER.finer("Dorwing getter. Has suit checked");
         return isInWater && !hasSuit;
     }
     
@@ -59,6 +67,9 @@ public abstract class Character
         LOGGER.fine("Using item...");
         
         inventory.get(itemIdx).Use(block);
+        
+        energy--;
+        LOGGER.fine("Energy decreased to " + energy);
     }
     
     public abstract void changeHealth(int value);
@@ -70,22 +81,24 @@ public abstract class Character
     
     public boolean hasFlare()
     {
-        return false;
+        return hasFlare;
     }
     
     public void setHasFlare()
     {
         LOGGER.fine("Character has a flare now!");
+        hasFlare = true;
     }
     
     public boolean hasBullet()
     {
-        return false;
+        return hasBullet;
     }
     
     public void setHasBullet()
     {
         LOGGER.fine("Character has a bullet now!");
+        hasBullet = true;
     }
     
     public void setIceBlock(IceBlock block)
@@ -108,7 +121,12 @@ public abstract class Character
         return inventory;
     }
     
-    private int energy;
+    public boolean isInIgloo()
+    {
+        return block.hasIgloo();
+    }
+    
+    protected int energy;
     private int health;
     private boolean isInWater;
     private boolean hasSuit = false;
