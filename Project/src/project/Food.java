@@ -2,16 +2,13 @@ package project;
 
 import java.util.logging.Logger;
 
-public class Food implements Item
+public class Food implements CollectableItem
 {
     private static final Logger LOGGER = Logger.getLogger( Food.class.getName() );
     
-    public void Use(IceBlock block)
+    public void InteractWithCharacter(Character c)
     {
-    }
-    
-    public Item PickedUp(Character c)
-    {
-        return null;
+        LOGGER.fine("Picked up Food");
+        c.changeHealth(1);
     }
 }

@@ -9,9 +9,18 @@ public class Main
 	
 	public static void main(String[] args)
 	{
-		setLogLevel(Level.FINE);
+		setLogLevel(Level.FINEST);
 		
 		Game game = Game.get();
+		// inicializálás
+		// 		IceBlockok lerakása
+		// 		Itemek lerakása
+		// 		Karakterek lerakása
+		
+		// játék indítás
+		//
+		
+		game.start();
 		
 	}
 	

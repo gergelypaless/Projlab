@@ -11,7 +11,7 @@ public class UnstableBlock extends IceBlock
         super(amountOfSnow, stability);
     }
     
-    public UnstableBlock(int amountOfSnow, int stability, Item item)
+    public UnstableBlock(int amountOfSnow, int stability, CollectableItem item)
     {
         super(amountOfSnow, stability, item);
     }
@@ -20,6 +20,14 @@ public class UnstableBlock extends IceBlock
     {
         LOGGER.fine("UnstableBlock accepting");
         getCharacters().add(c);
+        
+        if (getCharacters().size() > getStability())
+        {
+            for (Character character : getCharacters())
+            {
+                character.fallIn();
+            }
+        }
     }
     
     public void remove(Character c)

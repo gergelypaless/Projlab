@@ -15,6 +15,7 @@ public class EmptyBlock extends IceBlock
     {
         LOGGER.fine("EmptyBlock accepting");
         getCharacters().add(c);
+        c.fallIn();
     }
     
     public void remove(Character c)

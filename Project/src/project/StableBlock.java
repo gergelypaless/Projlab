@@ -11,7 +11,7 @@ public class StableBlock extends IceBlock
         super(amountOfSnow, stability);
     }
     
-    public StableBlock(int amountOfSnow, int stability, Item item)
+    public StableBlock(int amountOfSnow, int stability, CollectableItem item)
     {
         super(amountOfSnow, stability, item);
     }

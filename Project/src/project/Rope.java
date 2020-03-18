@@ -2,16 +2,18 @@ package project;
 
 import java.util.logging.Logger;
 
-public class Rope implements Item
+public class Rope implements CollectableItem, UsableItem
 {
     private static final Logger LOGGER = Logger.getLogger( Rope.class.getName() );
     
     public void Use(IceBlock block)
     {
+        LOGGER.fine("Using Rope");
     }
     
-    public Item PickedUp(Character c)
+    public void InteractWithCharacter(Character c)
     {
-        return null;
+        LOGGER.fine("Picked up Rope");
+        c.addItem(this);
     }
 }

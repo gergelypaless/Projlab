@@ -2,16 +2,14 @@ package project;
 
 import java.util.logging.Logger;
 
-public class Bullet implements Item
+public class Bullet implements CollectableItem
 {
     private static final Logger LOGGER = Logger.getLogger( Bullet.class.getName() );
     
-    public void Use(IceBlock block)
+    public void InteractWithCharacter(Character c)
     {
-    }
-    
-    public Item PickedUp(Character c)
-    {
-        return null;
+        LOGGER.fine("Picked up Bullet");
+        
+        c.setHasBullet();
     }
 }

@@ -2,16 +2,13 @@ package project;
 
 import java.util.logging.Logger;
 
-public class Flare implements Item
+public class Flare implements CollectableItem
 {
     private static final Logger LOGGER = Logger.getLogger( Flare.class.getName() );
     
-    public void Use(IceBlock block)
+    public void InteractWithCharacter(Character c)
     {
-    }
-    
-    public Item PickedUp(Character c)
-    {
-        return null;
+        LOGGER.fine("Picked up Flare");
+        c.setHasFlare();
     }
 }
