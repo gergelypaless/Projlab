@@ -2,7 +2,7 @@ package project;
 
 import java.util.logging.Logger;
 
-public class Bullet implements CollectableItem
+public class Bullet implements CollectableItem // csak gyűjthető
 {
     private static final Logger LOGGER = Logger.getLogger( Bullet.class.getName() );
     

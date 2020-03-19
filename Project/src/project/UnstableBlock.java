@@ -16,13 +16,16 @@ public class UnstableBlock extends IceBlock
         super(amountOfSnow, stability, item);
     }
     
+    // valaki rálépett erre az IceBlockra
     public void accept(Character c)
     {
         LOGGER.fine("UnstableBlock accepting");
         getCharacters().add(c);
         
+        // megnézzük, hogy átfordul-e az IceBlock
         if (getCharacters().size() > getStability())
         {
+            // ha igen, akkor mindegyik karakternek meg kell hivni a fallIn() metódusát
             for (Character character : getCharacters())
             {
                 character.fallIn();
@@ -30,6 +33,7 @@ public class UnstableBlock extends IceBlock
         }
     }
     
+    // valaki ellépett erről az IceBlockól
     public void remove(Character c)
     {
         LOGGER.fine("UnstableBlock removing");

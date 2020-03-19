@@ -9,6 +9,7 @@ public class Flare implements CollectableItem
     public void InteractWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Flare");
+        // a karakter felvett egy Flare-t
         c.setHasFlare();
     }
 }

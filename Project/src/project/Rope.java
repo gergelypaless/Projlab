@@ -18,7 +18,7 @@ public class Rope implements CollectableItem, UsableItem
         try
         {
             input = reader.readLine();
-            Direction d = Direction.INVALID;
+            Direction d = Direction.UP;
             if (input.equals("up"))
                 d = Direction.UP;
             if (input.equals("down"))

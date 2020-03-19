@@ -76,7 +76,7 @@ public class IceMap
         LOGGER.fine("Creating blocks");
         blocks = new ArrayList<>();
         ArrayList<IceBlock> aBlock = new ArrayList<>();
-        aBlock.add(new EmptyBlock(0, 0));
+        aBlock.add(new StableBlock(0, 0));
         blocks.add(aBlock);
     }
     

@@ -13,6 +13,7 @@ public class Gun implements CollectableItem, UsableItem
         
         boolean hasFlare = false, hasBullet = false;
         ArrayList<Character> characters = block.getCharacters();
+        // megnézzük, hogy az ezen a blockon lévő játékosoknál van-e a Flare és a Bullet.
         for (Character c : characters)
         {
             if (!hasFlare)
@@ -20,6 +21,7 @@ public class Gun implements CollectableItem, UsableItem
             if (!hasBullet)
                 hasBullet = c.hasBullet();
         }
+        // ha mindkettő megvan, akkor el tudjuk sütni a fegyvert, nyertünk
         if (hasBullet && hasFlare)
         {
             LOGGER.fine("Gun used");
@@ -30,6 +32,6 @@ public class Gun implements CollectableItem, UsableItem
     public void InteractWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Gun");
-        c.addItem(this);
+        c.addItem(this); // inventoryhoz adjuk az itemet, mert UsableItem
     }
 }

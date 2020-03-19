@@ -11,13 +11,16 @@ public class EmptyBlock extends IceBlock
         super(amountOfSnow, stability);
     }
     
+    // valaki rálépett erre az IceBlockra
     public void accept(Character c)
     {
         LOGGER.fine("EmptyBlock accepting");
         getCharacters().add(c);
+        // ha üres block-ra lépünk akkor beleesünk a fízbe
         c.fallIn();
     }
     
+    // valaki ellépett erről az IceBlockól
     public void remove(Character c)
     {
         LOGGER.fine("EmptyBlock removing");

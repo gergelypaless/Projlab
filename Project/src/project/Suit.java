@@ -9,6 +9,8 @@ public class Suit implements CollectableItem
     public void InteractWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Suit");
+        
+        // a karakter felvett egy Suit-ot.
         c.setHasSuit();
     }
 }

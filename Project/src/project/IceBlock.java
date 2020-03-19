@@ -27,18 +27,19 @@ public abstract class IceBlock
     public void setNeighbour(Direction d, IceBlock block)
     {
         LOGGER.finer("Setting neighbour in Direction: " + d.toString());
+        // szomszédos IceBlock beállítása a megfelelő irányban, egy HashMap<Direction, IceBlock>-ot használva
         neighbours.put(d, block);
     }
     
     public int getSnow()
     {
-        return 0;
+        return amountOfSnow;
     }
     
     public int getStability()
     {
         LOGGER.finest("Stability getter");
-        return 3; // should return stability
+        return 3; // ez a stability változót kéne visszaadja, de az egyszerűség kedvéért most egy fix értéket írtunk be
     }
     
     public void changeAmountOfSnow(int i)
@@ -50,12 +51,14 @@ public abstract class IceBlock
     
     public abstract void remove(Character c);
     
+    // valaki fel akarja venni az Item-et ami ezen az IceBlockon van
     public CollectableItem removeItem()
     {
         LOGGER.fine("Removing Item from IceBlock");
     
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
+        // megkérdezzük, hogy milyen Item-et szeretne felvenni. Ez a künnyű tesztelhetőség érdekében kell.
         System.out.println("Which item to pick up (suit, flare, food, shovel, bullet, gun, rope)");
         try
         {
@@ -97,9 +100,12 @@ public abstract class IceBlock
     
     public boolean placeIgloo()
     {
+        LOGGER.fine("Can we place igloo on this IceBlock?");
+        // csak StableBlock-ra lehet igloo-t tenni, így csak az fog igazat visszaadni
         return false;
     }
     
+    // van-e az IceBlockon igloo
     public boolean hasIgloo()
     {
         LOGGER.finest("Has igloo getter");
@@ -118,9 +124,18 @@ public abstract class IceBlock
         return neighbours;
     }
     
+    // hó mennyisége
     private int amountOfSnow;
+    
+    // hány karaktert bír el
     private int stability;
+    
+    // karakterek az IceBlockon.
     private ArrayList<Character> characters = new ArrayList<>();
+    
+    // Item az IceBlockon
     private CollectableItem item;
+    
+    // IceBlock szomszédai egy HashMap-ben tárolva
     private HashMap<Direction, IceBlock> neighbours = new HashMap<>();
 }

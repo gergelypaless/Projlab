@@ -22,11 +22,13 @@ public class Explorer extends Character
         LOGGER.finest("Explorer constructor");
     }
     
+    // az Explorer képessége, hogy meg tudja nézni egy szomszédos block hány karaktert bír el.
     public void useAbility()
     {
         LOGGER.fine("Using character's ability");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
+        // megkérdezzük, hogy melyik irányba kell használni a képességét
         System.out.println("What direction should i use my ability? (up/down/left/right)");
         try
         {
@@ -40,11 +42,13 @@ public class Explorer extends Character
                 checkStability(Direction.LEFT);
             if (input.equals("right"))
                 checkStability(Direction.RIGHT);
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             e.printStackTrace();
         }
-    
+        
+        // a képesség használata egy munka
         energy--;
         LOGGER.fine("Energy decreased to " + energy);
     }
@@ -52,17 +56,17 @@ public class Explorer extends Character
     private int checkStability(Direction d)
     {
         LOGGER.finest("Explorer checking stability");
-        //block.getNeighbours().get(d).getStability();
-        block.getStability();
-        return 0;
+        
+        /* lekérjük a szomszédos block stability értékét.
+           Ezt valójában így kéne: block.getNeighbours().get(d).getStability();
+           mivel jelenleg csak egy block van az egész IceMap-en ezért nem tudjuk, csak a saját blockunk
+           stability értékét lekérdezni */
+        
+        return block.getStability();
     }
     
     public void changeHealth(int value)
     {
         LOGGER.fine("Changing health by " + value);
-    
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
-    
     }
 }

@@ -16,12 +16,14 @@ public class StableBlock extends IceBlock
         super(amountOfSnow, stability, item);
     }
     
+    // valaki rálépett erre az IceBlockra
     public void accept(Character c)
     {
         LOGGER.fine("StableBlock accepting");
         getCharacters().add(c);
     }
     
+    // valaki ellépett erről az IceBlockól
     public void remove(Character c)
     {
         LOGGER.fine("StableBlock removing");
@@ -30,7 +32,7 @@ public class StableBlock extends IceBlock
     
     public boolean placeIgloo()
     {
-        return false;
+        return true;
     }
     
     public boolean hasIgloo()

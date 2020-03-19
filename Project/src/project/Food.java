@@ -9,6 +9,7 @@ public class Food implements CollectableItem
     public void InteractWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Food");
+        c.changeEnergy(-1); // Item használata egy munka.
         c.changeHealth(1);
     }
 }

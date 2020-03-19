@@ -8,7 +8,7 @@ public class Eskimo extends Character
     
     public Eskimo()
     {
-        super(0);
+        super(0); // ősosztály kosntruktora
     }
     
     public Eskimo(int ID)
@@ -21,25 +21,24 @@ public class Eskimo extends Character
     {
         LOGGER.fine("Using character's ability");
     
+        // a képesség használata egy munkába kerül
         energy--;
         LOGGER.fine("Energy decreased to " + energy);
         
+        // Eskimo képessége iglook lerakása
         placeIgloo();
     }
     
     private boolean placeIgloo()
     {
         LOGGER.fine("Placing igloo");
-        //block.placeIgloo();
+        // visszaad egy igaz/hamis értéket, ez alapján lehet eldönteni, hogy tudunk-e lerakni itt igloo-t
+        block.placeIgloo();
         return false;
     }
     
     public void changeHealth(int value)
     {
         LOGGER.fine("Changing health by: " + value);
-    
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
-        
     }
 }
