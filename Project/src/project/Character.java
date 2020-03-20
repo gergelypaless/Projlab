@@ -66,7 +66,7 @@ public abstract class Character
     // fuldoklunk-e?
     public boolean isDrowning()
     {
-        LOGGER.finer("Dorwing getter. Has suit checked");
+        LOGGER.finer("Drowning getter. Has suit checked");
         return isInWater && !hasSuit;
     }
     
