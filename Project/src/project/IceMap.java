@@ -77,6 +77,10 @@ public class IceMap
         blocks = new ArrayList<>();
         ArrayList<IceBlock> aBlock = new ArrayList<>();
         aBlock.add(new StableBlock(0, 0));
+        aBlock.get(0).setNeighbour(Direction.UP, aBlock.get(0));
+        aBlock.get(0).setNeighbour(Direction.DOWN, aBlock.get(0));
+        aBlock.get(0).setNeighbour(Direction.LEFT, aBlock.get(0));
+        aBlock.get(0).setNeighbour(Direction.RIGHT, aBlock.get(0));
         blocks.add(aBlock);
     }
     

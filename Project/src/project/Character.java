@@ -18,7 +18,12 @@ public abstract class Character
     public void move(Direction d)
     {
         LOGGER.fine("Moving in direction: " + d.toString());
-    
+        
+        IceBlock iceBlockToMoveTo = block.getNeighbours().get(d);
+        block.remove(this);
+        iceBlockToMoveTo.accept(this);
+        setIceBlock(iceBlockToMoveTo);
+        
         // a mozgás egy munkába kerül
         energy--;
         LOGGER.fine("Energy decreased to " + energy);
@@ -44,7 +49,7 @@ public abstract class Character
         // a blocktól visszakapunk egy itemet
         CollectableItem item = block.removeItem();
         // "értesítjük" az itemet, hogy felvettük
-        item.InteractWithCharacter(this);
+        item.interactWithCharacter(this);
     }
     
     // amikor a karakter vízbe esik
@@ -52,6 +57,12 @@ public abstract class Character
     {
         LOGGER.fine("Character fell in water");
         isInWater = true;
+    }
+    
+    public void save()
+    {
+        LOGGER.fine("Character was saved");
+        isInWater = false;
     }
     
     public abstract void useAbility();
@@ -75,7 +86,7 @@ public abstract class Character
     {
         LOGGER.fine("Using item...");
         
-        inventory.get(itemIdx).Use(block);
+        inventory.get(itemIdx).use(block);
         
         // egy Item használata egy munkába kerül.
         energy--;
@@ -123,6 +134,7 @@ public abstract class Character
        ez később a konstruktorba fog kerülni*/
     public void setIceBlock(IceBlock block)
     {
+        LOGGER.fine("Character is on a new IceBlock");
         this.block = block;
     }
     

@@ -6,7 +6,7 @@ public class Food implements CollectableItem
 {
     private static final Logger LOGGER = Logger.getLogger( Food.class.getName() );
     
-    public void InteractWithCharacter(Character c)
+    public void interactWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Food");
         c.changeEnergy(-1); // Item használata egy munka.

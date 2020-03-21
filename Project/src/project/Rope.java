@@ -3,13 +3,14 @@ package project;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Rope implements CollectableItem, UsableItem
 {
     private static final Logger LOGGER = Logger.getLogger( Rope.class.getName() );
     
-    public void Use(IceBlock block)
+    public void use(IceBlock savingTo)
     {
         LOGGER.fine("Using Rope");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -27,17 +28,25 @@ public class Rope implements CollectableItem, UsableItem
                 d = Direction.LEFT;
             if (input.equals("right"))
                 d = Direction.RIGHT;
-            
-            LOGGER.fine("Saving character in direction " + d.toString());
+
+            IceBlock savingFrom = savingTo.getNeighbours().get(d);
+            ArrayList<Character> characters = savingFrom.getCharacters();
+            Character characterInTrouble = characters.get(0);
+            savingFrom.remove(characterInTrouble);
+            savingTo.accept(characterInTrouble);
+            characterInTrouble.setIceBlock(savingTo);
+            characterInTrouble.save();
+
         } catch (IOException e)
         {
             e.printStackTrace();
         }
     }
     
-    public void InteractWithCharacter(Character c)
+    public void interactWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Rope");
+        c.changeEnergy(-1); // Item használata egy munka.
         c.addItem(this);
     }
 }

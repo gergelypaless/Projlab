@@ -7,7 +7,7 @@ public class Gun implements CollectableItem, UsableItem
 {
     private static final Logger LOGGER = Logger.getLogger( Gun.class.getName() );
     
-    public void Use(IceBlock block)
+    public void use(IceBlock block)
     {
         LOGGER.fine("Using Gun");
         
@@ -29,9 +29,10 @@ public class Gun implements CollectableItem, UsableItem
         }
     }
     
-    public void InteractWithCharacter(Character c)
+    public void interactWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Gun");
+        c.changeEnergy(-1); // Item használata egy munka.
         c.addItem(this); // inventoryhoz adjuk az itemet, mert UsableItem
     }
 }
