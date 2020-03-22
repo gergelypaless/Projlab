@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 public class Explorer extends Character
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Explorer.class.getName() );
     
     public Explorer()
@@ -33,7 +34,8 @@ public class Explorer extends Character
         try
         {
             input = reader.readLine();
-            
+
+            // lekérjük a megfelelő IceBlock stability értékét
             if (input.equals("up"))
                 checkStability(Direction.UP);
             if (input.equals("down"))
@@ -57,12 +59,8 @@ public class Explorer extends Character
     {
         LOGGER.finest("Explorer checking stability");
         
-        /* lekérjük a szomszédos block stability értékét.
-           Ezt valójában így kéne: block.getNeighbours().get(d).getStability();
-           mivel jelenleg csak egy block van az egész IceMap-en ezért nem tudjuk, csak a saját blockunk
-           stability értékét lekérdezni */
-        
-        return block.getStability();
+        //lekérjük a szomszédos block stability értékét.
+        return block.getNeighbours().get(d).getStability();
     }
     
     public void changeHealth(int value)

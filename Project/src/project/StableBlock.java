@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 public class StableBlock extends IceBlock
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( StableBlock.class.getName() );
     
     public StableBlock(int amountOfSnow, int stability)
@@ -40,5 +41,5 @@ public class StableBlock extends IceBlock
         return false;
     }
     
-    private boolean hasIgloo;
+    private boolean hasIgloo; // van-e ezen az IceBlockon Igloo?
 }

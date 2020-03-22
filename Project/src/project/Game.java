@@ -9,6 +9,7 @@ import java.util.logging.*;
 
 public class Game
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
     
     private Game()
@@ -50,9 +51,9 @@ public class Game
     {
         LOGGER.fine("Initialization");
         
-        // 1*1-es a z IceMap
+        // 1*1-es az IceMap
         map = new IceMap(1,1, characters.size(), characters, itemsToAdd);
-        // beállítjuk az egyes IceBlockok szomszédjait
+        // beállítjuk az egyes IceBlockok szomszédait
         map.setNeighboursOnTheMap();
     }
     
@@ -146,6 +147,7 @@ public class Game
         input = reader.readLine();
         if (input.equals("y"))
         {
+            // ha a válasz az, hogy meg kellene, hogy fulladjon, akkor vesztettünk
             lose();
             return true;
         }
@@ -196,8 +198,8 @@ public class Game
         
     }
     
-    private boolean isWin;
-    private boolean isLost;
+    private boolean isWin; // nyertünk-e?
+    private boolean isLost; // vesztettünk-e?
     
     // a jégmező
     private IceMap map;
@@ -212,10 +214,10 @@ public class Game
     // osztálypéldány létezhet
     public static Game get()
     {
-        if (game == null)
-            game = new Game();
+        if (instance == null)
+            instance = new Game();
         
-        return game;
+        return instance;
     }
-    private static Game game;
+    private static Game instance;
 }

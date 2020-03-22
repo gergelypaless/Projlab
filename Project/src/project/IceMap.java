@@ -6,66 +6,20 @@ import java.util.logging.Logger;
 
 public class IceMap
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( IceMap.class.getName() );
     
     public IceMap(int N, int M, int numOfPlayers, ArrayList<Character> characters, ArrayList<CollectableItem> items)
     {
         LOGGER.finest("IceMap constructor");
-        
-        // create blocks
-        //      place characters
-        //      place Items
-        
+
+        // IceMap init
         createBlocks();
         placeCharacters(characters);
         placeItems(items);
-        
-        /*this.N = N;
-        this.M = M;
-        
-        blocks = new ArrayList<>();
-        for (int i = 0; i < N; ++i)
-        {
-            blocks.add(new ArrayList<>());
-        }
-        
-        ArrayList<CollectableItem> itemsToAdd = new ArrayList<>();
-        itemsToAdd.add(new Suit());
-        itemsToAdd.add(new Rope());
-        itemsToAdd.add(new Shovel());
-        itemsToAdd.add(new Gun());
-        itemsToAdd.add(new Bullet());
-        itemsToAdd.add(new Flare());
-        itemsToAdd.add(new Food());
-        for (int i = 0; i < N; ++i)
-        {
-            for (int j = 0; j < M; ++j)
-            {
-                IceBlock block = null;
-                
-                Random random = new Random();
-                if ((i * M + j) % 5 == 0)
-                {
-                    int itemIdx = random.nextInt(itemsToAdd.size());
-                    block = new UnstableBlock(random.nextInt(6), 1 + random.nextInt(4), itemsToAdd.get(itemIdx));
-                    itemsToAdd.remove(itemIdx);
-                }
-                else if ((i * M + j) % 8 == 0)
-                {
-                    block = new EmptyBlock(random.nextInt(2), 0);
-                }
-                else
-                {
-                    int itemIdx = random.nextInt(itemsToAdd.size());
-                    block = new StableBlock(random.nextInt(6), numOfPlayers, itemsToAdd.get(itemIdx));
-                    itemsToAdd.remove(itemIdx);
-                }
-                
-                blocks.get(i).add(block);
-            }
-        }*/
     }
-    
+
+    // ez a függvény rakja le az IceBlockokra az Itemeket
     private void placeItems(ArrayList<CollectableItem> items)
     {
         LOGGER.fine("Placing items");
@@ -87,14 +41,16 @@ public class IceMap
     private void placeCharacters(ArrayList<Character> characters)
     {
         LOGGER.fine("Placing characters");
-        
+
+        // mindegyik játékost ugyan arra a blockra rakunk, az egyszerűség kedvéért
         for (Character character : characters)
         {
             blocks.get(0).get(0).accept(character);
             character.setIceBlock(blocks.get(0).get(0));
         }
     }
-    
+
+    // szomszédok beállítása
     public void setNeighboursOnTheMap()
     {
         LOGGER.fine("Setting neighbours...");
@@ -123,9 +79,11 @@ public class IceMap
         LOGGER.finest("Blocks getter");
         return blocks;
     }
-    
+
+    // a jégmezp N*M méretű
     int N;
     int M;
-    
+
+    // blockok a jégmezőn
     private ArrayList<ArrayList<IceBlock>> blocks;
 }

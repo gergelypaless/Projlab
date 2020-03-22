@@ -5,25 +5,17 @@ import java.util.logging.*;
 
 public class Main
 {
-	
-	
 	public static void main(String[] args)
 	{
 		setLogLevel(Level.FINEST);
-		
+
 		Game game = Game.get();
-		// inicializálás
-		// 		IceBlockok lerakása
-		// 		Itemek lerakása
-		// 		Karakterek lerakása
-		
-		// játék indítás
-		//
-		
+
+		// játék elindítása
 		game.start();
-		
 	}
-	
+
+	// logger inicializáló függvény
 	private static void setLogLevel(Level level)
 	{
 		Logger rootLogger = LogManager.getLogManager().getLogger("");
@@ -46,7 +38,4 @@ public class Main
 			});
 		}
 	}
-	
-	
-	
 }

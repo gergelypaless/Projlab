@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 public abstract class Character
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Character.class.getName() );
     
     // A karaktereknek lett egy IDjük. Ez az ID egy indexként tud működni a Game osztály characters tömbjében
@@ -14,20 +15,27 @@ public abstract class Character
         this.energy = 5; // mindenkinek 5 munkája van
         inventory = new ArrayList<>();
     }
-    
+
+    // a karakter lépett a jégmezőn.
     public void move(Direction d)
     {
         LOGGER.fine("Moving in direction: " + d.toString());
-        
+
+        // lekérjük annak az iceBlocknak a szomszédait amin állunk, majd lekérjük a megfelelő irányban lévőt
         IceBlock iceBlockToMoveTo = block.getNeighbours().get(d);
+
+        // mozgatjuk a játékost az IceBlock accept és remove függvényeivel
         block.remove(this);
         iceBlockToMoveTo.accept(this);
+
+        // beállítjuk a karakternek az új IceBlockot.
         setIceBlock(iceBlockToMoveTo);
         
         // a mozgás egy munkába kerül
         energy--;
         LOGGER.fine("Energy decreased to " + energy);
-        
+
+        // ha Emptyblockra léptünk akkor vízbe estünk (ezt az EmptyBlock állítja be)
         if (isInWater)
             LOGGER.fine("Next player's turn");
     }
@@ -36,7 +44,7 @@ public abstract class Character
     {
         LOGGER.fine("Clearing...");
         block.changeAmountOfSnow(-1);
-    
+
         // a tisztítás egy munkába kerül
         energy--;
         LOGGER.fine("Energy decreased to " + energy);
@@ -58,7 +66,8 @@ public abstract class Character
         LOGGER.fine("Character fell in water");
         isInWater = true;
     }
-    
+
+    // a karaktert kimentette valaki
     public void save()
     {
         LOGGER.fine("Character was saved");
@@ -78,6 +87,7 @@ public abstract class Character
     public boolean isDrowning()
     {
         LOGGER.finer("Drowning getter. Has suit checked");
+        // akkor fuldoklunk (Drowning) ha a vízben vagyunk és nincs rajtunk búvárruha
         return isInWater && !hasSuit;
     }
     
@@ -103,9 +113,10 @@ public abstract class Character
     
     public int getHealth()
     {
-        return 0;
+        return health;
     }
-    
+
+    // ennél a játékosnál van-e a Flare (egy játék során pontosan egy jelzőfény van)
     public boolean hasFlare()
     {
         return hasFlare;
@@ -117,7 +128,8 @@ public abstract class Character
         LOGGER.fine("Character has a flare now!");
         hasFlare = true;
     }
-    
+
+    // ennél a játékosnál van-e a Bullet (egy játék során pontosan egy töltény van)
     public boolean hasBullet()
     {
         return hasBullet;
@@ -130,8 +142,7 @@ public abstract class Character
         hasBullet = true;
     }
     
-    /* az inicializálásnál kell, így tudunk átadni a karakternek egy IceBlock-ot, a karakter ezen a blockon fog állni
-       ez később a konstruktorba fog kerülni*/
+    /* ezzel tudunk átadni a karakternek egy IceBlock-ot, a karakter ezen a blockon fog állni */
     public void setIceBlock(IceBlock block)
     {
         LOGGER.fine("Character is on a new IceBlock");
@@ -153,19 +164,18 @@ public abstract class Character
     {
         return inventory;
     }
-    
+
+    // a játékos olyan mezőn áll-e amin van igloo?
     public boolean isInIgloo()
     {
         return block.hasIgloo();
     }
     
-    protected int energy;
-    private int health;
-    private boolean isInWater;
-    private boolean hasSuit = false;
-    
+    protected int energy; // munkák száma
+    protected int health; // élet
+    private boolean isInWater; // vízben vagyunk-e?
+    private boolean hasSuit = false; // van-e a karakteren búvárruha?
     private boolean hasFlare = false;
-    
     private boolean hasBullet = false;
     private int ID = -1;
     

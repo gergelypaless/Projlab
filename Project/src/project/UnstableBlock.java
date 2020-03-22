@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 public class UnstableBlock extends IceBlock
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( UnstableBlock.class.getName() );
     
     public UnstableBlock(int amountOfSnow, int stability)

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 public abstract class IceBlock
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( IceBlock.class.getName() );
     
     public IceBlock(int amountOfSnow, int stability)
@@ -39,9 +40,10 @@ public abstract class IceBlock
     public int getStability()
     {
         LOGGER.finest("Stability getter");
-        return 3; // ez a stability változót kéne visszaadja, de az egyszerűség kedvéért most egy fix értéket írtunk be
+        return 4; // ez a stability változót kéne visszaadja, de az egyszerűség kedvéért most egy fix értéket írtunk be
     }
-    
+
+    // hóréteg változtatása bizonyos értékkel
     public void changeAmountOfSnow(int i)
     {
         LOGGER.fine("Changing amount of snow by " + i);
@@ -51,7 +53,7 @@ public abstract class IceBlock
     
     public abstract void remove(Character c);
     
-    // valaki fel akarja venni az Item-et ami ezen az IceBlockon van
+    // valaki fel akarja venni az Item-et ami ezen az IceBlockon van, visszaadjuk az IceBlockon lévő Itemet
     public CollectableItem removeItem()
     {
         LOGGER.fine("Removing Item from IceBlock");

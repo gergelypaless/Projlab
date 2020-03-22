@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 public class Flare implements CollectableItem
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Flare.class.getName() );
     
     public void interactWithCharacter(Character c)

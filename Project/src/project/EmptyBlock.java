@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 public class EmptyBlock extends IceBlock
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( EmptyBlock.class.getName() );
     
     public EmptyBlock(int amountOfSnow, int stability)

@@ -5,8 +5,10 @@ import java.util.logging.Logger;
 
 public class Gun implements CollectableItem, UsableItem
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Gun.class.getName() );
-    
+
+    // az item használata
     public void use(IceBlock block)
     {
         LOGGER.fine("Using Gun");

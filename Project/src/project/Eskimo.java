@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 public class Eskimo extends Character
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger(Eskimo.class.getName());
     
     public Eskimo()
@@ -33,12 +34,12 @@ public class Eskimo extends Character
     {
         LOGGER.fine("Placing igloo");
         // visszaad egy igaz/hamis értéket, ez alapján lehet eldönteni, hogy tudunk-e lerakni itt igloo-t
-        block.placeIgloo();
-        return false;
+        return block.placeIgloo();
     }
     
     public void changeHealth(int value)
     {
         LOGGER.fine("Changing health by: " + value);
+        health += value;
     }
 }

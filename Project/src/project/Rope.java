@@ -8,8 +8,10 @@ import java.util.logging.Logger;
 
 public class Rope implements CollectableItem, UsableItem
 {
+    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Rope.class.getName() );
-    
+
+    // Item használata
     public void use(IceBlock savingTo)
     {
         LOGGER.fine("Using Rope");
@@ -29,12 +31,19 @@ public class Rope implements CollectableItem, UsableItem
             if (input.equals("right"))
                 d = Direction.RIGHT;
 
+            // lekérjük azt az IceBlockot ahonnan ki kell mentenünk valakit
             IceBlock savingFrom = savingTo.getNeighbours().get(d);
+            // lekérjük az IceBlockról a karaktereket
             ArrayList<Character> characters = savingFrom.getCharacters();
+            // kiválasztunk egyet, mondjuk a 0. helyen lévő karaktert
             Character characterInTrouble = characters.get(0);
+            // mozgatjuk a karaktert
             savingFrom.remove(characterInTrouble);
             savingTo.accept(characterInTrouble);
+            // beállítjuk a karakternek az új helyét
             characterInTrouble.setIceBlock(savingTo);
+
+            // meghívjhuk a save függvényt mivel a karakter megmenekült/nem fulladt meg
             characterInTrouble.save();
 
         } catch (IOException e)
@@ -42,11 +51,11 @@ public class Rope implements CollectableItem, UsableItem
             e.printStackTrace();
         }
     }
-    
+
     public void interactWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Rope");
         c.changeEnergy(-1); // Item használata egy munka.
-        c.addItem(this);
+        c.addItem(this); // hizzáadjuk az inventoryhoz mivel UsableItem
     }
 }
