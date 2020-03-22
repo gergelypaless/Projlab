@@ -103,14 +103,14 @@ public abstract class Character
         LOGGER.fine("Energy decreased to " + energy);
     }
     
-    public abstract void changeHealth(int value);
-    
     public void changeEnergy(int value)
     {
         energy += value;
         LOGGER.fine("Energy changed to " + energy);
     }
-    
+
+    public abstract void changeHealth(int value);
+
     public int getHealth()
     {
         return health;
@@ -147,11 +147,6 @@ public abstract class Character
     {
         LOGGER.fine("Character is on a new IceBlock");
         this.block = block;
-    }
-    
-    public int getID()
-    {
-        return ID;
     }
     
     // csak UsableItem-et tudunk hozzáadni az inventoryhoz.

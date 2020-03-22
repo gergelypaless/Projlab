@@ -168,11 +168,6 @@ public class Game
         isLost = true;
     }
     
-    public int getNumOfPlayers()
-    {
-        return characters.size();
-    }
-    
     // Hóvihar van
     private void snowStorm()
     {
@@ -194,8 +189,6 @@ public class Game
                 blocks.get(i).get(j).changeAmountOfSnow(1);
             }
         }
-        
-        
     }
     
     private boolean isWin; // nyertünk-e?
