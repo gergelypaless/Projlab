@@ -103,6 +103,7 @@ public abstract class Character
         LOGGER.fine("Energy decreased to " + energy);
     }
     
+    //megváltoztatható vele a karakter aktuális energiájának száma
     public void changeEnergy(int value)
     {
         energy += value;
@@ -155,6 +156,7 @@ public abstract class Character
         inventory.add(item);
     }
     
+    //visszaadja a karakter inventoryjának tömbjét
     public ArrayList<UsableItem> getInventory()
     {
         return inventory;

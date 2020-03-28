@@ -18,6 +18,7 @@ public class Eskimo extends Character
         LOGGER.finest("Eskimo constructor");
     }
     
+    //képesség használatát szolgáló függvény
     public void useAbility()
     {
         LOGGER.fine("Using character's ability");
@@ -30,6 +31,7 @@ public class Eskimo extends Character
         placeIgloo();
     }
     
+    //maga a képesség függvénye
     private boolean placeIgloo()
     {
         LOGGER.fine("Placing igloo");
@@ -37,6 +39,7 @@ public class Eskimo extends Character
         return block.placeIgloo();
     }
     
+    //a karakter aktuális életének megváltoztatására alkalmas függvény
     public void changeHealth(int value)
     {
         LOGGER.fine("Changing health by: " + value);

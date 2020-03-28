@@ -11,19 +11,21 @@ public abstract class IceBlock
     // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( IceBlock.class.getName() );
     
+    //item nélküli konstruktor
     public IceBlock(int amountOfSnow, int stability)
     {
         this(amountOfSnow, stability, null);
         LOGGER.finest("IceBlock constructor");
     }
     
+    //itemes konstruktor
     public IceBlock(int amountOfSnow, int stability, CollectableItem item)
     {
         this.amountOfSnow = amountOfSnow;
         this.stability = stability;
         this.item = item;
     }
-    
+    //szomszédok beállításáért felelős függvény
     public void setNeighbour(Direction d, IceBlock block)
     {
         LOGGER.finer("Setting neighbour in Direction: " + d.toString());
@@ -31,11 +33,13 @@ public abstract class IceBlock
         neighbours.put(d, block);
     }
     
+    //amountOfSnow gettere
     public int getSnow()
     {
         return amountOfSnow;
     }
     
+    //Stability gettere
     public int getStability()
     {
         LOGGER.finest("Stability getter");
@@ -59,37 +63,44 @@ public abstract class IceBlock
     
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
-        // megkérdezzük, hogy milyen Item-et szeretne felvenni. Ez a künnyű tesztelhetőség érdekében kell.
+        // megkérdezzük, hogy milyen Item-et szeretne felvenni. Ez a könnyű tesztelhetőség érdekében kell.
         System.out.println("Which item to pick up (suit, flare, food, shovel, bullet, gun, rope)");
         try
         {
             input = reader.readLine();
             if (input.equals("suit"))
             {
+            	//búvárruha?
                 return new Suit();
             }
             else if (input.equals("flare"))
             {
+            	//jelzőfény?
                 return new Flare();
             }
             else if (input.equals("food"))
             {
+            	//étel?
                 return new Food();
             }
             else if (input.equals("shovel"))
             {
+            	//ásó?
                 return new Shovel();
             }
             else if (input.equals("bullet"))
             {
+            	//töltény?
                 return new Bullet();
             }
             else if (input.equals("gun"))
             {
+            	//fegyver?
                 return new Gun();
             }
             else if (input.equals("rope"))
             {
+            	//kötél?
                 return new Rope();
             }
         } catch (IOException e)
@@ -98,7 +109,7 @@ public abstract class IceBlock
         }
         return null;
     }
-    
+    //eszkimó képességének használata váltja ki
     public boolean placeIgloo()
     {
         LOGGER.fine("Can we place igloo on this IceBlock?");
@@ -113,12 +124,14 @@ public abstract class IceBlock
         return false;
     }
     
+    //a blokkon lévő karakterek listájának lekérésére szolgáló függvény
     public ArrayList<Character> getCharacters()
     {
         LOGGER.finest("IceBlock Characters getter");
         return characters;
     }
     
+    //a szomszédos mezők visszaadása
     public HashMap<Direction, IceBlock> getNeighbours()
     {
         LOGGER.finest("Neighbours getter");

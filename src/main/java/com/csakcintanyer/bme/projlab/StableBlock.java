@@ -6,11 +6,13 @@ public class StableBlock extends IceBlock
     // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( StableBlock.class.getName() );
     
+    //item nélküli konstruktor
     public StableBlock(int amountOfSnow, int stability)
     {
         super(amountOfSnow, stability);
     }
     
+    //itemes konstruktor
     public StableBlock(int amountOfSnow, int stability, CollectableItem item)
     {
         super(amountOfSnow, stability, item);

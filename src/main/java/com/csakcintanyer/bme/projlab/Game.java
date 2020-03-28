@@ -135,6 +135,8 @@ public class Game
                     return;
             }
         }
+        LOGGER.fine("No more rounds left, end of the game");
+        
     }
     
     private boolean checkDrowning(BufferedReader reader) throws IOException

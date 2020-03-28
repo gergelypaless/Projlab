@@ -61,7 +61,7 @@ public class Explorer extends Character
         //lekérjük a szomszédos block stability értékét.
         return block.getNeighbours().get(d).getStability();
     }
-    
+  //a karakter aktuális életének megváltoztatására alkalmas függvény
     public void changeHealth(int value)
     {
         LOGGER.fine("Changing health by " + value);
