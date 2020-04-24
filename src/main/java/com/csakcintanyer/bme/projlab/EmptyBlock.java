@@ -13,18 +13,18 @@ public class EmptyBlock extends IceBlock
     }
     
     // valaki rálépett erre az IceBlockra
-    public void accept(Character c)
+    public void accept(Entity c)
     {
         LOGGER.fine("EmptyBlock accepting");
-        getCharacters().add(c);
+        getEntities().add(c);
         // ha üres block-ra lépünk akkor beleesünk a fízbe
         c.fallIn();
     }
     
     // valaki ellépett erről az IceBlockól
-    public void remove(Character c)
+    public void remove(Entity c)
     {
         LOGGER.fine("EmptyBlock removing");
-        getCharacters().remove(c);
+        getEntities().remove(c);
     }
 }

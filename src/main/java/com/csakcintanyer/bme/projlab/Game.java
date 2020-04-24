@@ -14,46 +14,23 @@ public class Game
     private Game()
     {
         LOGGER.finest("Game constructor");
+    }
+    
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear) // TODO: + Bear
+    {
+        init(iceMap, characters, bear, -1);
+    }
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns) // TODO: + Bear
+    {
+        map = iceMap;
+        this.characters = characters;
+        this.bear = bear;
+        if (snowInXTurns == -1)
+            deterministic = false;
+        else
+            deterministic = true;
         
-        // karakterek és IceMap inicializálása
-        createCharacters();
-        createMap(createItems());
-    }
-    
-    // Itemek létrehozása. Ezeket átadjuk majd az IceMapnek
-    private ArrayList<CollectableItem> createItems()
-    {
-        LOGGER.fine("Creating Items");
-        ArrayList<CollectableItem> itemsToAdd = new ArrayList<>();
-        itemsToAdd.add(new Suit());
-        itemsToAdd.add(new Rope());
-        itemsToAdd.add(new Shovel());
-        itemsToAdd.add(new Gun());
-        itemsToAdd.add(new Bullet());
-        itemsToAdd.add(new Flare());
-        itemsToAdd.add(new Food());
-        return itemsToAdd;
-    }
-    
-    // karakterek létrehozása, és eltárolása a characters ArrayList-ben
-    private void createCharacters()
-    {
-        LOGGER.fine("Creating characters");
-        characters.add(new Eskimo());
-        characters.add(new Eskimo());
-        characters.add(new Explorer());
-        characters.add(new Explorer());
-    }
-    
-    // IceMap inicializálása
-    private void createMap(ArrayList<CollectableItem> itemsToAdd)
-    {
-        LOGGER.fine("Initialization");
-        
-        // 1*1-es az IceMap
-        map = new IceMap(1,1, characters.size(), characters, itemsToAdd);
-        // beállítjuk az egyes IceBlockok szomszédait
-        map.setNeighboursOnTheMap();
+        this.snowInXTurns = snowInXTurns;
     }
     
     // játék kezdése
@@ -62,97 +39,177 @@ public class Game
         LOGGER.fine("Starting game");
         try
         {
-            // ebben a testprogramban csak egy kört játszunk le
-            nextRound();
+            Random random = new Random();
+            
+            int turns = 0;
+            nextRound(turns % characters.size());
+            turns++;
+            while (!gameOver())
+            {
+                if (deterministic && turns % snowInXTurns == 0)
+                {
+                    snowStorm();
+                }
+                else if (!deterministic)
+                {
+                    if (random.nextInt(2) == 1) // 50%
+                    {
+                        snowStorm();
+                    }
+                }
+                if (gameOver())
+                    break;
+    
+                nextRound(turns % characters.size());
+                
+                int rand = random.nextInt(4);
+                if (rand == 0)
+                    bear.move(Direction.LEFT);
+                if (rand == 1)
+                    bear.move(Direction.RIGHT);
+                if (rand == 2)
+                    bear.move(Direction.UP);
+                if (rand == 3)
+                    bear.move(Direction.DOWN);
+                
+                turns++;
+            }
         } catch (IOException e)
         {
             e.printStackTrace();
         }
     }
     
+    private String getIceBlockTypeAsString(IceBlock block)
+    {
+        if (block instanceof StableBlock)
+            return "StableBlock";
+        else if (block instanceof UnstableBlock)
+            return "UnstableBlock";
+        else if (block instanceof EmptyBlock)
+            return "EmptyBlock";
+        
+        return null;
+    }
+    
     // következő kör
-    public void nextRound() throws IOException
+    public void nextRound(int whichPlayer) throws IOException
     {
         LOGGER.fine("Changing round");
         
+        currentlyMovingCharacter = characters.get(whichPlayer);
+        if (currentlyMovingCharacter.isDrowning())
+        {
+            lose();
+            return;
+        }
+        
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
-    
-        // minden kör elején a characters tömb 0. elemén lévő játékos fog kezdeni
-        currentlyMovingCharacter = characters.get(0);
-        
-        Random random = new Random();
-        int numOfTurns = characters.size();
-        for (int i = 0; i < numOfTurns; ++i)
+        while (!(input = reader.readLine()).equals("end") && !(isLost || isWin) && currentlyMovingCharacter.getEnergy() > 0)
         {
-            // az i. karakter lép
-            
-            LOGGER.fine("Next player");
-            
-            // Hóvihar 50%-os valószínűséggel jön
-            if (random.nextInt(2) == 0)
-                snowStorm();
-            
-            // az éppen aktuálisan soron lévő játékos beállítása
-            currentlyMovingCharacter = characters.get(i);
-            
-            LOGGER.fine("You have " + (numOfTurns - i) + " turns left. Player" + (i + 1));
-            
-            // mozgás
-            System.out.println("What direction should i move? (up/down/left/right)");
-            input = reader.readLine();
-            if (input.equals("up"))
-                currentlyMovingCharacter.move(Direction.UP);
-            if (input.equals("down"))
-                currentlyMovingCharacter.move(Direction.DOWN);
-            if (input.equals("left"))
-                currentlyMovingCharacter.move(Direction.LEFT);
-            if (input.equals("right"))
-                currentlyMovingCharacter.move(Direction.RIGHT);
-    
-            // fullad-e a karakter?
-            if (checkDrowning(reader)) return;
-    
-            // képesség használata
-            currentlyMovingCharacter.useAbility();
-            
-            // IceBlock tisztítása
-            currentlyMovingCharacter.clear();
-            
-            // Item felvétele
-            currentlyMovingCharacter.pickUp();
-    
-            // ha használható Item-et vettünk fel, akkor a karakter inventory-ában van egy elem
-            if (currentlyMovingCharacter.getInventory().size() > 0)
+            String[] elements = input.split(" ");
+            switch (elements[0])
             {
-                System.out.println("Which item to use? You have " + currentlyMovingCharacter.getInventory().size() + " item. (0, 1, 2... stb)");
-                input = reader.readLine();
-                int index = Integer.parseInt(input);
-                currentlyMovingCharacter.useItem(index);
-                
-                // ha a Gun-t használtuk, és a győzelem minden feltétele teljesült akkor ezen a ponton az isWin igaz lesz
-                if (isWin)
-                    return;
+                case "move":
+                    Direction d;
+                    if (elements[1].equals("left"))
+                        d = Direction.LEFT;
+                    else if (elements[1].equals("right"))
+                        d = Direction.RIGHT;
+                    else if (elements[1].equals("up"))
+                        d = Direction.UP;
+                    else if (elements[1].equals("down"))
+                        d = Direction.DOWN;
+                    else
+                        throw new IllegalArgumentException("wrong direction");
+    
+                    currentlyMovingCharacter.move(d);
+                    break;
+                case "use":
+                    if (elements[1].equals("item"))
+                    {
+                        currentlyMovingCharacter.useItem(Integer.parseInt(elements[2]));
+                    } else if (elements[1].equals("ability"))
+                    {
+                        currentlyMovingCharacter.useAbility();
+                    }
+                    break;
+                case "pick_up":
+                    currentlyMovingCharacter.pickUp();
+                    break;
+                case "stat":
+                    // Type
+                    if (currentlyMovingCharacter instanceof Eskimo)
+                        System.out.println("Type: Eskimo");
+                    else if (currentlyMovingCharacter instanceof Explorer)
+                        System.out.println("Type: Explorer");
+    
+                    // Energy
+                    System.out.println("Energy: " + currentlyMovingCharacter.getEnergy());
+                    // Health
+                    System.out.println("Health: " + currentlyMovingCharacter.getHealth());
+                    // HasSuit
+                    System.out.println("HasSuit: " + (currentlyMovingCharacter.hasSuit() ? "True" : "False"));
+                    // HasFlare
+                    System.out.println("HasFlare: " + (currentlyMovingCharacter.hasFlare() ? "True" : "False"));
+                    // HasBullet
+                    System.out.println("HasBullet: " + (currentlyMovingCharacter.hasBullet() ? "True" : "False"));
+                    // ID
+                    System.out.println("ID: " + currentlyMovingCharacter.getID());
+                    // Items
+                    System.out.println("Items:");
+                    for (UsableItem item : currentlyMovingCharacter.getInventory())
+                    {
+                        System.out.println("\t" + item.toString());
+                    }
+                    break;
+                case "block":
+                    IceBlock block = currentlyMovingCharacter.getBlock();
+                    // Type
+                    if (block instanceof StableBlock)
+                        System.out.println("Type: StableBlock");
+                    else if (block instanceof UnstableBlock)
+                        System.out.println("Type: UnstableBlock");
+                    else if (block instanceof EmptyBlock)
+                        System.out.println("Type: EmptyBlock");
+                    
+                    // AmountOfSnow
+                    System.out.println("AmountOfSnow" + block.getSnow());
+                    // Stability
+                    System.out.println("Stability: " + block.getStability());
+                    // HasIgloo
+                    System.out.println("HasIgloo: " + block.hasIgloo());
+                    // HasTent
+                    System.out.println("HasTent: " + block.hasTent());
+                    // Item
+                    System.out.println("Item: \n\t" + block.getItem());
+                    // Entities
+                    System.out.println("Entities:");
+                    for (Entity entity : block.getEntities())
+                    {
+                        if (entity instanceof Eskimo)
+                            System.out.println("Eskimo");
+                        else if (entity instanceof Explorer)
+                            System.out.println("Explorer");
+                        else if (entity instanceof Bear)
+                            System.out.println("Bear");
+                    }
+                    // Neighbours
+                    System.out.println("Neighbours:");
+                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.LEFT)) + " - LEFT");
+                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.RIGHT)) + " - RIGHT");
+                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.UP)) + " - UP");
+                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.DOWN)) + " - DOWN");
+                    break;
+                    
+                case "clear":
+                    currentlyMovingCharacter.clear();
+                    break;
+                default:
+                    throw new IllegalArgumentException("wrong command");
             }
         }
-        LOGGER.fine("No more rounds left, end of the game");
-        
-    }
-    
-    private boolean checkDrowning(BufferedReader reader) throws IOException
-    {
-        String input;
-        // megkérdezzük a felhasználót, hogy szeretné-e, ha a karaktere fuldokolna=meghalna.
-        // Így ezt a működést is tudjuk tesztelni
-        System.out.println("Should player drowning? (y/n) Player is " + (currentlyMovingCharacter.isDrowning() ? "" : "not ") + "drowning at the moment!");
-        input = reader.readLine();
-        if (input.equals("y"))
-        {
-            // ha a válasz az, hogy meg kellene, hogy fulladjon, akkor vesztettünk
-            lose();
-            return true;
-        }
-        return false;
     }
     
     // ezt a függvényt kell meghívni, ha a győzelem feltétele teljesült
@@ -169,6 +226,11 @@ public class Game
         isLost = true;
     }
     
+    private boolean gameOver()
+    {
+        return (isLost || isWin);
+    }
+    
     // Hóvihar van
     private void snowStorm()
     {
@@ -177,7 +239,7 @@ public class Game
         // végigmegyünk a karaktereken, megnézük hogy iglooban vannak-e, ha nem akkor egy élet minusz
         for (Character c : characters)
         {
-            if (c.isInIgloo())
+            if (!(c.isInIgloo() || c.isInTent()))
                 c.changeHealth(-1);
         }
         
@@ -192,6 +254,11 @@ public class Game
         }
     }
     
+    public IceMap getIceMap()
+    {
+        return map;
+    }
+    
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
     
@@ -203,6 +270,12 @@ public class Game
     
     // éppen soron lévő játékos
     private Character currentlyMovingCharacter;
+    
+    // bear
+    private Bear bear = null;
+    
+    private boolean deterministic;
+    public int snowInXTurns;
     
     // a Game osztály a Singleton tervezési formát követi, hisz a program futása során csak egy, a játékot vezérlő
     // osztálypéldány létezhet

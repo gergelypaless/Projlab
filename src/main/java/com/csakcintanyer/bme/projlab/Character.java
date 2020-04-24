@@ -3,7 +3,7 @@ package com.csakcintanyer.bme.projlab;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public abstract class Character
+public abstract class Character extends Entity
 {
     // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Character.class.getName() );
@@ -12,7 +12,7 @@ public abstract class Character
     public Character(int ID)
     {
         this.ID = ID;
-        this.energy = 5; // mindenkinek 5 munkája van
+        setEnergy(4);
         inventory = new ArrayList<>();
     }
 
@@ -21,6 +21,9 @@ public abstract class Character
     {
         LOGGER.fine("Moving in direction: " + d.toString());
 
+        if (energy == 0)
+            return;
+        
         // lekérjük annak az iceBlocknak a szomszédait amin állunk, majd lekérjük a megfelelő irányban lévőt
         IceBlock iceBlockToMoveTo = block.getNeighbours().get(d);
 
@@ -32,46 +35,36 @@ public abstract class Character
         setIceBlock(iceBlockToMoveTo);
         
         // a mozgás egy munkába kerül
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
-
-        // ha Emptyblockra léptünk akkor vízbe estünk (ezt az EmptyBlock állítja be)
-        if (isInWater)
-            LOGGER.fine("Next player's turn");
+        changeEnergy(-1);
     }
     
     public void clear()
     {
+        if (energy == 0)
+            return;
+        
         LOGGER.fine("Clearing...");
         block.changeAmountOfSnow(-1);
 
         // a tisztítás egy munkába kerül
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
+        changeEnergy(-1);
     }
     
     public void pickUp()
     {
+        if (energy == 0)
+            return;
+        
         LOGGER.fine("Picking up item");
     
         // a blocktól visszakapunk egy itemet
         CollectableItem item = block.removeItem();
+        if (item == null)
+            return;
+    
+        changeEnergy(-1); // Item használata egy munka.
         // "értesítjük" az itemet, hogy felvettük
         item.interactWithCharacter(this);
-    }
-    
-    // amikor a karakter vízbe esik
-    public void fallIn()
-    {
-        LOGGER.fine("Character fell in water");
-        isInWater = true;
-    }
-
-    // a karaktert kimentette valaki
-    public void save()
-    {
-        LOGGER.fine("Character was saved");
-        isInWater = false;
     }
     
     public abstract void useAbility();
@@ -94,23 +87,36 @@ public abstract class Character
     // Egy Item használata. Az itemIdx paraméter a Character inventory tömbjében indexel, így kapunk egy Itemet
     public void useItem(int itemIdx)
     {
+        if (energy == 0)
+            return;
+        
         LOGGER.fine("Using item...");
         
-        inventory.get(itemIdx).use(block);
+        if (inventory.get(itemIdx).use(block))
+            inventory.remove(itemIdx);
         
         // egy Item használata egy munkába kerül.
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
+        changeEnergy(-1);
     }
     
     //megváltoztatható vele a karakter aktuális energiájának száma
-    public void changeEnergy(int value)
+    public void changeEnergy(int amount)
     {
-        energy += value;
+        energy += amount;
         LOGGER.fine("Energy changed to " + energy);
     }
+    
+    public void setEnergy(int value)
+    {
+        energy = value;
+    }
 
-    public abstract void changeHealth(int value);
+    public void changeHealth(int value)
+    {
+        health += value;
+        if (health == 0)
+            Game.get().lose();
+    }
 
     public int getHealth()
     {
@@ -136,18 +142,26 @@ public abstract class Character
         return hasBullet;
     }
     
+    public boolean hasSuit()
+    {
+        return hasSuit;
+    }
+    
+    public int getID()
+    {
+        return ID;
+    }
+    
+    public IceBlock getBlock()
+    {
+        return block;
+    }
+    
     // felvettünk egy Bullet-et
     public void setHasBullet()
     {
         LOGGER.fine("Character has a bullet now!");
         hasBullet = true;
-    }
-    
-    /* ezzel tudunk átadni a karakternek egy IceBlock-ot, a karakter ezen a blockon fog állni */
-    public void setIceBlock(IceBlock block)
-    {
-        LOGGER.fine("Character is on a new IceBlock");
-        this.block = block;
     }
     
     // csak UsableItem-et tudunk hozzáadni az inventoryhoz.
@@ -168,17 +182,25 @@ public abstract class Character
         return block.hasIgloo();
     }
     
+    // a játékos olyan mezőn áll-e amin van igloo?
+    public boolean isInTent()
+    {
+        return block.hasTent();
+    }
+    
+    public int getEnergy()
+    {
+        return energy;
+    }
+    
     protected int energy; // munkák száma
     protected int health; // élet
-    private boolean isInWater; // vízben vagyunk-e?
     private boolean hasSuit = false; // van-e a karakteren búvárruha?
     private boolean hasFlare = false;
     private boolean hasBullet = false;
-    private int ID = -1;
     
-    // a block amin a karakter áll
-    protected IceBlock block;
-    
+    private int ID;
     // az inventory csak használható Item-eket tárolhat. Ezeknek az Item-eknek van Use() függvényük is
+    
     private ArrayList<UsableItem> inventory;
 }

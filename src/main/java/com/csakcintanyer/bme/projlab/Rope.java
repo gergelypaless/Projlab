@@ -5,18 +5,23 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-public class Rope implements CollectableItem, UsableItem
+public class Rope extends CollectableItem implements UsableItem
 {
     // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
     private static final Logger LOGGER = Logger.getLogger( Rope.class.getName() );
-
+    
+    public Rope(IceBlock block)
+    {
+        super(block);
+    }
+    
     // Item használata
-    public void use(IceBlock savingTo)
+    public boolean use(IceBlock savingTo)
     {
         LOGGER.fine("Using Rope");
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
-        System.out.println("What direction should i save a character? (up/down/left/right)");
+        System.out.println("Direction: ");
         try
         {
             input = reader.readLine();
@@ -33,9 +38,9 @@ public class Rope implements CollectableItem, UsableItem
             // lekérjük azt az IceBlockot ahonnan ki kell mentenünk valakit
             IceBlock savingFrom = savingTo.getNeighbours().get(d);
             // lekérjük az IceBlockról a karaktereket
-            ArrayList<Character> characters = savingFrom.getCharacters();
+            ArrayList<Entity> characters = savingFrom.getEntities();
             // kiválasztunk egyet, mondjuk a 0. helyen lévő karaktert
-            Character characterInTrouble = characters.get(0);
+            Entity characterInTrouble = characters.get(0);
             // mozgatjuk a karaktert
             savingFrom.remove(characterInTrouble);
             savingTo.accept(characterInTrouble);
@@ -45,16 +50,18 @@ public class Rope implements CollectableItem, UsableItem
             // meghívjhuk a save függvényt mivel a karakter megmenekült/nem fulladt meg
             characterInTrouble.save();
 
-        } catch (IOException e)
-        {
-            e.printStackTrace();
         }
+        catch (IOException e)
+        {
+            System.out.println("Exception occured in the input");
+            return false;
+        }
+        return false;
     }
 
     public void interactWithCharacter(Character c)
     {
         LOGGER.fine("Picked up Rope");
-        c.changeEnergy(-1); // Item használata egy munka.
         c.addItem(this); // hizzáadjuk az inventoryhoz mivel UsableItem
     }
 }

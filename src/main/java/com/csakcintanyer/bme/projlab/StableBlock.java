@@ -19,28 +19,48 @@ public class StableBlock extends IceBlock
     }
     
     // valaki rálépett erre az IceBlockra
-    public void accept(Character c)
+    public void accept(Entity c)
     {
         LOGGER.fine("StableBlock accepting");
-        getCharacters().add(c);
+        getEntities().add(c);
     }
     
     // valaki ellépett erről az IceBlockól
-    public void remove(Character c)
+    public void remove(Entity c)
     {
         LOGGER.fine("StableBlock removing");
-        getCharacters().remove(c);
+        getEntities().remove(c);
     }
     
     public boolean placeIgloo()
     {
+        if (hasIgloo)
+            return false;
+        
+        hasIgloo = true;
+        hasTent = false;
+        return true;
+    }
+    
+    public boolean placeTent()
+    {
+        if (hasIgloo || hasTent)
+            return false;
+        
+        hasTent = true;
         return true;
     }
     
     public boolean hasIgloo()
     {
-        return false;
+        return hasIgloo;
+    }
+    
+    public boolean hasTent()
+    {
+        return hasIgloo;
     }
     
     private boolean hasIgloo; // van-e ezen az IceBlockon Igloo?
+    private boolean hasTent; // van-e ezen az IceBlockon Igloo?
 }
