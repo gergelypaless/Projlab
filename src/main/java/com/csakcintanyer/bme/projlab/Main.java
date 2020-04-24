@@ -44,12 +44,15 @@ public class Main
 		
 		while (!(input = reader.readLine()).equals("done"))
 		{
+			if (input.equals(""))
+				continue;
+			
 			String[] elements = input.split(" ");
 			switch (elements[0])
 			{
 				case "map":
-					M = Integer.parseInt(elements[1]);
-					N = Integer.parseInt(elements[2]);
+					N = Integer.parseInt(elements[1]);
+					M = Integer.parseInt(elements[2]);
 					for (int j = 0; j < M; ++j)
 					{
 						blocks.add(new ArrayList<>());
@@ -68,6 +71,7 @@ public class Main
 								blocks.get(j).add(new EmptyBlock(amountOfSnow, stability));
 						}
 					}
+					iceMap = new IceMap(blocks);
 					break;
 				case "load":
 					break;
@@ -138,7 +142,6 @@ public class Main
 			}
 		}
 		
-		iceMap = new IceMap(blocks);
 		Game.get().init(iceMap, characters, bear, snowInXTurns);
 	}
 	

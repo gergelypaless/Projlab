@@ -13,8 +13,8 @@ public class IceMap implements Serializable
     {
         LOGGER.finest("IceMap constructor");
     
-        this.N = blocks.size();
-        this.M = blocks.get(0).size();
+        this.M = blocks.size();
+        this.N = blocks.get(0).size();
         this.blocks = blocks;
         
         setNeighboursOnTheMap();
@@ -35,11 +35,11 @@ public class IceMap implements Serializable
                 if (x != N - 1)
                     blocks.get(y).get(x).setNeighbour(Direction.RIGHT, blocks.get(y).get(x + 1));
                 
-                if (y != M - 1)
-                    blocks.get(y).get(x).setNeighbour(Direction.UP, blocks.get(y + 1).get(x));
-                
                 if (y != 0)
-                    blocks.get(y).get(x).setNeighbour(Direction.DOWN, blocks.get(y - 1).get(x));
+                    blocks.get(y).get(x).setNeighbour(Direction.UP, blocks.get(y - 1).get(x));
+                
+                if (y != M - 1)
+                    blocks.get(y).get(x).setNeighbour(Direction.DOWN, blocks.get(y + 1).get(x));
             }
         }
     }
