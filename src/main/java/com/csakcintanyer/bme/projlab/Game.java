@@ -41,6 +41,7 @@ public class Game
             
             int turns = 0;
             nextRound(turns % characters.size());
+            moveBear();
             turns++;
             while (!gameOver())
             {
@@ -55,22 +56,12 @@ public class Game
                         snowStorm();
                     }
                 }
+                
                 if (gameOver())
                     break;
     
                 nextRound(turns % characters.size());
-                
-                int rand = random.nextInt(4);
-                if (rand == 0)
-                    bear.move(Direction.LEFT);
-                if (rand == 1)
-                    bear.move(Direction.RIGHT);
-                if (rand == 2)
-                    bear.move(Direction.UP);
-                if (rand == 3)
-                    bear.move(Direction.DOWN);
-                System.out.println("Bear moved!");
-                
+                moveBear();
                 turns++;
             }
             
@@ -168,6 +159,21 @@ public class Game
             }
         }
         System.out.println("Your turn is over");
+    }
+    
+    private void moveBear()
+    {
+        int rand = new Random().nextInt(4);
+        if (rand == 0)
+            bear.move(Direction.LEFT);
+        if (rand == 1)
+            bear.move(Direction.RIGHT);
+        if (rand == 2)
+            bear.move(Direction.UP);
+        if (rand == 3)
+            bear.move(Direction.DOWN);
+        System.out.println("Bear moved! Position: ");
+        IOLanguage.PrintBlock(bear.getBlock());
     }
     
     // ezt a függvényt kell meghívni, ha a győzelem feltétele teljesült
