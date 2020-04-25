@@ -7,7 +7,7 @@ public abstract class Entity implements Serializable
 {
 	private static final Logger LOGGER = Logger.getLogger( Character.class.getName() );
 	
-	public abstract void move(Direction d);
+	public abstract boolean move(Direction d);
 	
 	public void fallIn()
 	{
@@ -26,6 +26,11 @@ public abstract class Entity implements Serializable
 	{
 		LOGGER.fine("Character is on a new IceBlock");
 		this.block = block;
+	}
+	
+	public IceBlock getBlock()
+	{
+		return block;
 	}
 	
 	public boolean hasBullet()

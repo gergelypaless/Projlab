@@ -15,14 +15,18 @@ public class Eskimo extends Character
     }
     
     //képesség használatát szolgáló függvény
-    public void useAbility()
+    public boolean useAbility()
     {
         LOGGER.fine("Using character's ability");
     
         if (energy == 0)
-            return;
+            return false;
         
         if (block.placeIgloo())
+        {
             changeEnergy(-1);
+            return true;
+        }
+        return false;
     }
 }

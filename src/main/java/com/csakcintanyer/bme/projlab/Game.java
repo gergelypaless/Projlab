@@ -1,4 +1,5 @@
 package com.csakcintanyer.bme.projlab;
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,10 +26,7 @@ public class Game
         map = iceMap;
         this.characters = characters;
         this.bear = bear;
-        if (snowInXTurns == -1)
-            deterministic = false;
-        else
-            deterministic = true;
+        deterministic = snowInXTurns < 0;
         
         this.snowInXTurns = snowInXTurns;
     }
@@ -80,18 +78,6 @@ public class Game
         }
     }
     
-    private String getIceBlockTypeAsString(IceBlock block)
-    {
-        if (block instanceof StableBlock)
-            return "StableBlock";
-        else if (block instanceof UnstableBlock)
-            return "UnstableBlock";
-        else if (block instanceof EmptyBlock)
-            return "EmptyBlock";
-        
-        return null;
-    }
-    
     // következő kör
     public void nextRound(int whichPlayer) throws IOException
     {
@@ -112,99 +98,45 @@ public class Game
             switch (elements[0])
             {
                 case "move":
-                    Direction d;
-                    if (elements[1].equals("left"))
-                        d = Direction.LEFT;
-                    else if (elements[1].equals("right"))
-                        d = Direction.RIGHT;
-                    else if (elements[1].equals("up"))
-                        d = Direction.UP;
-                    else if (elements[1].equals("down"))
-                        d = Direction.DOWN;
+                    if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
+                        System.out.println("OK, character moved");
                     else
-                        throw new IllegalArgumentException("wrong direction");
-    
-                    currentlyMovingCharacter.move(d);
+                        System.out.println("You cannot move " + elements[1]);
                     break;
                 case "use":
                     if (elements[1].equals("item"))
                     {
-                        currentlyMovingCharacter.useItem(Integer.parseInt(elements[2]));
-                    } else if (elements[1].equals("ability"))
+                        if (currentlyMovingCharacter.useItem(Integer.parseInt(elements[2])))
+                            System.out.println("OK, item used");
+                        else
+                            System.out.println("Item was not used");
+                    }
+                    else if (elements[1].equals("ability"))
                     {
-                        currentlyMovingCharacter.useAbility();
+                        if (currentlyMovingCharacter.useAbility())
+                            System.out.println("OK, ability used");
+                        else
+                            System.out.println("Ability was not used");
                     }
                     break;
                 case "pick_up":
-                    currentlyMovingCharacter.pickUp();
+                    if (currentlyMovingCharacter.pickUp())
+                        System.out.println("OK, item picked up");
+                    else
+                        System.out.println("Item was not picked up");
                     break;
                 case "stat":
-                    // Type
-                    if (currentlyMovingCharacter instanceof Eskimo)
-                        System.out.println("Type: Eskimo");
-                    else if (currentlyMovingCharacter instanceof Explorer)
-                        System.out.println("Type: Explorer");
-    
-                    // Energy
-                    System.out.println("Energy: " + currentlyMovingCharacter.getEnergy());
-                    // Health
-                    System.out.println("Health: " + currentlyMovingCharacter.getHealth());
-                    // HasSuit
-                    System.out.println("HasSuit: " + (currentlyMovingCharacter.hasSuit() ? "True" : "False"));
-                    // HasFlare
-                    System.out.println("HasFlare: " + (currentlyMovingCharacter.hasFlare() ? "True" : "False"));
-                    // HasBullet
-                    System.out.println("HasBullet: " + (currentlyMovingCharacter.hasBullet() ? "True" : "False"));
-                    // ID
-                    System.out.println("ID: " + currentlyMovingCharacter.getID());
-                    // Items
-                    System.out.println("Items:");
-                    for (UsableItem item : currentlyMovingCharacter.getInventory())
-                    {
-                        System.out.println("\t" + item.toString());
-                    }
+                    IOLanguage.PrintCharacter(currentlyMovingCharacter);
                     break;
                 case "block":
-                    IceBlock block = currentlyMovingCharacter.getBlock();
-                    // Type
-                    if (block instanceof StableBlock)
-                        System.out.println("Type: StableBlock");
-                    else if (block instanceof UnstableBlock)
-                        System.out.println("Type: UnstableBlock");
-                    else if (block instanceof EmptyBlock)
-                        System.out.println("Type: EmptyBlock");
-                    
-                    // AmountOfSnow
-                    System.out.println("AmountOfSnow" + block.getSnow());
-                    // Stability
-                    System.out.println("Stability: " + block.getStability());
-                    // HasIgloo
-                    System.out.println("HasIgloo: " + block.hasIgloo());
-                    // HasTent
-                    System.out.println("HasTent: " + block.hasTent());
-                    // Item
-                    System.out.println("Item: \n\t" + block.getItem());
-                    // Entities
-                    System.out.println("Entities:");
-                    for (Entity entity : block.getEntities())
-                    {
-                        if (entity instanceof Eskimo)
-                            System.out.println("Eskimo");
-                        else if (entity instanceof Explorer)
-                            System.out.println("Explorer");
-                        else if (entity instanceof Bear)
-                            System.out.println("Bear");
-                    }
-                    // Neighbours
-                    System.out.println("Neighbours:");
-                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.LEFT)) + " - LEFT");
-                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.RIGHT)) + " - RIGHT");
-                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.UP)) + " - UP");
-                    System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.DOWN)) + " - DOWN");
+                    IOLanguage.PrintBlock(currentlyMovingCharacter.getBlock());
                     break;
                     
                 case "clear":
-                    currentlyMovingCharacter.clear();
+                    if (currentlyMovingCharacter.clear())
+                        System.out.println("OK, iceblock cleared");
+                    else
+                        System.out.println("Iceblock was not cleared");
                     break;
                 default:
                     throw new IllegalArgumentException("wrong command");
@@ -236,6 +168,8 @@ public class Game
     {
         LOGGER.fine("Snow storm is now!");
     
+        System.out.println("Oh no, SNOWSTORM!!");
+        
         // végigmegyünk a karaktereken, megnézük hogy iglooban vannak-e, ha nem akkor egy élet minusz
         for (Character c : characters)
         {
@@ -245,11 +179,11 @@ public class Game
         
         // az IceBlockok hórétegének nővelése
         ArrayList<ArrayList<IceBlock>> blocks = map.getBlocks();
-        for (int i = 0; i < blocks.size(); ++i)
+        for (ArrayList<IceBlock> block : blocks)
         {
-            for (int j = 0; j < blocks.get(0).size(); ++j)
+            for (IceBlock iceBlock : block)
             {
-                blocks.get(i).get(j).changeAmountOfSnow(1);
+                iceBlock.changeAmountOfSnow(1);
             }
         }
     }

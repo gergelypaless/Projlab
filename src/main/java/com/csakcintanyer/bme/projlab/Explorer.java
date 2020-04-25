@@ -19,38 +19,24 @@ public class Explorer extends Character
     }
     
     // az Explorer képessége, hogy meg tudja nézni egy szomszédos block hány karaktert bír el.
-    public void useAbility()
+    public boolean useAbility()
     {
         if (energy == 0)
-            return;
+            return false;
         
         LOGGER.fine("Using character's ability");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String input;
-        // megkérdezzük, hogy melyik irányba kell használni a képességét
-        System.out.println("Direction: ");
         try
         {
-            input = reader.readLine();
-
-            // lekérjük a megfelelő IceBlock stability értékét
-            if (input.equals("up"))
-                System.out.println(checkStability(Direction.UP));
-            if (input.equals("down"))
-                System.out.println(checkStability(Direction.DOWN));
-            if (input.equals("left"))
-                System.out.println(checkStability(Direction.LEFT));
-            if (input.equals("right"))
-                System.out.println(checkStability(Direction.RIGHT));
-        }
-        catch (IOException e)
+            System.out.println(checkStability(IOLanguage.GetDirection()));
+        } catch (IOException e)
         {
-            System.out.println("Exception occured in the input");
-            return;
+            e.printStackTrace();
+            return false;
         }
-        
+    
         // a képesség használata egy munka
         changeEnergy(-1);
+        return true;
     }
     
     private int checkStability(Direction d)

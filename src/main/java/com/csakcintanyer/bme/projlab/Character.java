@@ -17,15 +17,18 @@ public abstract class Character extends Entity
     }
 
     // a karakter lépett a jégmezőn.
-    public void move(Direction d)
+    public boolean move(Direction d)
     {
         LOGGER.fine("Moving in direction: " + d.toString());
 
         if (energy == 0)
-            return;
+            return false;
         
         // lekérjük annak az iceBlocknak a szomszédait amin állunk, majd lekérjük a megfelelő irányban lévőt
         IceBlock iceBlockToMoveTo = block.getNeighbours().get(d);
+        
+        if (iceBlockToMoveTo == null)
+            return false;
 
         // mozgatjuk a játékost az IceBlock accept és remove függvényeivel
         block.remove(this);
@@ -36,38 +39,41 @@ public abstract class Character extends Entity
         
         // a mozgás egy munkába kerül
         changeEnergy(-1);
+        return true;
     }
     
-    public void clear()
+    public boolean clear()
     {
         if (energy == 0)
-            return;
+            return false;
         
         LOGGER.fine("Clearing...");
         block.changeAmountOfSnow(-1);
 
         // a tisztítás egy munkába kerül
         changeEnergy(-1);
+        return true;
     }
     
-    public void pickUp()
+    public boolean pickUp()
     {
         if (energy == 0)
-            return;
+            return false;
         
         LOGGER.fine("Picking up item");
     
         // a blocktól visszakapunk egy itemet
         CollectableItem item = block.removeItem();
         if (item == null)
-            return;
+            return false;
     
         changeEnergy(-1); // Item használata egy munka.
         // "értesítjük" az itemet, hogy felvettük
         item.interactWithCharacter(this);
+        return true;
     }
     
-    public abstract void useAbility();
+    public abstract boolean useAbility();
     
     // felvettünk egy Suit-ot
     public void setHasSuit()
@@ -85,10 +91,10 @@ public abstract class Character extends Entity
     }
     
     // Egy Item használata. Az itemIdx paraméter a Character inventory tömbjében indexel, így kapunk egy Itemet
-    public void useItem(int itemIdx)
+    public boolean useItem(int itemIdx)
     {
         if (energy == 0)
-            return;
+            return false;
         
         LOGGER.fine("Using item...");
         
@@ -97,6 +103,7 @@ public abstract class Character extends Entity
         
         // egy Item használata egy munkába kerül.
         changeEnergy(-1);
+        return true;
     }
     
     //megváltoztatható vele a karakter aktuális energiájának száma
@@ -150,11 +157,6 @@ public abstract class Character extends Entity
     public int getID()
     {
         return ID;
-    }
-    
-    public IceBlock getBlock()
-    {
-        return block;
     }
     
     // felvettünk egy Bullet-et
