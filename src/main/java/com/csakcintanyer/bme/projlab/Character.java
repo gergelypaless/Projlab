@@ -44,11 +44,13 @@ public abstract class Character extends Entity
     
     public boolean clear()
     {
-        if (energy == 0)
+        if (energy == 0 || block.getSnow() == 0)
             return false;
         
         LOGGER.fine("Clearing...");
+        
         block.changeAmountOfSnow(-1);
+        
 
         // a tisztítás egy munkába kerül
         changeEnergy(-1);

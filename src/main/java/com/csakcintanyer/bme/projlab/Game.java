@@ -26,8 +26,9 @@ public class Game
         map = iceMap;
         this.characters = characters;
         this.bear = bear;
-        deterministic = snowInXTurns < 0;
+        deterministic = snowInXTurns >= 0;
         
+        System.out.println("Snow in every " + snowInXTurns + " turns");
         this.snowInXTurns = snowInXTurns;
     }
     
@@ -69,9 +70,14 @@ public class Game
                     bear.move(Direction.UP);
                 if (rand == 3)
                     bear.move(Direction.DOWN);
+                System.out.println("Bear moved!");
                 
                 turns++;
             }
+            
+            IOLanguage.PrintCharacter(currentlyMovingCharacter);
+            IOLanguage.PrintBlock(currentlyMovingCharacter.getBlock());
+            
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -90,18 +96,32 @@ public class Game
             return;
         }
         
+        currentlyMovingCharacter.setEnergy(4);
+        
+        System.out.println("Player " + whichPlayer + "'s turn");
+        
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
-        while (!(input = reader.readLine()).equals("end") && !(isLost || isWin) && currentlyMovingCharacter.getEnergy() > 0)
+        while (currentlyMovingCharacter.getEnergy() > 0 && !(input = reader.readLine()).equals("end") && !(isLost || isWin))
         {
+            if (input.equals(""))
+                continue;
+            
             String[] elements = input.split(" ");
             switch (elements[0])
             {
                 case "move":
                     if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
+                    {
                         System.out.println("OK, character moved");
+                        
+                        if (bear.getBlock() == currentlyMovingCharacter.getBlock())
+                            lose();
+                    }
                     else
+                    {
                         System.out.println("You cannot move " + elements[1]);
+                    }
                     break;
                 case "use":
                     if (elements[1].equals("item"))
@@ -142,6 +162,7 @@ public class Game
                     throw new IllegalArgumentException("wrong command");
             }
         }
+        System.out.println("Your turn is over");
     }
     
     // ezt a függvényt kell meghívni, ha a győzelem feltétele teljesült

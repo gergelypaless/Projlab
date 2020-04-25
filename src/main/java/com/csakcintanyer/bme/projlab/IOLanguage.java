@@ -254,11 +254,17 @@ public class IOLanguage
 		else if (block instanceof EmptyBlock)
 			System.out.println("Type: EmptyBlock");
 		
-		System.out.println("AmountOfSnow" + block.getSnow());
+		System.out.println("AmountOfSnow: " + block.getSnow());
 		System.out.println("Stability: " + block.getStability());
 		System.out.println("HasIgloo: " + block.hasIgloo());
 		System.out.println("HasTent: " + block.hasTent());
-		System.out.println("Item: \n\t" + block.getItem());
+		if (block.getSnow() > 0)
+			System.out.println("Item: unknown");
+		else if (block.getSnow() == 0 && block.getItem() == null)
+			System.out.println("Item: no item");
+		else
+			System.out.println("Item: \t" + block.getItem().toString());
+		
 		System.out.println("Entities:");
 		for (Entity entity : block.getEntities())
 		{
@@ -270,10 +276,10 @@ public class IOLanguage
 				System.out.println("Bear");
 		}
 		System.out.println("Neighbours:");
-		System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.LEFT)) + " - LEFT");
-		System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.RIGHT)) + " - RIGHT");
-		System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.UP)) + " - UP");
-		System.out.println(getIceBlockTypeAsString(block.getNeighbours().get(Direction.DOWN)) + " - DOWN");
+		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.LEFT)) + " - LEFT");
+		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.RIGHT)) + " - RIGHT");
+		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.UP)) + " - UP");
+		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.DOWN)) + " - DOWN");
 	}
 	
 	private static String getIceBlockTypeAsString(IceBlock block)
