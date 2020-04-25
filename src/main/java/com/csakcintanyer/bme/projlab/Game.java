@@ -1,5 +1,4 @@
 package com.csakcintanyer.bme.projlab;
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,7 +25,7 @@ public class Game
         map = iceMap;
         this.characters = characters;
         this.bear = bear;
-        deterministic = snowInXTurns >= 0;
+        deterministic = snowInXTurns > 0;
         
         System.out.println("Snow in every " + snowInXTurns + " turns");
         this.snowInXTurns = snowInXTurns;
