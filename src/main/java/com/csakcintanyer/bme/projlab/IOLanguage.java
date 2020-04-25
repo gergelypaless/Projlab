@@ -34,9 +34,10 @@ public class IOLanguage
 				case "load":
 					LoadFile(elements[1]);
 					System.out.println("File loaded");
-					return true;
+					break;
 				case "save":
 					SaveToFile(elements[1]);
+					System.out.println("OK, game saved");
 					break;
 				case "character": 				CreateCharacter(elements); break;
 				case "item": 					CreateItem(elements); break;
@@ -104,6 +105,7 @@ public class IOLanguage
 		}
 		bear = new Bear();
 		bear.setIceBlock(block);
+		block.getEntities().add(bear);
 		
 		System.out.println("OK, bear created");
 	}
@@ -182,25 +184,26 @@ public class IOLanguage
 		if (iceMap == null)
 			throw new IllegalArgumentException("icemap was not initialized");
 		
+		IceBlock block;
 		if (elements.length <= 2) // nincs pozició specifikálva, csak típus volt
 		{
-			IceBlock block;
+			
 			do
 			{
 				int x = rand.nextInt(iceMap.getBlocks().get(0).size());
 				int y = rand.nextInt(iceMap.getBlocks().size());
 				block = iceMap.getBlocks().get(y).get(x);
 			} while (block instanceof EmptyBlock || block.getStability() == block.getEntities().size() || isBearOnIceBlock(block));
-			character.setIceBlock(block);
 		}
 		else
 		{
 			int x = Integer.parseInt(elements[2]);
 			int y = Integer.parseInt(elements[3]);
-			IceBlock block = iceMap.getBlocks().get(y).get(x);
-			character.setIceBlock(block);
+			block = iceMap.getBlocks().get(y).get(x);
 			//characters.get(characters.size() - 1).setIceBlock(iceMap.getBlocks().get(Integer.parseInt(elements[3])).get(Integer.parseInt(elements[2])));
 		}
+		character.setIceBlock(block);
+		block.getEntities().add(character);
 		System.out.println("OK, character created");
 	}
 	
@@ -276,11 +279,11 @@ public class IOLanguage
 		for (Entity entity : block.getEntities())
 		{
 			if (entity instanceof Eskimo)
-				System.out.println("Eskimo");
+				System.out.println("\tEskimo");
 			else if (entity instanceof Explorer)
-				System.out.println("Explorer");
+				System.out.println("\tExplorer");
 			else if (entity instanceof Bear)
-				System.out.println("Bear");
+				System.out.println("\tBear");
 		}
 		System.out.println("Neighbours:");
 		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.LEFT)) + " - LEFT");
@@ -303,7 +306,7 @@ public class IOLanguage
 	
 	public static void LoadFile(String filePath)
 	{
-		IceMap iceMap = null;
+		iceMap = null;
 		try
 		{
 			// Reading the object from a file
@@ -317,9 +320,9 @@ public class IOLanguage
 		catch(IOException ex) { System.out.println("IOException is caught"); return; }
 		catch(ClassNotFoundException ex) { System.out.println("ClassNotFoundException is caught"); return; }
 		
-		ArrayList<ArrayList<IceBlock>> blocks = iceMap.getBlocks();
-		ArrayList<Character> characters = new ArrayList<>();
-		Bear bear = null;
+		blocks = iceMap.getBlocks();
+		characters = new ArrayList<>();
+		bear = null;
 		for (ArrayList<IceBlock> row : blocks)
 		{
 			for (IceBlock iceBlock : row)

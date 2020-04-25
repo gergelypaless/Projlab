@@ -57,18 +57,15 @@ public class Game
                     }
                 }
                 
-                if (gameOver())
-                    break;
-    
-                if (!nextRound(turns % characters.size()))
-                    continue;
+                if (gameOver()) break;
+                nextRound(turns % characters.size());
+                if (gameOver()) break;
                 
                 moveBear();
                 turns++;
             }
             
-            IOLanguage.PrintCharacter(currentlyMovingCharacter);
-            IOLanguage.PrintBlock(currentlyMovingCharacter.getBlock());
+            System.out.println("Game over!");
             
         } catch (IOException e)
         {
@@ -78,7 +75,7 @@ public class Game
     
     // következő kör
     // returns true if the round was successful
-    public boolean nextRound(int whichPlayer) throws IOException
+    public void nextRound(int whichPlayer) throws IOException
     {
         LOGGER.fine("Changing round");
         
@@ -86,7 +83,7 @@ public class Game
         if (currentlyMovingCharacter.isDrowning())
         {
             lose();
-            return false;
+            return;
         }
         
         currentlyMovingCharacter.setEnergy(4);
@@ -105,9 +102,10 @@ public class Game
                 case "exit":
                     System.out.println("Exiting...");
                     isLost = true;
-                    return false;
+                    return;
                 case "save":
                     IOLanguage.SaveToFile(elements[1]);
+                    System.out.println("OK, game saved");
                     break;
                 case "move":
                     if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
@@ -115,12 +113,15 @@ public class Game
                         System.out.println("OK, character moved");
                         
                         if (bear.getBlock() == currentlyMovingCharacter.getBlock())
+                        {
                             lose();
+                            return; // end of turn
+                        }
                         
                         if (currentlyMovingCharacter.isDrowning())
                         {
                             System.out.println("You are drowning, your turn is over!");
-                            return false;
+                            return; // end of turn
                         }
                     }
                     else
@@ -168,7 +169,6 @@ public class Game
             }
         }
         System.out.println("Your turn is over");
-        return true;
     }
     
     private void moveBear()
