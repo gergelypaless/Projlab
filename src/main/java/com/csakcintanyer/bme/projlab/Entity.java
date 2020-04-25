@@ -43,7 +43,7 @@ public abstract class Entity implements Serializable
 		return false;
 	}
 	
-	protected boolean isInWater; // vízben vagyunk-e?
+	public boolean isInWater; // vízben vagyunk-e?
 	// a block amin a karakter áll
 	protected IceBlock block;
 }

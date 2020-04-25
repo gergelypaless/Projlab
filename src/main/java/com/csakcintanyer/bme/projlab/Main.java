@@ -15,7 +15,8 @@ public class Main
 		}
 		else
 		{
-			IOLanguage.ReadFromConsole();
+			if (!IOLanguage.ReadFromConsole())
+				return;
 		}
 		
 		Game game = Game.get();

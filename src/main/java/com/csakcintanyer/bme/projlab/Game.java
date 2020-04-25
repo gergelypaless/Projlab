@@ -29,6 +29,7 @@ public class Game
         
         System.out.println("Snow in every " + snowInXTurns + " turns");
         this.snowInXTurns = snowInXTurns;
+        turns = 0;
     }
     
     // játék kezdése
@@ -39,7 +40,6 @@ public class Game
         {
             Random random = new Random();
             
-            int turns = 0;
             nextRound(turns % characters.size());
             moveBear();
             turns++;
@@ -60,7 +60,9 @@ public class Game
                 if (gameOver())
                     break;
     
-                nextRound(turns % characters.size());
+                if (!nextRound(turns % characters.size()))
+                    continue;
+                
                 moveBear();
                 turns++;
             }
@@ -75,7 +77,8 @@ public class Game
     }
     
     // következő kör
-    public void nextRound(int whichPlayer) throws IOException
+    // returns true if the round was successful
+    public boolean nextRound(int whichPlayer) throws IOException
     {
         LOGGER.fine("Changing round");
         
@@ -83,16 +86,15 @@ public class Game
         if (currentlyMovingCharacter.isDrowning())
         {
             lose();
-            return;
+            return false;
         }
         
         currentlyMovingCharacter.setEnergy(4);
         
         System.out.println("Player " + whichPlayer + "'s turn");
         
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input;
-        while (currentlyMovingCharacter.getEnergy() > 0 && !(input = reader.readLine()).equals("end") && !(isLost || isWin))
+        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !(input = reader.readLine()).equals("end"))
         {
             if (input.equals(""))
                 continue;
@@ -100,9 +102,10 @@ public class Game
             String[] elements = input.split(" ");
             switch (elements[0])
             {
-                case "load":
-                    IOLanguage.LoadFile(elements[1]);
-                    break;
+                case "exit":
+                    System.out.println("Exiting...");
+                    isLost = true;
+                    return false;
                 case "save":
                     IOLanguage.SaveToFile(elements[1]);
                     break;
@@ -113,6 +116,12 @@ public class Game
                         
                         if (bear.getBlock() == currentlyMovingCharacter.getBlock())
                             lose();
+                        
+                        if (currentlyMovingCharacter.isDrowning())
+                        {
+                            System.out.println("You are drowning, your turn is over!");
+                            return false;
+                        }
                     }
                     else
                     {
@@ -159,6 +168,7 @@ public class Game
             }
         }
         System.out.println("Your turn is over");
+        return true;
     }
     
     private void moveBear()
@@ -227,6 +237,9 @@ public class Game
     
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
+    private int turns;
+    
+    private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     
     // a jégmező
     private IceMap map;

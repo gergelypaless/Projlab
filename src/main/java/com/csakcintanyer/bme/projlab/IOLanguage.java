@@ -16,7 +16,7 @@ public class IOLanguage
 	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Random rand = new Random();
 	
-	public static void ReadFromConsole() throws IOException
+	public static boolean ReadFromConsole() throws IOException
 	{
 		String input;
 		while (!(input = reader.readLine()).equals("done"))
@@ -28,10 +28,13 @@ public class IOLanguage
 			switch (elements[0])
 			{
 				case "map": 					CreateMap(elements); break;
+				case "exit":
+					System.out.println("Exiting...");
+					return false;
 				case "load":
 					LoadFile(elements[1]);
 					System.out.println("File loaded");
-					return;
+					return true;
 				case "save":
 					SaveToFile(elements[1]);
 					break;
@@ -51,6 +54,7 @@ public class IOLanguage
 		}
 		System.out.println("OK, initialization ended");
 		Game.get().init(iceMap, characters, bear, snowInXTurns);
+		return true;
 	}
 	
 	public static void CreateMap(String[] elements) throws IOException
