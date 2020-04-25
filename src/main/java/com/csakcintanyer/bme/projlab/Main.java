@@ -11,7 +11,7 @@ public class Main
 
 		if (args.length > 0)
 		{
-			IOLanguage.TestWithFile(args[0]);
+			IOLanguage.LoadFile(args[0]);
 		}
 		else
 		{

@@ -7,9 +7,8 @@ public class Bear extends Entity
 	public boolean move(Direction d)
 	{
 		IceBlock newBlock = block.getNeighbours().get(d);
-		
-		if (newBlock == null)
-			return false;
+		while (newBlock == null)
+			newBlock = block.getNeighbours().get(d);
 		
 		block.remove(this);
 		newBlock.accept(this);

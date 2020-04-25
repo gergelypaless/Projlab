@@ -29,8 +29,11 @@ public class IOLanguage
 			{
 				case "map": 					CreateMap(elements); break;
 				case "load":
-					break;
+					LoadFile(elements[1]);
+					System.out.println("File loaded");
+					return;
 				case "save":
+					SaveToFile(elements[1]);
 					break;
 				case "character": 				CreateCharacter(elements); break;
 				case "item": 					CreateItem(elements); break;
@@ -294,27 +297,7 @@ public class IOLanguage
 		return null;
 	}
 	
-	public static void SerializeGame(String filePath)
-	{
-		try
-		{
-			//Saving of object in a file
-			FileOutputStream file = new FileOutputStream(filePath);
-			ObjectOutputStream out = new ObjectOutputStream(file);
-			
-			// Method for serialization of object
-			out.writeObject(Game.get().getIceMap());
-			
-			out.close();
-			file.close();
-		}
-		catch(IOException ex)
-		{
-			System.out.println("IOException is caught");
-		}
-	}
-	
-	public static void TestWithFile(String filePath)
+	public static void LoadFile(String filePath)
 	{
 		IceMap iceMap = null;
 		try
@@ -331,29 +314,45 @@ public class IOLanguage
 		catch(ClassNotFoundException ex) { System.out.println("ClassNotFoundException is caught"); return; }
 		
 		ArrayList<ArrayList<IceBlock>> blocks = iceMap.getBlocks();
-		int N = blocks.size();
-		int M = blocks.get(0).size();
 		ArrayList<Character> characters = new ArrayList<>();
 		Bear bear = null;
-		for (int i = 0; i < N; ++i)
+		for (ArrayList<IceBlock> row : blocks)
 		{
-			for (int j = 0; j < M; ++j)
+			for (IceBlock iceBlock : row)
 			{
-				ArrayList<Entity> entities = blocks.get(i).get(j).getEntities();
+				ArrayList<Entity> entities = iceBlock.getEntities();
 				for (int k = 0; k < entities.size(); ++k)
 				{
-					Entity entity = blocks.get(i).get(j).getEntities().get(k);
+					Entity entity = iceBlock.getEntities().get(k);
 					if (!(entity instanceof Bear))
-						characters.add((Character)entity);
+						characters.add((Character) entity);
 					else
-						bear = (Bear)entity;
+						bear = (Bear) entity;
 				}
 			}
 		}
 		Game.get().init(iceMap, characters, bear);
 	}
 	
-	
+	public static void SaveToFile(String filePath)
+	{
+		try
+		{
+			//Saving of object in a file
+			FileOutputStream file = new FileOutputStream(filePath);
+			ObjectOutputStream out = new ObjectOutputStream(file);
+			
+			// Method for serialization of object
+			out.writeObject(Game.get().getIceMap());
+			
+			out.close();
+			file.close();
+		}
+		catch(IOException ex)
+		{
+			ex.printStackTrace();
+		}
+	}
 }
 
 

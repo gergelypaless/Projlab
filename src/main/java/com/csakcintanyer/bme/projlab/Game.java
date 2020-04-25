@@ -109,6 +109,12 @@ public class Game
             String[] elements = input.split(" ");
             switch (elements[0])
             {
+                case "load":
+                    IOLanguage.LoadFile(elements[1]);
+                    break;
+                case "save":
+                    IOLanguage.SaveToFile(elements[1]);
+                    break;
                 case "move":
                     if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
                     {
