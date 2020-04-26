@@ -53,7 +53,7 @@ public class StableBlock extends IceBlock
     
     public boolean hasTent()
     {
-        return hasIgloo;
+        return hasTent;
     }
     
     private boolean hasIgloo; // van-e ezen az IceBlockon Igloo?
