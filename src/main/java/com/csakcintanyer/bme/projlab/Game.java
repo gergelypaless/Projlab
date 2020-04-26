@@ -104,10 +104,13 @@ public class Game
                     {
                         System.out.println("OK, character moved");
 
-                        if (bear.getBlock() == currentlyMovingCharacter.getBlock())
+                        if (bear != null)
                         {
-                            lose();
-                            return; // end of turn
+                            if (bear.getBlock() == currentlyMovingCharacter.getBlock())
+                            {
+                                lose();
+                                return; // end of turn
+                            }
                         }
 
                         if (currentlyMovingCharacter.isDrowning())
