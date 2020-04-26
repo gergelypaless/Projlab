@@ -16,11 +16,11 @@ public class Game
         LOGGER.finest("Game constructor");
     }
     
-    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear) // TODO: + Bear
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear)
     {
         init(iceMap, characters, bear, -1);
     }
-    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns) // TODO: + Bear
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns)
     {
         map = iceMap;
         this.characters = characters;
@@ -74,7 +74,6 @@ public class Game
     }
     
     // következő kör
-    // returns true if the round was successful
     public void nextRound(int whichPlayer) throws IOException
     {
         LOGGER.fine("Changing round");
