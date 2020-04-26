@@ -172,15 +172,20 @@ public class Game
     
     private void moveBear()
     {
-        int rand = new Random().nextInt(4);
-        if (rand == 0)
-            bear.move(Direction.LEFT);
-        if (rand == 1)
-            bear.move(Direction.RIGHT);
-        if (rand == 2)
-            bear.move(Direction.UP);
-        if (rand == 3)
-            bear.move(Direction.DOWN);
+        Random rand = new Random();
+        boolean moved = false;
+        do
+        {
+            int randNum = rand.nextInt(4);
+            if (randNum == 0)
+                moved = bear.move(Direction.LEFT);
+            if (randNum == 1)
+                moved = bear.move(Direction.RIGHT);
+            if (randNum == 2)
+                moved = bear.move(Direction.UP);
+            if (randNum == 3)
+                moved = bear.move(Direction.DOWN);
+        } while (!moved);
         System.out.println("Bear moved! Position: ");
         IOLanguage.PrintBlock(bear.getBlock());
     }
