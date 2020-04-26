@@ -48,6 +48,8 @@ public abstract class IceBlock implements Serializable
     public void changeAmountOfSnow(int value)
     {
         amountOfSnow += value;
+        if (amountOfSnow < 0)
+            amountOfSnow = 0;
     }
     
     public abstract void accept(Entity c);
