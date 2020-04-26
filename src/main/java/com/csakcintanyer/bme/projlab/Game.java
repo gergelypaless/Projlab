@@ -111,11 +111,12 @@ public class Game
                     if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
                     {
                         System.out.println("OK, character moved");
-                        
-                        if (bear.getBlock() == currentlyMovingCharacter.getBlock())
-                        {
-                            lose();
-                            return; // end of turn
+
+                        if(bear != null) {
+                            if (bear.getBlock() == currentlyMovingCharacter.getBlock()) {
+                                lose();
+                                return; // end of turn
+                            }
                         }
                         
                         if (currentlyMovingCharacter.isDrowning())
