@@ -141,10 +141,17 @@ public class Game
                 case "use":
                     if (elements[1].equals("item"))
                     {
-                        if (currentlyMovingCharacter.useItem(Integer.parseInt(elements[2]))) // hanyadik tárgyat
-                            System.out.println("OK, item used");
+                        if (!currentlyMovingCharacter.getInventory().isEmpty())
+                        {
+                            if (currentlyMovingCharacter.useItem(Integer.parseInt(elements[2]))) // hanyadik tárgyat
+                                System.out.println("OK, item used");
+                            else
+                                System.out.println("Item was not used");
+                        }
                         else
-                            System.out.println("Item was not used");
+                        {
+                            System.out.println("Your inventory is empty");
+                        }
                     }
                     else if (elements[1].equals("ability"))
                     {
