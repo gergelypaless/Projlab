@@ -41,7 +41,7 @@ public class Game
             Random random = new Random();
             
             nextRound(turns % characters.size());
-            moveBear();
+            if(bear != null) moveBear();
             turns++;
             while (!gameOver())
             {
@@ -60,8 +60,8 @@ public class Game
                 if (gameOver()) break;
                 nextRound(turns % characters.size());
                 if (gameOver()) break;
-                
-                moveBear();
+
+                if(bear != null) moveBear();
                 turns++;
             }
             
