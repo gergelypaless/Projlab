@@ -24,7 +24,7 @@ public class Gun extends CollectableItem implements UsableItem
                 hasBullet = e.hasBullet();
         }
         // ha mindkettő megvan, akkor el tudjuk sütni a fegyvert, nyertünk
-        if (hasBullet && hasFlare)
+        if (hasBullet && hasFlare && Game.get().getNumOfCharacters() == block.getEntities().size())
         {
             Game.get().win();
         }

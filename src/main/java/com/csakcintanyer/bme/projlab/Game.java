@@ -229,6 +229,11 @@ public class Game
     {
         return map;
     }
+    
+    public int getNumOfCharacters()
+    {
+        return characters.size();
+    }
 
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
