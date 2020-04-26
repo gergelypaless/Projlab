@@ -1,22 +1,30 @@
 package com.csakcintanyer.bme.projlab;
 
-import java.io.Serializable;
-
+// A medve osztálya
 public class Bear extends Entity
 {
+
+	// a medve lép egyet a jégmezőn a paraméterként átvett irányba.
 	public boolean move(Direction d)
 	{
 		IceBlock newBlock = block.getNeighbours().get(d);
-		while (newBlock == null)
-			newBlock = block.getNeighbours().get(d);
-		
+
+		//ha az adott irányban nincs jégtábla, akkor a lépés sikertelen
+		if (newBlock == null)
+			return false;
+
+		// mozgatjuk a medvét az IceBlock accept és remove függvényeivel
 		block.remove(this);
 		newBlock.accept(this);
 		setIceBlock(newBlock);
-		
-		if (newBlock.getEntities().size() > 1 && !newBlock.hasIgloo()) // there is somebody else on the iceblock and no igloo
+
+		/*
+		* Itt ellenőrizzük. hogy a medvén kívül van-e valaki(játékos) a jégtáblán és
+		* ha igen, akkor van-e ott iglu. Ha van játékos és nincs iglu -> Game over
+		* */
+		if (newBlock.getEntities().size() > 1 && !newBlock.hasIgloo())
 			Game.get().lose();
-		
-		return true;
+
+		return true; //sikeres lépés
 	}
 }

@@ -1,14 +1,11 @@
 package com.csakcintanyer.bme.projlab;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public abstract class Character extends Entity
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Character.class.getName() );
     
-    // A karaktereknek lett egy IDjük. Ez az ID egy indexként tud működni a Game osztály characters tömbjében
+    // A karakter osztály rendelkezik egy ID-vel. Ez az ID egy indexként működik a Game osztály characters tömbjében
     public Character(int ID)
     {
         this.ID = ID;
@@ -16,18 +13,17 @@ public abstract class Character extends Entity
         inventory = new ArrayList<>();
     }
 
-    // a karakter lépett a jégmezőn.
+    // a karakter lép egyet a jégmezőn.
     public boolean move(Direction d)
     {
-        LOGGER.fine("Moving in direction: " + d.toString());
 
-        if (energy == 0)
+        if (energy == 0) //ha nincs több energiája, akkor nem tud lépni többet ebben a körben
             return false;
         
         // lekérjük annak az iceBlocknak a szomszédait amin állunk, majd lekérjük a megfelelő irányban lévőt
         IceBlock iceBlockToMoveTo = block.getNeighbours().get(d);
         
-        if (iceBlockToMoveTo == null)
+        if (iceBlockToMoveTo == null) // ha az adott irányba nincs jégtábla, akkor a lépés sikertelen
             return false;
 
         // mozgatjuk a játékost az IceBlock accept és remove függvényeivel
@@ -39,55 +35,59 @@ public abstract class Character extends Entity
         
         // a mozgás egy munkába kerül
         changeEnergy(-1);
-        return true;
+        return true; // sikeres lépés
     }
-    
+
+    // a játékos eltakarít 1 réteg havat
     public boolean clear()
     {
+        /*
+        * Ha nincs már több energiája a játékosnak vagy nincs 1 réteg hó sem a táblán,
+        * akkor a takarítás sikertelen
+        * */
         if (energy == 0 || block.getSnow() == 0)
             return false;
-        
-        LOGGER.fine("Clearing...");
-        
+
+        // csökkentjük a jégtáblán lévő hórétegek számát 1-el
         block.changeAmountOfSnow(-1);
         
 
         // a tisztítás egy munkába kerül
         changeEnergy(-1);
-        return true;
+        return true; // sikeres hóeltakarítás
     }
-    
+
+    // a játékos felvesz 1 tárgyat
     public boolean pickUp()
     {
-        if (energy == 0)
+        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
             return false;
-        
-        LOGGER.fine("Picking up item");
     
         // a blocktól visszakapunk egy itemet
         CollectableItem item = block.removeItem();
-        if (item == null)
+        if (item == null) // ha nincs tárgy a jégtáblán nem sikerül
+            return false;
+
+        if (block.getSnow() > 0) // ha hó takarja a jégtáblát nem sikerül
             return false;
     
         changeEnergy(-1); // Item használata egy munka.
         // "értesítjük" az itemet, hogy felvettük
         item.interactWithCharacter(this);
-        return true;
+        return true; // sikeres
     }
     
-    public abstract boolean useAbility();
+    public abstract boolean useAbility(); // Az Eskimo és az Explorer képessége
     
-    // felvettünk egy Suit-ot
+    // a játékos felvesz 1 Suit-ot
     public void setHasSuit()
     {
-        LOGGER.fine("Character has a suit now!");
         hasSuit = true;
     }
     
     // fuldoklunk-e?
     public boolean isDrowning()
     {
-        LOGGER.finer("Drowning getter. Has suit checked");
         // akkor fuldoklunk (Drowning) ha a vízben vagyunk és nincs rajtunk búvárruha
         return isInWater && !hasSuit;
     }
@@ -95,26 +95,24 @@ public abstract class Character extends Entity
     // Egy Item használata. Az itemIdx paraméter a Character inventory tömbjében indexel, így kapunk egy Itemet
     public boolean useItem(int itemIdx)
     {
-        if (energy == 0)
+        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
             return false;
-        
-        LOGGER.fine("Using item...");
-        
+
+        // TODO : Geri ez mi ez?
         if (inventory.get(itemIdx).use(block))
             inventory.remove(itemIdx);
         
         // egy Item használata egy munkába kerül.
         changeEnergy(-1);
-        return true;
+        return true; // sikeres
     }
     
     //megváltoztatható vele a karakter aktuális energiájának száma
     public void changeEnergy(int amount)
     {
         energy += amount;
-        LOGGER.fine("Energy changed to " + energy);
     }
-    
+
     public void setEnergy(int value)
     {
         energy = value;
@@ -141,7 +139,6 @@ public abstract class Character extends Entity
     // felvettünk egy Flare-t
     public void setHasFlare()
     {
-        LOGGER.fine("Character has a flare now!");
         hasFlare = true;
     }
 
@@ -164,7 +161,6 @@ public abstract class Character extends Entity
     // felvettünk egy Bullet-et
     public void setHasBullet()
     {
-        LOGGER.fine("Character has a bullet now!");
         hasBullet = true;
     }
     

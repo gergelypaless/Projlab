@@ -1,17 +1,12 @@
 package com.csakcintanyer.bme.projlab;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Logger;
 
 public class IceMap implements Serializable
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( IceMap.class.getName() );
     
     public IceMap(ArrayList<ArrayList<IceBlock>> blocks)
     {
-        LOGGER.finest("IceMap constructor");
     
         this.M = blocks.size();
         this.N = blocks.get(0).size();
@@ -23,7 +18,6 @@ public class IceMap implements Serializable
     // szomszédok beállítása
     public void setNeighboursOnTheMap()
     {
-        LOGGER.fine("Setting neighbours...");
         
         for (int y = 0; y < M; ++y)
         {
@@ -46,7 +40,6 @@ public class IceMap implements Serializable
     
     public ArrayList<ArrayList<IceBlock>> getBlocks()
     {
-        LOGGER.finest("Blocks getter");
         return blocks;
     }
 

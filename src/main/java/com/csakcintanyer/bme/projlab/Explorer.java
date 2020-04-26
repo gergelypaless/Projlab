@@ -1,20 +1,14 @@
 package com.csakcintanyer.bme.projlab;
 
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.logging.Logger;
+
 
 public class Explorer extends Character
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Explorer.class.getName() );
     
     public Explorer(int ID)
     {
         super(ID);
-        LOGGER.finest("Explorer constructor");
         health = 4;
     }
     
@@ -23,8 +17,7 @@ public class Explorer extends Character
     {
         if (energy == 0)
             return false;
-        
-        LOGGER.fine("Using character's ability");
+
         try
         {
             System.out.println(checkStability(IOLanguage.GetDirection()));
@@ -41,7 +34,6 @@ public class Explorer extends Character
     
     private int checkStability(Direction d)
     {
-        LOGGER.finest("Explorer checking stability");
         
         //lekérjük a szomszédos block stability értékét.
         return block.getNeighbours().get(d).getStability();

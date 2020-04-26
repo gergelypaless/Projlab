@@ -1,14 +1,9 @@
 package com.csakcintanyer.bme.projlab;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class Rope extends CollectableItem implements UsableItem
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Rope.class.getName() );
     
     public Rope(IceBlock block)
     {
@@ -18,7 +13,6 @@ public class Rope extends CollectableItem implements UsableItem
     // Item használata
     public boolean use(IceBlock savingTo)
     {
-        LOGGER.fine("Using Rope");
         
         // lekérjük azt az IceBlockot ahonnan ki kell mentenünk valakit
         IceBlock savingFrom = null;
@@ -44,7 +38,6 @@ public class Rope extends CollectableItem implements UsableItem
 
     public void interactWithCharacter(Character c)
     {
-        LOGGER.fine("Picked up Rope");
         c.addItem(this); // hizzáadjuk az inventoryhoz mivel UsableItem
     }
 }

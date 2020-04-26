@@ -1,10 +1,7 @@
 package com.csakcintanyer.bme.projlab;
-import java.util.logging.Logger;
 
 public class StableBlock extends IceBlock
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( StableBlock.class.getName() );
     
     //item nélküli konstruktor
     public StableBlock(int amountOfSnow, int stability)
@@ -21,14 +18,12 @@ public class StableBlock extends IceBlock
     // valaki rálépett erre az IceBlockra
     public void accept(Entity c)
     {
-        LOGGER.fine("StableBlock accepting");
         getEntities().add(c);
     }
     
     // valaki ellépett erről az IceBlockól
     public void remove(Entity c)
     {
-        LOGGER.fine("StableBlock removing");
         getEntities().remove(c);
     }
     

@@ -4,44 +4,37 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.*;
 
 public class Game
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
-    
-    private Game()
-    {
-        LOGGER.finest("Game constructor");
-    }
-    
-    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear) // TODO: + Bear
+
+    private Game(){ }
+
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear)
     {
         init(iceMap, characters, bear, -1);
     }
-    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns) // TODO: + Bear
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns)
     {
         map = iceMap;
         this.characters = characters;
         this.bear = bear;
         deterministic = snowInXTurns > 0;
-        
+
         System.out.println("Snow in every " + snowInXTurns + " turns");
         this.snowInXTurns = snowInXTurns;
         turns = 0;
     }
-    
+
     // játék kezdése
     public void start()
     {
-        LOGGER.fine("Starting game");
         try
         {
             Random random = new Random();
-            
+
             nextRound(turns % characters.size());
-            moveBear();
+            if(bear != null) moveBear();
             turns++;
             while (!gameOver())
             {
@@ -56,46 +49,45 @@ public class Game
                         snowStorm();
                     }
                 }
-                
+
                 if (gameOver()) break;
                 nextRound(turns % characters.size());
                 if (gameOver()) break;
-                
-                moveBear();
+
+                if(bear != null) moveBear();
                 turns++;
             }
-            
+
             System.out.println("Game over!");
-            
+
         } catch (IOException e)
         {
             e.printStackTrace();
         }
     }
-    
+
     // következő kör
     // returns true if the round was successful
     public void nextRound(int whichPlayer) throws IOException
     {
-        LOGGER.fine("Changing round");
-        
+
         currentlyMovingCharacter = characters.get(whichPlayer);
         if (currentlyMovingCharacter.isDrowning())
         {
             lose();
             return;
         }
-        
+
         currentlyMovingCharacter.setEnergy(4);
-        
+
         System.out.println("Player " + whichPlayer + "'s turn");
-        
+
         String input;
         while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !(input = reader.readLine()).equals("end"))
         {
             if (input.equals(""))
                 continue;
-            
+
             String[] elements = input.split(" ");
             switch (elements[0])
             {
@@ -111,13 +103,13 @@ public class Game
                     if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
                     {
                         System.out.println("OK, character moved");
-                        
+
                         if (bear.getBlock() == currentlyMovingCharacter.getBlock())
                         {
                             lose();
                             return; // end of turn
                         }
-                        
+
                         if (currentlyMovingCharacter.isDrowning())
                         {
                             System.out.println("You are drowning, your turn is over!");
@@ -157,7 +149,7 @@ public class Game
                 case "block":
                     IOLanguage.PrintBlock(currentlyMovingCharacter.getBlock());
                     break;
-                    
+
                 case "clear":
                     if (currentlyMovingCharacter.clear())
                         System.out.println("OK, iceblock cleared");
@@ -170,55 +162,58 @@ public class Game
         }
         System.out.println("Your turn is over");
     }
-    
+
     private void moveBear()
     {
-        int rand = new Random().nextInt(4);
-        if (rand == 0)
-            bear.move(Direction.LEFT);
-        if (rand == 1)
-            bear.move(Direction.RIGHT);
-        if (rand == 2)
-            bear.move(Direction.UP);
-        if (rand == 3)
-            bear.move(Direction.DOWN);
+        Random rand = new Random();
+        boolean moved = false;
+        int randNum;
+        do {
+            randNum = rand.nextInt(4);
+            if (randNum == 0)
+                moved = bear.move(Direction.LEFT);
+            if (randNum == 1)
+                moved = bear.move(Direction.RIGHT);
+            if (randNum == 2)
+                moved = bear.move(Direction.UP);
+            if (randNum == 3)
+                moved = bear.move(Direction.DOWN);
+        } while (!moved);
+
         System.out.println("Bear moved! Position: ");
         IOLanguage.PrintBlock(bear.getBlock());
     }
-    
+
     // ezt a függvényt kell meghívni, ha a győzelem feltétele teljesült
     public void win()
     {
-        LOGGER.fine("You win!!!");
         isWin = true;
     }
-    
+
     // ezt a függvényt kell meghívni, ha a vereség feltétele teljesült
     public void lose()
     {
-        LOGGER.fine("End of the game");
         isLost = true;
     }
-    
+
     private boolean gameOver()
     {
         return (isLost || isWin);
     }
-    
+
     // Hóvihar van
     private void snowStorm()
     {
-        LOGGER.fine("Snow storm is now!");
-    
+
         System.out.println("Oh no, SNOWSTORM!!");
-        
+
         // végigmegyünk a karaktereken, megnézük hogy iglooban vannak-e, ha nem akkor egy élet minusz
         for (Character c : characters)
         {
             if (!(c.isInIgloo() || c.isInTent()))
                 c.changeHealth(-1);
         }
-        
+
         // az IceBlockok hórétegének nővelése
         ArrayList<ArrayList<IceBlock>> blocks = map.getBlocks();
         for (ArrayList<IceBlock> block : blocks)
@@ -229,40 +224,40 @@ public class Game
             }
         }
     }
-    
+
     public IceMap getIceMap()
     {
         return map;
     }
-    
+
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
     private int turns;
-    
+
     private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    
+
     // a jégmező
     private IceMap map;
-    
+
     // karakterek akik játszanak
     private ArrayList<Character> characters = new ArrayList<>();
-    
+
     // éppen soron lévő játékos
     private Character currentlyMovingCharacter;
-    
+
     // bear
     private Bear bear = null;
-    
+
     private boolean deterministic;
     public int snowInXTurns;
-    
+
     // a Game osztály a Singleton tervezési formát követi, hisz a program futása során csak egy, a játékot vezérlő
     // osztálypéldány létezhet
     public static Game get()
     {
         if (instance == null)
             instance = new Game();
-        
+
         return instance;
     }
     private static Game instance;
