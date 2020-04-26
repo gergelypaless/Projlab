@@ -6,7 +6,7 @@ public class Eskimo extends Character
     public Eskimo(int ID)
     {
         super(ID);
-        health = 5; // 5 testhője van
+        maxHealth = health = 5; // 5 testhője van
     }
     
     //képesség használatát szolgáló függvény (Épít 1 db iglut)

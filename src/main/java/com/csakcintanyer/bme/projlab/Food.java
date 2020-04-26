@@ -11,6 +11,7 @@ public class Food extends CollectableItem
     public void interactWithCharacter(Character c)
     {
         // Foodot vettünk fel, ezért 1-el nő a testhőnk
-        c.changeHealth(1);
+        if (c.getHealth() != c.getMaxHealth())
+            c.changeHealth(1);
     }
 }

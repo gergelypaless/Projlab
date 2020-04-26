@@ -9,7 +9,7 @@ public class Explorer extends Character
     public Explorer(int ID)
     {
         super(ID);
-        health = 4; // 4 testhője van
+        maxHealth = health = 4; // 4 testhője van
     }
     
     // az Explorer képessége, hogy meg tudja nézni egy szomszédos block hány karaktert bír el.

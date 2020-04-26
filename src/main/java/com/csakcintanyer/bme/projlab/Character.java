@@ -157,6 +157,11 @@ public abstract class Character extends Entity
         return hasSuit;
     }
 
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
+    
     // visszadaja a játékos ID-ját
     public int getID()
     {
@@ -206,6 +211,7 @@ public abstract class Character extends Entity
     private boolean hasBullet = false; // a karakternél van-e a Bullet?
     
     private int ID;
+    protected int maxHealth;
 
     // az inventory csak használható Item-eket tárolhat. Ezeknek az Item-eknek van Use() függvényük is
     private ArrayList<UsableItem> inventory;
