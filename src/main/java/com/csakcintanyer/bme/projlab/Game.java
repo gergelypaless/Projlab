@@ -118,10 +118,13 @@ public class Game
                     {
                         System.out.println("OK, character moved");
 
-                        if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtálán
+                        if (bear != null)
                         {
-                            lose(); // vesztettünk
-                            return; // end of turn
+                            if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtálán
+                            {
+                                lose(); // vesztettünk
+                                return; // end of turn
+                            }
                         }
 
                         if (currentlyMovingCharacter.isDrowning())
