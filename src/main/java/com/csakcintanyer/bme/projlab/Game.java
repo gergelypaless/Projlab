@@ -97,7 +97,7 @@ public class Game
          * Addig nincs vége a játékos körének, amíg van energiája, nincs vége a játéknak vagy be nem fejezik a körét
          * az "end" parancsal
          */
-        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !(input = reader.readLine()).equals("end"))
+        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !(input = IOLanguage.reader.readLine()).equals("end"))
         {
             if (input.equals(""))
                 continue;
@@ -266,8 +266,6 @@ public class Game
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
     private int turns; // az aktuális kör száma
-
-    private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     // a jégmező
     private IceMap map;

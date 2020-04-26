@@ -13,7 +13,7 @@ public class IOLanguage
 	private static ArrayList<ArrayList<IceBlock>> blocks = new ArrayList<>();
 	private static IceMap iceMap = null;
 	private static int snowInXTurns = -1;
-	private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Random rand = new Random();
 	
 	public static boolean ReadFromConsole() throws IOException
