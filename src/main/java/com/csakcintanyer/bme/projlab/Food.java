@@ -13,5 +13,6 @@ public class Food extends CollectableItem
         // Foodot vettünk fel, ezért 1-el nő a testhőnk
         if (c.getHealth() != c.getMaxHealth())
             c.changeHealth(1);
+        else throw new IllegalArgumentException();
     }
 }

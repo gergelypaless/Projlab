@@ -67,13 +67,15 @@ public abstract class Character extends Entity
         CollectableItem item = block.removeItem();
         if (item == null) // ha nincs tárgy a jégtáblán nem sikerül
             return false;
-
-        if (block.getSnow() > 0) // ha hó takarja a jégtáblát nem sikerül
-            return false;
-    
-        changeEnergy(-1); // Item használata egy munka.
+        
         // "értesítjük" az itemet, hogy felvettük
-        item.interactWithCharacter(this);
+        try {
+            item.interactWithCharacter(this);
+        } catch (IllegalArgumentException e) {
+            block.setItem(item);
+            return false;
+        }
+        changeEnergy(-1); // Item használata egy munka.
         return true; // sikeres
     }
     

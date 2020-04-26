@@ -15,7 +15,7 @@ public abstract class CollectableItem implements Serializable
     }
     
     // felvettünk egy itemet.
-    public abstract void interactWithCharacter(Character c);
+    public abstract void interactWithCharacter(Character c) throws IllegalArgumentException;
     
     protected IceBlock block;
     
