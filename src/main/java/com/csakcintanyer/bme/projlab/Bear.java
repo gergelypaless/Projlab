@@ -27,4 +27,9 @@ public class Bear extends Entity
 
 		return true; //sikeres lépés
 	}
+	
+	public String toString()
+	{
+		return "bear";
+	}
 }

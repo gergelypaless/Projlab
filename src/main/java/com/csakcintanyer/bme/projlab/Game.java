@@ -1,7 +1,5 @@
 package com.csakcintanyer.bme.projlab;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -90,14 +88,13 @@ public class Game
         currentlyMovingCharacter.setEnergy(4); // 4 energia a kör elején
 
         System.out.println("Player " + whichPlayer + "'s turn");
-
-        String input;
+        
         /**
          * parancsok feldolgozása
          * Addig nincs vége a játékos körének, amíg van energiája, nincs vége a játéknak vagy be nem fejezik a körét
          * az "end" parancsal
          */
-        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !(input = IOLanguage.reader.readLine()).equals("end"))
+        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !hasInput())
         {
             if (input.equals(""))
                 continue;
@@ -185,6 +182,19 @@ public class Game
             }
         }
         System.out.println("Your turn is over");
+    }
+    
+    private boolean hasInput()
+    {
+        System.out.print(">>>> ");
+        try
+        {
+            input = IOLanguage.reader.readLine();
+        } catch (IOException e)
+        {
+            return false;
+        }
+        return input.equals("end");
     }
 
     // a medvét mozgatása
@@ -281,6 +291,8 @@ public class Game
 
     private boolean deterministic;
     public int snowInXTurns;
+    
+    private String input;
 
     // a Game osztály a Singleton tervezési formát követi, hisz a program futása során csak egy, a játékot vezérlő
     // osztálypéldány létezhet

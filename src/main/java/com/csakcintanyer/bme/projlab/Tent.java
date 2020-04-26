@@ -17,4 +17,9 @@ public class Tent extends CollectableItem implements UsableItem
 	{
 		return block.placeTent();
 	}
+	
+	public String toString()
+	{
+		return "tent";
+	}
 }

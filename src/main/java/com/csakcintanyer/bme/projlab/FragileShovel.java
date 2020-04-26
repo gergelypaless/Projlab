@@ -20,5 +20,10 @@ public class FragileShovel extends CollectableItem implements UsableItem
 		return durability == 0; // eltört-e már az ásó és törölni kell-e
 	}
 	
+	public String toString()
+	{
+		return "fragileshovel";
+	}
+	
 	private int durability; //annak az értéke, hogy hányszor lehet ásni az ásóval
 }

@@ -22,4 +22,9 @@ public class Food extends CollectableItem
             throw new IllegalArgumentException();
         }
     }
+    
+    public String toString()
+    {
+        return "food";
+    }
 }

@@ -2,8 +2,6 @@ package com.csakcintanyer.bme.projlab;
 
 public class Flare extends CollectableItem
 {
-
-    
     public Flare(IceBlock block)
     {
         super(block);
@@ -13,5 +11,10 @@ public class Flare extends CollectableItem
     {
         // a karakter felvett egy Flare-t
         c.setHasFlare();
+    }
+    
+    public String toString()
+    {
+        return "flare";
     }
 }

@@ -16,8 +16,23 @@ public class IOLanguage
 	public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Random rand = new Random();
 	
+	public static String directionToString(Direction d)
+	{
+		if (d == Direction.DOWN)
+			return "Direction.DOWN";
+		if (d == Direction.UP)
+			return "Direction.DOWN";
+		if (d == Direction.RIGHT)
+			return "Direction.RIGHT";
+		if (d == Direction.LEFT)
+			return "Direction.LEFT";
+		
+		return "-----------";
+	}
+	
 	public static boolean ReadFromConsole() throws IOException
 	{
+		System.out.print(">>>> ");
 		String input;
 		while (!(input = reader.readLine()).equals("done"))
 		{
@@ -216,7 +231,7 @@ public class IOLanguage
 	
 	public static Direction GetDirection() throws IOException
 	{
-		System.out.println("Direction: ");
+		System.out.print("Direction: ");
 		return GetDirection(reader.readLine());
 	}
 	
@@ -239,10 +254,7 @@ public class IOLanguage
 	
 	public static void PrintCharacter(Character currentlyMovingCharacter)
 	{
-		if (currentlyMovingCharacter instanceof Eskimo)
-			System.out.println("Type: Eskimo");
-		else if (currentlyMovingCharacter instanceof Explorer)
-			System.out.println("Type: Explorer");
+		System.out.println("Type: " + currentlyMovingCharacter.toString());
 		
 		System.out.println("Energy: " + currentlyMovingCharacter.getEnergy());
 		System.out.println("Health: " + currentlyMovingCharacter.getHealth());
@@ -257,12 +269,7 @@ public class IOLanguage
 	
 	public static void PrintBlock(IceBlock block)
 	{
-		if (block instanceof StableBlock)
-			System.out.println("Type: StableBlock");
-		else if (block instanceof UnstableBlock)
-			System.out.println("Type: UnstableBlock");
-		else if (block instanceof EmptyBlock)
-			System.out.println("Type: EmptyBlock");
+		System.out.println("Type: " + block.toString());
 		
 		System.out.println("AmountOfSnow: " + block.getSnow());
 		System.out.println("Stability: " + block.getStability());
@@ -278,30 +285,17 @@ public class IOLanguage
 		System.out.println("Entities:");
 		for (Entity entity : block.getEntities())
 		{
-			if (entity instanceof Eskimo)
-				System.out.println("\tEskimo");
-			else if (entity instanceof Explorer)
-				System.out.println("\tExplorer");
-			else if (entity instanceof Bear)
-				System.out.println("\tBear");
+			System.out.println("\t" + entity.toString());
 		}
 		System.out.println("Neighbours:");
-		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.LEFT)) + " - LEFT");
-		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.RIGHT)) + " - RIGHT");
-		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.UP)) + " - UP");
-		System.out.println("\t" + getIceBlockTypeAsString(block.getNeighbours().get(Direction.DOWN)) + " - DOWN");
-	}
-	
-	private static String getIceBlockTypeAsString(IceBlock block)
-	{
-		if (block instanceof StableBlock)
-			return "StableBlock";
-		else if (block instanceof UnstableBlock)
-			return "UnstableBlock";
-		else if (block instanceof EmptyBlock)
-			return "EmptyBlock";
-		
-		return null;
+		if (block.getNeighbours().get(Direction.LEFT) != null)
+			System.out.println("\t" + block.getNeighbours().get(Direction.LEFT).toString() + " - " + Direction.LEFT.toString());
+		if (block.getNeighbours().get(Direction.RIGHT) != null)
+			System.out.println("\t" + block.getNeighbours().get(Direction.RIGHT).toString() + " - " + Direction.RIGHT.toString());
+		if (block.getNeighbours().get(Direction.UP) != null)
+			System.out.println("\t" + block.getNeighbours().get(Direction.UP).toString() + " - " + Direction.UP.toString());
+		if (block.getNeighbours().get(Direction.DOWN) != null)
+			System.out.println("\t" + block.getNeighbours().get(Direction.DOWN).toString() + " - " + Direction.DOWN.toString());
 	}
 	
 	public static void LoadFile(String filePath)
@@ -362,41 +356,3 @@ public class IOLanguage
 	}
 }
 
-
-
-/*
-			// N, M
-			int N = (int) in.readObject();
-			int M = (int) in.readObject();
-			
-			// blocks
-			ArrayList<ArrayList<IceBlock>> blocks = new ArrayList<>();
-			for (int i = 0; i < N; ++i)
-			{
-				blocks.add(new ArrayList<>());
-				for (int j = 0; j < M; ++j)
-				{
-					blocks.get(i).add((IceBlock)in.readObject());
-				}
-			}
-			
-			// numOfCharacters
-			int numOfCharacters = (int) in.readObject();
-			// characters
-			ArrayList<Character> characters = new ArrayList<>();
-			for (int i = 0; i < numOfCharacters; ++i)
-			{
-				characters.add((Character) in.readObject());
-			}
-			
-			// bear
-			Bear bear = (Bear) in.readObject();
-			
-			// collectable items
-			int numOfCollectableItems = (int) in.readObject();
-			ArrayList<CollectableItem> collectableItems = new ArrayList<>();
-			for (int i = 0; i < numOfCollectableItems; ++i)
-			{
-				collectableItems.add((CollectableItem)in.readObject());
-			}*/
-			

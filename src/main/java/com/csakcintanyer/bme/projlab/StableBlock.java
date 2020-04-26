@@ -56,6 +56,11 @@ public class StableBlock extends IceBlock
         return hasTent;
     }
     
+    public String toString()
+    {
+        return "stableblock";
+    }
+    
     private boolean hasIgloo; // van-e ezen az IceBlockon Igloo?
     private boolean hasTent; // van-e ezen az IceBlockon Igloo?
 }

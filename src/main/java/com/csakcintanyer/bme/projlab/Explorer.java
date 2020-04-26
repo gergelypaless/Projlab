@@ -20,10 +20,10 @@ public class Explorer extends Character
 
         try
         {
-            System.out.println(checkStability(IOLanguage.GetDirection())); // TODO : ez hogy van?
-        } catch (IOException e)
+            System.out.println(checkStability(IOLanguage.GetDirection()));
+        }
+        catch (IllegalArgumentException | IOException e)
         {
-            e.printStackTrace();
             return false;
         }
     
@@ -33,9 +33,17 @@ public class Explorer extends Character
     }
 
     // a sarkkutató ellenőrzi egy adott irányba lévő jégtábla stabilitását
-    private int checkStability(Direction d) // TODO : mi van ha nincs arra tábla?
+    private int checkStability(Direction d) throws IllegalArgumentException
     {
         //lekérjük a szomszédos block stability értékét.
-        return block.getNeighbours().get(d).getStability();
+        if (block.getNeighbours().get(d) != null)
+            return block.getNeighbours().get(d).getStability();
+         
+        throw new IllegalArgumentException();
+    }
+    
+    public String toString()
+    {
+        return "explorer";
     }
 }

@@ -13,4 +13,9 @@ public class Suit extends CollectableItem
         // a karakter felvett egy Suit-ot.
         c.setHasSuit();
     }
+    
+    public String toString()
+    {
+        return "suit";
+    }
 }

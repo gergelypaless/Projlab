@@ -16,6 +16,11 @@ public class EmptyBlock extends IceBlock
         c.fallIn();
     }
     
+    public String toString()
+    {
+        return "emptyblock";
+    }
+    
     // valaki ellépett erről az IceBlockól
     public void remove(Entity c)
     {

@@ -22,4 +22,9 @@ public class Eskimo extends Character
         }
         return false; // sikertelen
     }
+    
+    public String toString()
+    {
+        return "eskimo";
+    }
 }

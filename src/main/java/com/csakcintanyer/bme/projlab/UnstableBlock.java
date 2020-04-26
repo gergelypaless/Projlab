@@ -34,4 +34,9 @@ public class UnstableBlock extends IceBlock
     {
         getEntities().remove(c);
     }
+    
+    public String toString()
+    {
+        return "unstableblock";
+    }
 }
