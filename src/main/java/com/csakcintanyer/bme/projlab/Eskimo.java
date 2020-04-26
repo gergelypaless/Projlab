@@ -12,7 +12,6 @@ public class Eskimo extends Character
     //képesség használatát szolgáló függvény (Épít 1 db iglut)
     public boolean useAbility()
     {
-    
         if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
             return false;
         
