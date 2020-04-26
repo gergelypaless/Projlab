@@ -12,7 +12,7 @@ public class IceMap implements Serializable
         this.N = blocks.get(0).size();
         this.blocks = blocks;
         
-        setNeighboursOnTheMap();
+        setNeighboursOnTheMap(); //beállítjuk minden jégtáblára, hogy melyek szomsédosak vele
     }
 
     // szomszédok beállítása

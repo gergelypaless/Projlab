@@ -24,12 +24,12 @@ public class Gun extends CollectableItem implements UsableItem
                 hasBullet = e.hasBullet();
         }
         // ha mindkettő megvan, akkor el tudjuk sütni a fegyvert, nyertünk
-        if (hasBullet && hasFlare)
+        if (hasBullet && hasFlare && Game.get().getNumOfCharacters() == block.getEntities().size())
         {
             Game.get().win();
         }
         
-        return false;
+        return false; // az ásót nem kell törölni az Inventory-ból
     }
     
     public void interactWithCharacter(Character c)

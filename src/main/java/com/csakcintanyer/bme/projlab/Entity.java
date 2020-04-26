@@ -6,12 +6,14 @@ public abstract class Entity implements Serializable
 {
 	
 	public abstract boolean move(Direction d);
-	
+
+	// az Entity beleesik a vízbe (medvénél nem fontos)
 	public void fallIn()
 	{
 		isInWater = true;
 	}
-	
+
+	// az Entity-t kihúzzák a vízből
 	public void save()
 	{
 		isInWater = false;
@@ -22,23 +24,26 @@ public abstract class Entity implements Serializable
 	{
 		this.block = block;
 	}
-	
+
+	// visszaadja, hogy van-e az Entity mely IceBlock-on van jelenleg
 	public IceBlock getBlock()
 	{
 		return block;
 	}
-	
+
+	// visszaadja, hogy van-e az Entity-nél Bullet
 	public boolean hasBullet()
 	{
 		return false;
 	}
-	
+
+	// visszaadja, hogy van-e az Entity-nél Flare
 	public boolean hasFlare()
 	{
 		return false;
 	}
 	
 	public boolean isInWater; // vízben vagyunk-e?
-	// a block amin a karakter áll
-	protected IceBlock block;
+
+	protected IceBlock block; // a block amin a karakter áll
 }

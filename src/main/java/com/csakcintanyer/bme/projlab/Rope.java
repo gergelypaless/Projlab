@@ -33,7 +33,7 @@ public class Rope extends CollectableItem implements UsableItem
         // meghívjhuk a save függvényt mivel a karakter megmenekült/nem fulladt meg
         characterInTrouble.save();
         
-        return false;
+        return false; // a kötelet nem kell törölni használat után
     }
 
     public void interactWithCharacter(Character c)

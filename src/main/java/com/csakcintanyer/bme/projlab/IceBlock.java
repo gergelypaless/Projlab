@@ -57,12 +57,12 @@ public abstract class IceBlock implements Serializable
     // valaki fel akarja venni az Item-et ami ezen az IceBlockon van, visszaadjuk az IceBlockon lévő Itemet
     public CollectableItem removeItem()
     {
-        if (amountOfSnow > 0)
+        if (amountOfSnow > 0) // ha hó borítja nem veszünk fel semmit
             return null;
 
         CollectableItem itemToReturn = item;
-        item = null;
-        return itemToReturn;
+        item = null; // miután valaki felveszi a tárgyat, nem lesz többé a jégtáblában
+        return itemToReturn; // visszaadjuk a jégtáblában lévő tárgyat
     }
     
     //eszkimó képességének használata váltja ki

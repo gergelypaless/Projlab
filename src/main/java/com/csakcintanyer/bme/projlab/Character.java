@@ -98,7 +98,7 @@ public abstract class Character extends Entity
         if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
             return false;
 
-        // TODO : Geri ez mi ez?
+        // ha a UsableItem elhasználódik töröljuk az Inventory-ból
         if (inventory.get(itemIdx).use(block))
             inventory.remove(itemIdx);
         
@@ -113,18 +113,21 @@ public abstract class Character extends Entity
         energy += amount;
     }
 
+    // a játékos energiájának beállítása a kör elején a paraméter értékére
     public void setEnergy(int value)
     {
         energy = value;
     }
 
+    // megváltoztatja a játékos testhőjét a paraméter értékével
     public void changeHealth(int value)
     {
         health += value;
-        if (health == 0)
+        if (health == 0) // ha a változással a játékos testhője 0-ra csökken -> Game over
             Game.get().lose();
     }
 
+    // visszaadja a játékos testhőjét
     public int getHealth()
     {
         return health;
@@ -147,12 +150,14 @@ public abstract class Character extends Entity
     {
         return hasBullet;
     }
-    
+
+    // visszaadja, hogy a játékoson van-e búvárruha
     public boolean hasSuit()
     {
         return hasSuit;
     }
-    
+
+    // visszadaja a játékos ID-ját
     public int getID()
     {
         return ID;
@@ -187,7 +192,8 @@ public abstract class Character extends Entity
     {
         return block.hasTent();
     }
-    
+
+    // visszadaja a játékos energiaszintjét
     public int getEnergy()
     {
         return energy;
@@ -196,11 +202,11 @@ public abstract class Character extends Entity
     protected int energy; // munkák száma
     protected int health; // élet
     private boolean hasSuit = false; // van-e a karakteren búvárruha?
-    private boolean hasFlare = false;
-    private boolean hasBullet = false;
+    private boolean hasFlare = false; // a karakternél van-e a Flare?
+    private boolean hasBullet = false; // a karakternél van-e a Bullet?
     
     private int ID;
+
     // az inventory csak használható Item-eket tárolhat. Ezeknek az Item-eknek van Use() függvényük is
-    
     private ArrayList<UsableItem> inventory;
 }

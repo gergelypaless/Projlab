@@ -3,7 +3,6 @@ package com.csakcintanyer.bme.projlab;
 import java.io.Serializable;
 
 /**
- 
  * @author zsoko
  *A CollectableItem-eket nem lehet "felvenni" az inventoryba, ezek egyből felhasználódnak
  */

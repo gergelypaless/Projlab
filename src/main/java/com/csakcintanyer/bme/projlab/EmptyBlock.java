@@ -12,7 +12,7 @@ public class EmptyBlock extends IceBlock
     public void accept(Entity c)
     {
         getEntities().add(c);
-        // ha üres block-ra lépünk akkor beleesünk a fízbe
+        // mivel üres block-ra lépünk ezért beleesünk a vízbe
         c.fallIn();
     }
     

@@ -10,10 +10,13 @@ public class Game
 
     private Game(){ }
 
+    // a jégmező, a játékosok és a medve beállítása nem-determinisztikus módban
     public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear)
     {
         init(iceMap, characters, bear, -1);
     }
+
+    // a jégmező, a játékosok és a medve beállítása determinisztikus módban
     public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns)
     {
         map = iceMap;
@@ -33,16 +36,19 @@ public class Game
         {
             Random random = new Random();
 
-            nextRound(turns % characters.size());
-            if(bear != null) moveBear();
+            nextRound(0); //az első játékos játszik 1 kört
+            if(bear != null) moveBear(); // medve lép, ha van
             turns++;
-            while (!gameOver())
+            while (!gameOver()) //amíg nincs vége a játéknak
             {
+                /*
+                * Ha determinisztkus módban vagyunk, akkor a beállítot érték szerint annyi körönként hóvihar
+                * */
                 if (deterministic && turns % snowInXTurns == 0)
                 {
                     snowStorm();
                 }
-                else if (!deterministic)
+                else if (!deterministic) //nem-determinisztikus módban
                 {
                     if (random.nextInt(2) == 1) // 50%
                     {
@@ -51,14 +57,19 @@ public class Game
                 }
 
                 if (gameOver()) break;
-                nextRound(turns % characters.size());
+                nextRound(turns % characters.size()); // a következő játékos köre jön
                 if (gameOver()) break;
 
-                if(bear != null) moveBear();
+                if(bear != null) moveBear(); // ha van medve lép
                 turns++;
             }
 
-            System.out.println("Game over!");
+            if (isLost){
+                System.out.println("Game over!"); //vesztettünk
+            }
+            if (isWin){
+                System.out.println("Victory!"); //nyertünk
+            }
 
         } catch (IOException e)
         {
@@ -67,22 +78,25 @@ public class Game
     }
 
     // következő kör
-    // returns true if the round was successful
     public void nextRound(int whichPlayer) throws IOException
     {
-
-        currentlyMovingCharacter = characters.get(whichPlayer);
-        if (currentlyMovingCharacter.isDrowning())
+        currentlyMovingCharacter = characters.get(whichPlayer); //meghatározzuk, hogy melyik játékos jön
+        if (currentlyMovingCharacter.isDrowning()) // ha ez a játékos még mindig vízben van (már 1 teljes kör óta)
         {
-            lose();
+            lose(); //vége a játéknak
             return;
         }
 
-        currentlyMovingCharacter.setEnergy(4);
+        currentlyMovingCharacter.setEnergy(4); // 4 energia a kör elején
 
         System.out.println("Player " + whichPlayer + "'s turn");
 
         String input;
+        /**
+         * parancsok feldolgozása
+         * Addig nincs vége a játékos körének, amíg van energiája, nincs vége a játéknak vagy be nem fejezik a körét
+         * az "end" parancsal
+         */
         while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !(input = reader.readLine()).equals("end"))
         {
             if (input.equals(""))
@@ -94,7 +108,7 @@ public class Game
                 case "exit":
                     System.out.println("Exiting...");
                     isLost = true;
-                    return;
+                    return; // end of turn
                 case "save":
                     IOLanguage.SaveToFile(elements[1]);
                     System.out.println("OK, game saved");
@@ -104,9 +118,9 @@ public class Game
                     {
                         System.out.println("OK, character moved");
 
-                        if (bear.getBlock() == currentlyMovingCharacter.getBlock())
+                        if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtálán
                         {
-                            lose();
+                            lose(); // vesztettünk
                             return; // end of turn
                         }
 
@@ -124,7 +138,7 @@ public class Game
                 case "use":
                     if (elements[1].equals("item"))
                     {
-                        if (currentlyMovingCharacter.useItem(Integer.parseInt(elements[2])))
+                        if (currentlyMovingCharacter.useItem(Integer.parseInt(elements[2]))) // hanyadik tárgyat
                             System.out.println("OK, item used");
                         else
                             System.out.println("Item was not used");
@@ -163,12 +177,13 @@ public class Game
         System.out.println("Your turn is over");
     }
 
+    // a medvét mozgatása
     private void moveBear()
     {
         Random rand = new Random();
         boolean moved = false;
         int randNum;
-        do {
+        do { // addig mozgatjuk, amíg nem talál egy random irány amerre van jégtábla
             randNum = rand.nextInt(4);
             if (randNum == 0)
                 moved = bear.move(Direction.LEFT);
@@ -196,18 +211,25 @@ public class Game
         isLost = true;
     }
 
+    // megadja, hogy a játékmenetnek vége van-e
     private boolean gameOver()
     {
         return (isLost || isWin);
     }
 
-    // Hóvihar van
+    // visszaadja a játékosok számát
+    public int getNumOfCharacters()
+    {
+        return characters.size();
+    }
+
+    // Hóvihar
     private void snowStorm()
     {
 
         System.out.println("Oh no, SNOWSTORM!!");
 
-        // végigmegyünk a karaktereken, megnézük hogy iglooban vannak-e, ha nem akkor egy élet minusz
+        // végigmegyünk a karaktereken, megnézük hogy igluban vannak-e, ha nem akkor egy élet minusz
         for (Character c : characters)
         {
             if (!(c.isInIgloo() || c.isInTent()))
@@ -225,6 +247,7 @@ public class Game
         }
     }
 
+    //visszaadja a jégmezőt, amelyen a játék folyik
     public IceMap getIceMap()
     {
         return map;
@@ -232,7 +255,7 @@ public class Game
 
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
-    private int turns;
+    private int turns; // az aktuális kör száma
 
     private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -245,7 +268,7 @@ public class Game
     // éppen soron lévő játékos
     private Character currentlyMovingCharacter;
 
-    // bear
+    // A medve
     private Bear bear = null;
 
     private boolean deterministic;

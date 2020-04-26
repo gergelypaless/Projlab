@@ -9,6 +9,7 @@ public class Tent extends CollectableItem implements UsableItem
 	
 	public void interactWithCharacter(Character c)
 	{
+		// a karakter felvesz egy sátrat
 		c.addItem(this);
 	}
 	

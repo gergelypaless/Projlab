@@ -29,7 +29,7 @@ public class StableBlock extends IceBlock
     
     public boolean placeIgloo()
     {
-        if (hasIgloo)
+        if (hasIgloo) // ha már van iglu akkor sikertelen
             return false;
         
         hasIgloo = true;
@@ -39,7 +39,7 @@ public class StableBlock extends IceBlock
     
     public boolean placeTent()
     {
-        if (hasIgloo || hasTent)
+        if (hasIgloo || hasTent) // ha van már iglu vagy másik sátor a jégtáblán -> sikertelen
             return false;
         
         hasTent = true;
