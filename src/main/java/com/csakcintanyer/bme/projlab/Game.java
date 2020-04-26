@@ -91,8 +91,11 @@ public class Game
         System.out.println("Player " + whichPlayer + "'s turn");
         
         String input;
-        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !(input = reader.readLine()).equals("end"))
+        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin))
         {
+            if ((input = reader.readLine()).equals("end"))
+                break;
+            
             if (input.equals(""))
                 continue;
             
