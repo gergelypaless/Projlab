@@ -14,6 +14,7 @@ public class Suit extends CollectableItem
         c.setHasSuit();
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "suit";

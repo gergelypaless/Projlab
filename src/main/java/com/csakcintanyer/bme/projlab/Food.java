@@ -10,9 +10,10 @@ public class Food extends CollectableItem
     
     public void interactWithCharacter(Character c)
     {
-        // Foodot vettünk fel, ezért 1-el nő a testhőnk
+        // csak akkor ha nem max healthünk van
         if (c.getHealth() != c.getMaxHealth())
         {
+            // Foodot vettünk fel, ezért 1-el nő a testhőnk
             c.changeHealth(1);
             System.out.println("Health increased by 1");
         }
@@ -23,6 +24,7 @@ public class Food extends CollectableItem
         }
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "food";

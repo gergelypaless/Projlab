@@ -23,6 +23,7 @@ public class Eskimo extends Character
         return false; // sikertelen
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "eskimo";

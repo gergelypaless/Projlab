@@ -16,6 +16,7 @@ public class EmptyBlock extends IceBlock
         c.fallIn();
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "emptyblock";

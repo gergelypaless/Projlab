@@ -36,6 +36,7 @@ public class Rope extends CollectableItem implements UsableItem
         return false; // a kötelet nem kell törölni használat után
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "rope";

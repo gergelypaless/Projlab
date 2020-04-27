@@ -13,6 +13,7 @@ public class Flare extends CollectableItem
         c.setHasFlare();
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "flare";

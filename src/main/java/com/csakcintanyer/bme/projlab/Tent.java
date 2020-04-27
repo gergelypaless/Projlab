@@ -18,6 +18,7 @@ public class Tent extends CollectableItem implements UsableItem
 		return block.placeTent();
 	}
 	
+	// kiíráshoz kell
 	public String toString()
 	{
 		return "tent";

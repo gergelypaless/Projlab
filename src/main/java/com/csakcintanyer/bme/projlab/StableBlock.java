@@ -2,7 +2,6 @@ package com.csakcintanyer.bme.projlab;
 
 public class StableBlock extends IceBlock
 {
-    
     //item nélküli konstruktor
     public StableBlock(int amountOfSnow, int stability)
     {
@@ -33,8 +32,8 @@ public class StableBlock extends IceBlock
             return false;
         
         hasIgloo = true;
-        hasTent = false;
-        return true;
+        hasTent = false; // az igloot leraktuk akkor a rajta lévő sátor eltűnik
+        return true; // sikeres
     }
     
     public boolean placeTent()
@@ -43,7 +42,7 @@ public class StableBlock extends IceBlock
             return false;
         
         hasTent = true;
-        return true;
+        return true; // sikeres
     }
     
     public boolean hasIgloo()
@@ -56,6 +55,7 @@ public class StableBlock extends IceBlock
         return hasTent;
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "stableblock";

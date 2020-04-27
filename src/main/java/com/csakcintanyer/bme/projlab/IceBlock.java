@@ -20,6 +20,7 @@ public abstract class IceBlock implements Serializable
         this.item = item;
     }
     
+    // item beállítása
     public void setItem(CollectableItem item)
     {
         this.item = item;
@@ -104,6 +105,7 @@ public abstract class IceBlock implements Serializable
         return neighbours;
     }
     
+    // item lekérdezése
     public CollectableItem getItem()
     {
         return item;

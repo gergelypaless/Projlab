@@ -62,13 +62,14 @@ public class Game
                 turns++;
             }
 
-            if (isLost){
+            if (isLost)
+            {
                 System.out.println("Game over!"); //vesztettünk
             }
-            if (isWin){
+            if (isWin)
+            {
                 System.out.println("Victory!"); //nyertünk
             }
-
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -97,7 +98,7 @@ public class Game
         while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !hasInput())
         {
             if (input.equals(""))
-                continue;
+                continue; // ignore
 
             String[] elements = input.split(" ");
             switch (elements[0])
@@ -114,17 +115,16 @@ public class Game
                     if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
                     {
                         System.out.println("OK, character moved");
-
-                        if (bear != null)
+                        if (bear != null) // ha van medve
                         {
-                            if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtálán
+                            if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtáblán
                             {
                                 lose(); // vesztettünk
                                 return; // end of turn
                             }
                         }
 
-                        if (currentlyMovingCharacter.isDrowning())
+                        if (currentlyMovingCharacter.isDrowning()) // ha fuldoklunk akkor vége a körünknek
                         {
                             System.out.println("You are drowning, your turn is over!");
                             return; // end of turn
@@ -138,7 +138,7 @@ public class Game
                 case "use":
                     if (elements[1].equals("item"))
                     {
-                        if (!currentlyMovingCharacter.getInventory().isEmpty())
+                        if (!currentlyMovingCharacter.getInventory().isEmpty()) // ha van item az inventoryban
                         {
                             if (currentlyMovingCharacter.useItem(Integer.parseInt(elements[2]))) // hanyadik tárgyat
                                 System.out.println("OK, item used");
@@ -289,8 +289,8 @@ public class Game
     // A medve
     private Bear bear = null;
 
-    private boolean deterministic;
-    public int snowInXTurns;
+    private boolean deterministic; // determinisztikus a programunk?
+    public int snowInXTurns; // minden hány körben van hóvihar
     
     private String input;
 

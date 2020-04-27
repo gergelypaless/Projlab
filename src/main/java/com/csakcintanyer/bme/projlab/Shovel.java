@@ -23,6 +23,7 @@ public class Shovel extends CollectableItem implements UsableItem
         c.addItem(this); // hozzáadjuk a karakter inventoryjához mivel UsableItem
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "shovel";

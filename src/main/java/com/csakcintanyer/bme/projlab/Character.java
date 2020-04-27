@@ -9,14 +9,13 @@ public abstract class Character extends Entity
     public Character(int ID)
     {
         this.ID = ID;
-        setEnergy(4);
+        setEnergy(4); // mindenkinek 4 energiája van
         inventory = new ArrayList<>();
     }
 
     // a karakter lép egyet a jégmezőn.
     public boolean move(Direction d)
     {
-
         if (energy == 0) //ha nincs több energiája, akkor nem tud lépni többet ebben a körben
             return false;
         
@@ -50,7 +49,6 @@ public abstract class Character extends Entity
 
         // csökkentjük a jégtáblán lévő hórétegek számát 1-el
         block.changeAmountOfSnow(-1);
-        
 
         // a tisztítás egy munkába kerül
         changeEnergy(-1);
@@ -68,11 +66,11 @@ public abstract class Character extends Entity
         if (item == null) // ha nincs tárgy a jégtáblán nem sikerül
             return false;
         
-        // "értesítjük" az itemet, hogy felvettük
         try {
-            item.interactWithCharacter(this);
+            // "értesítjük" az itemet, hogy felvettük
+            item.interactWithCharacter(this); // kivételt dob ha nem lehet felvenni
         } catch (IllegalArgumentException e) {
-            block.setItem(item);
+            block.setItem(item); // nem lehet felvenni ezért visszatesszük az iceblockra
             return false;
         }
         changeEnergy(-1); // Item használata egy munka.
@@ -159,6 +157,7 @@ public abstract class Character extends Entity
         return hasSuit;
     }
 
+    // visszaadja a maximum health értékét
     public int getMaxHealth()
     {
         return maxHealth;
@@ -212,8 +211,8 @@ public abstract class Character extends Entity
     private boolean hasFlare = false; // a karakternél van-e a Flare?
     private boolean hasBullet = false; // a karakternél van-e a Bullet?
     
-    private int ID;
-    protected int maxHealth;
+    private int ID; // játékos azonosítója
+    protected int maxHealth; // maximum élet
 
     // az inventory csak használható Item-eket tárolhat. Ezeknek az Item-eknek van Use() függvényük is
     private ArrayList<UsableItem> inventory;

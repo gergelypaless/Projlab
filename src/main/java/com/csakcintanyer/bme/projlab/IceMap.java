@@ -38,6 +38,7 @@ public class IceMap implements Serializable
         }
     }
     
+    // iceblock lekérdezése
     public ArrayList<ArrayList<IceBlock>> getBlocks()
     {
         return blocks;

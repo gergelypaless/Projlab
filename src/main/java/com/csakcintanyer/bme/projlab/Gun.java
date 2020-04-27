@@ -32,6 +32,7 @@ public class Gun extends CollectableItem implements UsableItem
         return false; // az ásót nem kell törölni az Inventory-ból
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "gun";

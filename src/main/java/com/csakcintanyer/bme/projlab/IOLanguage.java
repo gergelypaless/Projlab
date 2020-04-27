@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class IOLanguage
 {
+	/* segédváltozók */
 	private static int N;
 	private static int M;
 	private static ArrayList<Character> characters = new ArrayList<>();
@@ -15,6 +16,7 @@ public class IOLanguage
 	private static int snowInXTurns = -1;
 	public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Random rand = new Random();
+	
 	
 	public static String directionToString(Direction d)
 	{
@@ -30,6 +32,7 @@ public class IOLanguage
 		return "-----------";
 	}
 	
+	// reading from stdin
 	public static boolean ReadFromConsole() throws IOException
 	{
 		System.out.print(">>>> ");
@@ -73,6 +76,7 @@ public class IOLanguage
 		return true;
 	}
 	
+	// icemap létrehozása
 	public static void CreateMap(String[] elements) throws IOException
 	{
 		N = Integer.parseInt(elements[1]);
@@ -100,6 +104,7 @@ public class IOLanguage
 		System.out.println("OK, map created");
 	}
 	
+	// medve létrehozása
 	public static void CreateBear(String[] elements)
 	{
 		IceBlock block;
@@ -125,6 +130,7 @@ public class IOLanguage
 		System.out.println("OK, bear created");
 	}
 	
+	// egy item létrehozása
 	public static void CreateItem(String[] elements)
 	{
 		IceBlock block;
@@ -137,7 +143,7 @@ public class IOLanguage
 				block = iceMap.getBlocks().get(y).get(x);
 			} while (block instanceof EmptyBlock || block.getItem() != null);
 		}
-		else
+		else // van pozíció
 		{
 			int x = Integer.parseInt(elements[2]);
 			int y = Integer.parseInt(elements[3]);
@@ -169,6 +175,7 @@ public class IOLanguage
 		System.out.println("OK, item created");
 	}
 	
+	// karakter létrehozása
 	public static void CreateCharacter(String[] elements)
 	{
 		Character character = null;
@@ -181,7 +188,7 @@ public class IOLanguage
 			
 			characters.add(character);
 		}
-		else
+		else // van karaktertípus
 		{
 			if (elements[1].equals("eskimo"))
 			{
@@ -215,13 +222,13 @@ public class IOLanguage
 			int x = Integer.parseInt(elements[2]);
 			int y = Integer.parseInt(elements[3]);
 			block = iceMap.getBlocks().get(y).get(x);
-			//characters.get(characters.size() - 1).setIceBlock(iceMap.getBlocks().get(Integer.parseInt(elements[3])).get(Integer.parseInt(elements[2])));
 		}
 		character.setIceBlock(block);
 		block.getEntities().add(character);
 		System.out.println("OK, character created");
 	}
 	
+	// a medve rajta van a blockon?
 	private static boolean isBearOnIceBlock(IceBlock block)
 	{
 		if (bear != null)
@@ -252,6 +259,7 @@ public class IOLanguage
 		throw new IllegalArgumentException("wrong direction");
 	}
 	
+	// karakter kiírása
 	public static void PrintCharacter(Character currentlyMovingCharacter)
 	{
 		System.out.println("Type: " + currentlyMovingCharacter.toString());
@@ -267,6 +275,7 @@ public class IOLanguage
 			System.out.println("\t" + item.toString());
 	}
 	
+	// block kiírása
 	public static void PrintBlock(IceBlock block)
 	{
 		System.out.println("Type: " + block.toString());
@@ -298,6 +307,7 @@ public class IOLanguage
 			System.out.println("\t" + block.getNeighbours().get(Direction.DOWN).toString() + " - " + Direction.DOWN.toString());
 	}
 	
+	// szerializált fájl betöltése
 	public static void LoadFile(String filePath)
 	{
 		iceMap = null;
@@ -335,6 +345,7 @@ public class IOLanguage
 		Game.get().init(iceMap, characters, bear);
 	}
 	
+	// játékállá szerializálása
 	public static void SaveToFile(String filePath)
 	{
 		try

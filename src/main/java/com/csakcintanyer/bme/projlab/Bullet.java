@@ -16,6 +16,7 @@ public class Bullet extends CollectableItem // csak gyűjthető
         c.setHasBullet();
     }
     
+    // kiiráshoz kell
     public String toString()
     {
         return "bullet";

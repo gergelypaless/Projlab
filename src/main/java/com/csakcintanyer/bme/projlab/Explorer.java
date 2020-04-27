@@ -5,7 +5,6 @@ import java.io.IOException;
 
 public class Explorer extends Character
 {
-    
     public Explorer(int ID)
     {
         super(ID);
@@ -24,6 +23,7 @@ public class Explorer extends Character
         }
         catch (IllegalArgumentException | IOException e)
         {
+            // Nem volt abban az irányban block
             return false;
         }
     
@@ -42,6 +42,7 @@ public class Explorer extends Character
         throw new IllegalArgumentException();
     }
     
+    // kiíráshoz kell
     public String toString()
     {
         return "explorer";
