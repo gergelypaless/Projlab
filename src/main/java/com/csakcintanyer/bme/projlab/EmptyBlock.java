@@ -1,11 +1,7 @@
 package com.csakcintanyer.bme.projlab;
 
-import java.util.logging.Logger;
-
 public class EmptyBlock extends IceBlock
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( EmptyBlock.class.getName() );
     
     public EmptyBlock(int amountOfSnow, int stability)
     {
@@ -13,18 +9,22 @@ public class EmptyBlock extends IceBlock
     }
     
     // valaki rálépett erre az IceBlockra
-    public void accept(Character c)
+    public void accept(Entity c)
     {
-        LOGGER.fine("EmptyBlock accepting");
-        getCharacters().add(c);
-        // ha üres block-ra lépünk akkor beleesünk a fízbe
+        getEntities().add(c);
+        // mivel üres block-ra lépünk ezért beleesünk a vízbe
         c.fallIn();
     }
     
-    // valaki ellépett erről az IceBlockól
-    public void remove(Character c)
+    // kiíráshoz kell
+    public String toString()
     {
-        LOGGER.fine("EmptyBlock removing");
-        getCharacters().remove(c);
+        return "emptyblock";
+    }
+    
+    // valaki ellépett erről az IceBlockól
+    public void remove(Entity c)
+    {
+        getEntities().remove(c);
     }
 }

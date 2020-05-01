@@ -1,11 +1,7 @@
 package com.csakcintanyer.bme.projlab;
-import java.util.logging.Logger;
 
 public class StableBlock extends IceBlock
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( StableBlock.class.getName() );
-    
     //item nélküli konstruktor
     public StableBlock(int amountOfSnow, int stability)
     {
@@ -19,28 +15,52 @@ public class StableBlock extends IceBlock
     }
     
     // valaki rálépett erre az IceBlockra
-    public void accept(Character c)
+    public void accept(Entity c)
     {
-        LOGGER.fine("StableBlock accepting");
-        getCharacters().add(c);
+        getEntities().add(c);
     }
     
     // valaki ellépett erről az IceBlockól
-    public void remove(Character c)
+    public void remove(Entity c)
     {
-        LOGGER.fine("StableBlock removing");
-        getCharacters().remove(c);
+        getEntities().remove(c);
     }
     
     public boolean placeIgloo()
     {
-        return true;
+        if (hasIgloo) // ha már van iglu akkor sikertelen
+            return false;
+        
+        hasIgloo = true;
+        hasTent = false; // az igloot leraktuk akkor a rajta lévő sátor eltűnik
+        return true; // sikeres
+    }
+    
+    public boolean placeTent()
+    {
+        if (hasIgloo || hasTent) // ha van már iglu vagy másik sátor a jégtáblán -> sikertelen
+            return false;
+        
+        hasTent = true;
+        return true; // sikeres
     }
     
     public boolean hasIgloo()
     {
-        return false;
+        return hasIgloo;
+    }
+    
+    public boolean hasTent()
+    {
+        return hasTent;
+    }
+    
+    // kiíráshoz kell
+    public String toString()
+    {
+        return "stableblock";
     }
     
     private boolean hasIgloo; // van-e ezen az IceBlockon Igloo?
+    private boolean hasTent; // van-e ezen az IceBlockon Igloo?
 }

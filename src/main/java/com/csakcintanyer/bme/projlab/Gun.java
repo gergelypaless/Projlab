@@ -1,39 +1,45 @@
 package com.csakcintanyer.bme.projlab;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
-public class Gun implements CollectableItem, UsableItem
+public class Gun extends CollectableItem implements UsableItem
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Gun.class.getName() );
-
-    // az item használata
-    public void use(IceBlock block)
+    
+    public Gun(IceBlock block)
     {
-        LOGGER.fine("Using Gun");
+        super(block);
+    }
+    
+    // az item használata
+    public boolean use(IceBlock block)
+    {
         
         boolean hasFlare = false, hasBullet = false;
-        ArrayList<Character> characters = block.getCharacters();
+        ArrayList<Entity> entities = block.getEntities();
         // megnézzük, hogy az ezen a blockon lévő játékosoknál van-e a Flare és a Bullet.
-        for (Character c : characters)
+        for (Entity e : entities)
         {
             if (!hasFlare)
-                hasFlare = c.hasFlare();
+                hasFlare = e.hasFlare();
             if (!hasBullet)
-                hasBullet = c.hasBullet();
+                hasBullet = e.hasBullet();
         }
         // ha mindkettő megvan, akkor el tudjuk sütni a fegyvert, nyertünk
-        if (hasBullet && hasFlare)
+        if (hasBullet && hasFlare && Game.get().getNumOfCharacters() == block.getEntities().size())
         {
-            LOGGER.fine("Gun used");
             Game.get().win();
         }
+        
+        return false; // az ásót nem kell törölni az Inventory-ból
+    }
+    
+    // kiíráshoz kell
+    public String toString()
+    {
+        return "gun";
     }
     
     public void interactWithCharacter(Character c)
     {
-        LOGGER.fine("Picked up Gun");
-        c.changeEnergy(-1); // Item használata egy munka.
         c.addItem(this); // inventoryhoz adjuk az itemet, mert UsableItem
     }
 }

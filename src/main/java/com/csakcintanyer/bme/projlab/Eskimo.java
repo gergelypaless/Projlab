@@ -1,48 +1,31 @@
 package com.csakcintanyer.bme.projlab;
 
-import java.util.logging.Logger;
-
 public class Eskimo extends Character
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger(Eskimo.class.getName());
-    
-    public Eskimo()
-    {
-        super(0); // ősosztály kosntruktora
-    }
     
     public Eskimo(int ID)
     {
         super(ID);
-        LOGGER.finest("Eskimo constructor");
+        maxHealth = health = 5; // 5 testhője van
     }
     
-    //képesség használatát szolgáló függvény
-    public void useAbility()
+    //képesség használatát szolgáló függvény (Épít 1 db iglut)
+    public boolean useAbility()
     {
-        LOGGER.fine("Using character's ability");
-    
-        // a képesség használata egy munkába kerül
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
+        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
+            return false;
         
-        // Eskimo képessége iglook lerakása
-        placeIgloo();
+        if (block.placeIgloo()) // ha sikeresen építet egy iglut
+        {
+            changeEnergy(-1); // 1 munkába került
+            return true; // jelezzük, hogy sikeres
+        }
+        return false; // sikertelen
     }
     
-    //maga a képesség függvénye
-    private boolean placeIgloo()
+    // kiíráshoz kell
+    public String toString()
     {
-        LOGGER.fine("Placing igloo");
-        // visszaad egy igaz/hamis értéket, ez alapján lehet eldönteni, hogy tudunk-e lerakni itt igloo-t
-        return block.placeIgloo();
-    }
-    
-    //a karakter aktuális életének megváltoztatására alkalmas függvény
-    public void changeHealth(int value)
-    {
-        LOGGER.fine("Changing health by: " + value);
-        health += value;
+        return "eskimo";
     }
 }

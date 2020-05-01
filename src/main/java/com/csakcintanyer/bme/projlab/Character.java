@@ -1,28 +1,29 @@
 package com.csakcintanyer.bme.projlab;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
-public abstract class Character
+public abstract class Character extends Entity
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Character.class.getName() );
     
-    // A karaktereknek lett egy IDjük. Ez az ID egy indexként tud működni a Game osztály characters tömbjében
+    // A karakter osztály rendelkezik egy ID-vel. Ez az ID egy indexként működik a Game osztály characters tömbjében
     public Character(int ID)
     {
         this.ID = ID;
-        this.energy = 5; // mindenkinek 5 munkája van
+        setEnergy(4); // mindenkinek 4 energiája van
         inventory = new ArrayList<>();
     }
 
-    // a karakter lépett a jégmezőn.
-    public void move(Direction d)
+    // a karakter lép egyet a jégmezőn.
+    public boolean move(Direction d)
     {
-        LOGGER.fine("Moving in direction: " + d.toString());
-
+        if (energy == 0) //ha nincs több energiája, akkor nem tud lépni többet ebben a körben
+            return false;
+        
         // lekérjük annak az iceBlocknak a szomszédait amin állunk, majd lekérjük a megfelelő irányban lévőt
         IceBlock iceBlockToMoveTo = block.getNeighbours().get(d);
+        
+        if (iceBlockToMoveTo == null) // ha az adott irányba nincs jégtábla, akkor a lépés sikertelen
+            return false;
 
         // mozgatjuk a játékost az IceBlock accept és remove függvényeivel
         block.remove(this);
@@ -32,86 +33,101 @@ public abstract class Character
         setIceBlock(iceBlockToMoveTo);
         
         // a mozgás egy munkába kerül
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
-
-        // ha Emptyblockra léptünk akkor vízbe estünk (ezt az EmptyBlock állítja be)
-        if (isInWater)
-            LOGGER.fine("Next player's turn");
+        changeEnergy(-1);
+        return true; // sikeres lépés
     }
-    
-    public void clear()
+
+    // a játékos eltakarít 1 réteg havat
+    public boolean clear()
     {
-        LOGGER.fine("Clearing...");
+        /*
+        * Ha nincs már több energiája a játékosnak vagy nincs 1 réteg hó sem a táblán,
+        * akkor a takarítás sikertelen
+        * */
+        if (energy == 0 || block.getSnow() == 0)
+            return false;
+
+        // csökkentjük a jégtáblán lévő hórétegek számát 1-el
         block.changeAmountOfSnow(-1);
 
         // a tisztítás egy munkába kerül
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
+        changeEnergy(-1);
+        return true; // sikeres hóeltakarítás
     }
-    
-    public void pickUp()
+
+    // a játékos felvesz 1 tárgyat
+    public boolean pickUp()
     {
-        LOGGER.fine("Picking up item");
+        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
+            return false;
     
         // a blocktól visszakapunk egy itemet
         CollectableItem item = block.removeItem();
-        // "értesítjük" az itemet, hogy felvettük
-        item.interactWithCharacter(this);
+        if (item == null) // ha nincs tárgy a jégtáblán nem sikerül
+            return false;
+        
+        try {
+            // "értesítjük" az itemet, hogy felvettük
+            item.interactWithCharacter(this); // kivételt dob ha nem lehet felvenni
+        } catch (IllegalArgumentException e) {
+            block.setItem(item); // nem lehet felvenni ezért visszatesszük az iceblockra
+            return false;
+        }
+        changeEnergy(-1); // Item használata egy munka.
+        return true; // sikeres
     }
     
-    // amikor a karakter vízbe esik
-    public void fallIn()
-    {
-        LOGGER.fine("Character fell in water");
-        isInWater = true;
-    }
-
-    // a karaktert kimentette valaki
-    public void save()
-    {
-        LOGGER.fine("Character was saved");
-        isInWater = false;
-    }
+    public abstract boolean useAbility(); // Az Eskimo és az Explorer képessége
     
-    public abstract void useAbility();
-    
-    // felvettünk egy Suit-ot
+    // a játékos felvesz 1 Suit-ot
     public void setHasSuit()
     {
-        LOGGER.fine("Character has a suit now!");
         hasSuit = true;
     }
     
     // fuldoklunk-e?
     public boolean isDrowning()
     {
-        LOGGER.finer("Drowning getter. Has suit checked");
         // akkor fuldoklunk (Drowning) ha a vízben vagyunk és nincs rajtunk búvárruha
         return isInWater && !hasSuit;
     }
     
     // Egy Item használata. Az itemIdx paraméter a Character inventory tömbjében indexel, így kapunk egy Itemet
-    public void useItem(int itemIdx)
+    public boolean useItem(int itemIdx)
     {
-        LOGGER.fine("Using item...");
-        
-        inventory.get(itemIdx).use(block);
+        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
+            return false;
+
+        // ha a UsableItem elhasználódik töröljuk az Inventory-ból
+        if (inventory.get(itemIdx).use(block))
+            inventory.remove(itemIdx);
         
         // egy Item használata egy munkába kerül.
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
+        changeEnergy(-1);
+        return true; // sikeres
     }
     
     //megváltoztatható vele a karakter aktuális energiájának száma
-    public void changeEnergy(int value)
+    public void changeEnergy(int amount)
     {
-        energy += value;
-        LOGGER.fine("Energy changed to " + energy);
+        energy += amount;
     }
 
-    public abstract void changeHealth(int value);
+    // a játékos energiájának beállítása a kör elején a paraméter értékére
+    public void setEnergy(int value)
+    {
+        energy = value;
+    }
 
+    // megváltoztatja a játékos testhőjét a paraméter értékével
+    public void changeHealth(int value)
+    {
+        health += value;
+        if (health == 0) // ha a változással a játékos testhője 0-ra csökken -> Game over
+            Game.get().lose();
+    }
+
+    // visszaadja a játékos testhőjét
     public int getHealth()
     {
         return health;
@@ -126,7 +142,6 @@ public abstract class Character
     // felvettünk egy Flare-t
     public void setHasFlare()
     {
-        LOGGER.fine("Character has a flare now!");
         hasFlare = true;
     }
 
@@ -135,19 +150,29 @@ public abstract class Character
     {
         return hasBullet;
     }
+
+    // visszaadja, hogy a játékoson van-e búvárruha
+    public boolean hasSuit()
+    {
+        return hasSuit;
+    }
+
+    // visszaadja a maximum health értékét
+    public int getMaxHealth()
+    {
+        return maxHealth;
+    }
+    
+    // visszadaja a játékos ID-ját
+    public int getID()
+    {
+        return ID;
+    }
     
     // felvettünk egy Bullet-et
     public void setHasBullet()
     {
-        LOGGER.fine("Character has a bullet now!");
         hasBullet = true;
-    }
-    
-    /* ezzel tudunk átadni a karakternek egy IceBlock-ot, a karakter ezen a blockon fog állni */
-    public void setIceBlock(IceBlock block)
-    {
-        LOGGER.fine("Character is on a new IceBlock");
-        this.block = block;
     }
     
     // csak UsableItem-et tudunk hozzáadni az inventoryhoz.
@@ -168,17 +193,27 @@ public abstract class Character
         return block.hasIgloo();
     }
     
+    // a játékos olyan mezőn áll-e amin van igloo?
+    public boolean isInTent()
+    {
+        return block.hasTent();
+    }
+
+    // visszadaja a játékos energiaszintjét
+    public int getEnergy()
+    {
+        return energy;
+    }
+    
     protected int energy; // munkák száma
     protected int health; // élet
-    private boolean isInWater; // vízben vagyunk-e?
     private boolean hasSuit = false; // van-e a karakteren búvárruha?
-    private boolean hasFlare = false;
-    private boolean hasBullet = false;
-    private int ID = -1;
+    private boolean hasFlare = false; // a karakternél van-e a Flare?
+    private boolean hasBullet = false; // a karakternél van-e a Bullet?
     
-    // a block amin a karakter áll
-    protected IceBlock block;
-    
+    private int ID; // játékos azonosítója
+    protected int maxHealth; // maximum élet
+
     // az inventory csak használható Item-eket tárolhat. Ezeknek az Item-eknek van Use() függvényük is
     private ArrayList<UsableItem> inventory;
 }

@@ -1,216 +1,306 @@
 package com.csakcintanyer.bme.projlab;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.logging.*;
 
 public class Game
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Game.class.getName() );
-    
-    private Game()
+
+    private Game(){ }
+
+    // a jégmező, a játékosok és a medve beállítása nem-determinisztikus módban
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear)
     {
-        LOGGER.finest("Game constructor");
-        
-        // karakterek és IceMap inicializálása
-        createCharacters();
-        createMap(createItems());
+        init(iceMap, characters, bear, -1);
     }
-    
-    // Itemek létrehozása. Ezeket átadjuk majd az IceMapnek
-    private ArrayList<CollectableItem> createItems()
+
+    // a jégmező, a játékosok és a medve beállítása determinisztikus módban
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns)
     {
-        LOGGER.fine("Creating Items");
-        ArrayList<CollectableItem> itemsToAdd = new ArrayList<>();
-        itemsToAdd.add(new Suit());
-        itemsToAdd.add(new Rope());
-        itemsToAdd.add(new Shovel());
-        itemsToAdd.add(new Gun());
-        itemsToAdd.add(new Bullet());
-        itemsToAdd.add(new Flare());
-        itemsToAdd.add(new Food());
-        return itemsToAdd;
+        map = iceMap;
+        this.characters = characters;
+        this.bear = bear;
+        deterministic = snowInXTurns > 0;
+
+        System.out.println("Snow in every " + snowInXTurns + " turns");
+        this.snowInXTurns = snowInXTurns;
+        turns = 0;
     }
-    
-    // karakterek létrehozása, és eltárolása a characters ArrayList-ben
-    private void createCharacters()
-    {
-        LOGGER.fine("Creating characters");
-        characters.add(new Eskimo());
-        characters.add(new Eskimo());
-        characters.add(new Explorer());
-        characters.add(new Explorer());
-    }
-    
-    // IceMap inicializálása
-    private void createMap(ArrayList<CollectableItem> itemsToAdd)
-    {
-        LOGGER.fine("Initialization");
-        
-        // 1*1-es az IceMap
-        map = new IceMap(1,1, characters.size(), characters, itemsToAdd);
-        // beállítjuk az egyes IceBlockok szomszédait
-        map.setNeighboursOnTheMap();
-    }
-    
+
     // játék kezdése
     public void start()
     {
-        LOGGER.fine("Starting game");
         try
         {
-            // ebben a testprogramban csak egy kört játszunk le
-            nextRound();
+            Random random = new Random();
+
+            nextRound(0); //az első játékos játszik 1 kört
+            if(bear != null) moveBear(); // medve lép, ha van
+            turns++;
+            while (!gameOver()) //amíg nincs vége a játéknak
+            {
+                /*
+                * Ha determinisztkus módban vagyunk, akkor a beállítot érték szerint annyi körönként hóvihar
+                * */
+                if (deterministic && turns % snowInXTurns == 0)
+                {
+                    snowStorm();
+                }
+                else if (!deterministic) //nem-determinisztikus módban
+                {
+                    if (random.nextInt(2) == 1) // 50%
+                    {
+                        snowStorm();
+                    }
+                }
+
+                if (gameOver()) break;
+                nextRound(turns % characters.size()); // a következő játékos köre jön
+                if (gameOver()) break;
+
+                if(bear != null) moveBear(); // ha van medve lép
+                turns++;
+            }
+
+            if (isLost)
+            {
+                System.out.println("Game over!"); //vesztettünk
+            }
+            if (isWin)
+            {
+                System.out.println("Victory!"); //nyertünk
+            }
         } catch (IOException e)
         {
             e.printStackTrace();
         }
     }
-    
+
     // következő kör
-    public void nextRound() throws IOException
+    public void nextRound(int whichPlayer) throws IOException
     {
-        LOGGER.fine("Changing round");
-        
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String input;
-    
-        // minden kör elején a characters tömb 0. elemén lévő játékos fog kezdeni
-        currentlyMovingCharacter = characters.get(0);
-        
-        Random random = new Random();
-        int numOfTurns = characters.size();
-        for (int i = 0; i < numOfTurns; ++i)
+        currentlyMovingCharacter = characters.get(whichPlayer); //meghatározzuk, hogy melyik játékos jön
+        if (currentlyMovingCharacter.isDrowning()) // ha ez a játékos még mindig vízben van (már 1 teljes kör óta)
         {
-            // az i. karakter lép
-            
-            LOGGER.fine("Next player");
-            
-            // Hóvihar 50%-os valószínűséggel jön
-            if (random.nextInt(2) == 0)
-                snowStorm();
-            
-            // az éppen aktuálisan soron lévő játékos beállítása
-            currentlyMovingCharacter = characters.get(i);
-            
-            LOGGER.fine("You have " + (numOfTurns - i) + " turns left. Player" + (i + 1));
-            
-            // mozgás
-            System.out.println("What direction should i move? (up/down/left/right)");
-            input = reader.readLine();
-            if (input.equals("up"))
-                currentlyMovingCharacter.move(Direction.UP);
-            if (input.equals("down"))
-                currentlyMovingCharacter.move(Direction.DOWN);
-            if (input.equals("left"))
-                currentlyMovingCharacter.move(Direction.LEFT);
-            if (input.equals("right"))
-                currentlyMovingCharacter.move(Direction.RIGHT);
-    
-            // fullad-e a karakter?
-            if (checkDrowning(reader)) return;
-    
-            // képesség használata
-            currentlyMovingCharacter.useAbility();
-            
-            // IceBlock tisztítása
-            currentlyMovingCharacter.clear();
-            
-            // Item felvétele
-            currentlyMovingCharacter.pickUp();
-    
-            // ha használható Item-et vettünk fel, akkor a karakter inventory-ában van egy elem
-            if (currentlyMovingCharacter.getInventory().size() > 0)
+            lose(); //vége a játéknak
+            return;
+        }
+
+        currentlyMovingCharacter.setEnergy(4); // 4 energia a kör elején
+
+        System.out.println("Player " + whichPlayer + "'s turn");
+        
+        /**
+         * parancsok feldolgozása
+         * Addig nincs vége a játékos körének, amíg van energiája, nincs vége a játéknak vagy be nem fejezik a körét
+         * az "end" parancsal
+         */
+        while (currentlyMovingCharacter.getEnergy() > 0 && !(isLost || isWin) && !hasInput())
+        {
+            if (input.equals(""))
+                continue; // ignore
+
+            String[] elements = input.split(" ");
+            switch (elements[0])
             {
-                System.out.println("Which item to use? You have " + currentlyMovingCharacter.getInventory().size() + " item. (0, 1, 2... stb)");
-                input = reader.readLine();
-                int index = Integer.parseInt(input);
-                currentlyMovingCharacter.useItem(index);
-                
-                // ha a Gun-t használtuk, és a győzelem minden feltétele teljesült akkor ezen a ponton az isWin igaz lesz
-                if (isWin)
-                    return;
+                case "exit":
+                    System.out.println("Exiting...");
+                    isLost = true;
+                    return; // end of turn
+                case "save":
+                    IOLanguage.SaveToFile(elements[1]);
+                    System.out.println("OK, game saved");
+                    break;
+                case "move":
+                    if (currentlyMovingCharacter.move(IOLanguage.GetDirection(elements[1])))
+                    {
+                        System.out.println("OK, character moved");
+                        if (bear != null) // ha van medve
+                        {
+                            if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtáblán
+                            {
+                                lose(); // vesztettünk
+                                return; // end of turn
+                            }
+                        }
+
+                        if (currentlyMovingCharacter.isDrowning()) // ha fuldoklunk akkor vége a körünknek
+                        {
+                            System.out.println("You are drowning, your turn is over!");
+                            return; // end of turn
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("You cannot move " + elements[1]);
+                    }
+                    break;
+                case "use":
+                    if (elements[1].equals("item"))
+                    {
+                        if (!currentlyMovingCharacter.getInventory().isEmpty()) // ha van item az inventoryban
+                        {
+                            if (currentlyMovingCharacter.useItem(Integer.parseInt(elements[2]))) // hanyadik tárgyat
+                                System.out.println("OK, item used");
+                            else
+                                System.out.println("Item was not used");
+                        }
+                        else
+                        {
+                            System.out.println("Your inventory is empty");
+                        }
+                    }
+                    else if (elements[1].equals("ability"))
+                    {
+                        if (currentlyMovingCharacter.useAbility())
+                            System.out.println("OK, ability used");
+                        else
+                            System.out.println("Ability was not used");
+                    }
+                    break;
+                case "pick_up":
+                    if (currentlyMovingCharacter.pickUp())
+                        System.out.println("OK, item picked up");
+                    else
+                        System.out.println("Item was not picked up");
+                    break;
+                case "stat":
+                    IOLanguage.PrintCharacter(currentlyMovingCharacter);
+                    break;
+                case "block":
+                    IOLanguage.PrintBlock(currentlyMovingCharacter.getBlock());
+                    break;
+
+                case "clear":
+                    if (currentlyMovingCharacter.clear())
+                        System.out.println("OK, iceblock cleared");
+                    else
+                        System.out.println("Iceblock was not cleared");
+                    break;
+                default:
+                    throw new IllegalArgumentException("wrong command");
             }
         }
-        LOGGER.fine("No more rounds left, end of the game");
-        
+        System.out.println("Your turn is over");
     }
     
-    private boolean checkDrowning(BufferedReader reader) throws IOException
+    private boolean hasInput()
     {
-        String input;
-        // megkérdezzük a felhasználót, hogy szeretné-e, ha a karaktere fuldokolna=meghalna.
-        // Így ezt a működést is tudjuk tesztelni
-        System.out.println("Should player drowning? (y/n) Player is " + (currentlyMovingCharacter.isDrowning() ? "" : "not ") + "drowning at the moment!");
-        input = reader.readLine();
-        if (input.equals("y"))
+        System.out.print(">>>> ");
+        try
         {
-            // ha a válasz az, hogy meg kellene, hogy fulladjon, akkor vesztettünk
-            lose();
-            return true;
+            input = IOLanguage.reader.readLine();
+        } catch (IOException e)
+        {
+            return false;
         }
-        return false;
+        return input.equals("end");
     }
-    
+
+    // a medvét mozgatása
+    private void moveBear()
+    {
+        Random rand = new Random();
+        boolean moved = false;
+        int randNum;
+        do { // addig mozgatjuk, amíg nem talál egy random irány amerre van jégtábla
+            randNum = rand.nextInt(4);
+            if (randNum == 0)
+                moved = bear.move(Direction.LEFT);
+            if (randNum == 1)
+                moved = bear.move(Direction.RIGHT);
+            if (randNum == 2)
+                moved = bear.move(Direction.UP);
+            if (randNum == 3)
+                moved = bear.move(Direction.DOWN);
+        } while (!moved);
+
+        System.out.println("Bear moved! Position: ");
+        IOLanguage.PrintBlock(bear.getBlock());
+    }
+
     // ezt a függvényt kell meghívni, ha a győzelem feltétele teljesült
     public void win()
     {
-        LOGGER.fine("You win!!!");
         isWin = true;
     }
-    
+
     // ezt a függvényt kell meghívni, ha a vereség feltétele teljesült
     public void lose()
     {
-        LOGGER.fine("End of the game");
         isLost = true;
     }
-    
-    // Hóvihar van
+
+    // megadja, hogy a játékmenetnek vége van-e
+    private boolean gameOver()
+    {
+        return (isLost || isWin);
+    }
+
+    // visszaadja a játékosok számát
+    public int getNumOfCharacters()
+    {
+        return characters.size();
+    }
+
+    // Hóvihar
     private void snowStorm()
     {
-        LOGGER.fine("Snow storm is now!");
-    
-        // végigmegyünk a karaktereken, megnézük hogy iglooban vannak-e, ha nem akkor egy élet minusz
+
+        System.out.println("Oh no, SNOWSTORM!!");
+
+        // végigmegyünk a karaktereken, megnézük hogy igluban vannak-e, ha nem akkor egy élet minusz
         for (Character c : characters)
         {
-            if (c.isInIgloo())
+            if (!(c.isInIgloo() || c.isInTent()))
                 c.changeHealth(-1);
         }
-        
+
         // az IceBlockok hórétegének nővelése
         ArrayList<ArrayList<IceBlock>> blocks = map.getBlocks();
-        for (int i = 0; i < blocks.size(); ++i)
+        for (ArrayList<IceBlock> block : blocks)
         {
-            for (int j = 0; j < blocks.get(0).size(); ++j)
+            for (IceBlock iceBlock : block)
             {
-                blocks.get(i).get(j).changeAmountOfSnow(1);
+                iceBlock.changeAmountOfSnow(1);
             }
         }
     }
-    
+
+    //visszaadja a jégmezőt, amelyen a játék folyik
+    public IceMap getIceMap()
+    {
+        return map;
+    }
+
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
-    
+    private int turns; // az aktuális kör száma
+
     // a jégmező
     private IceMap map;
-    
+
     // karakterek akik játszanak
     private ArrayList<Character> characters = new ArrayList<>();
-    
+
     // éppen soron lévő játékos
     private Character currentlyMovingCharacter;
+
+    // A medve
+    private Bear bear = null;
+
+    private boolean deterministic; // determinisztikus a programunk?
+    public int snowInXTurns; // minden hány körben van hóvihar
     
+    private String input;
+
     // a Game osztály a Singleton tervezési formát követi, hisz a program futása során csak egy, a játékot vezérlő
     // osztálypéldány létezhet
     public static Game get()
     {
         if (instance == null)
             instance = new Game();
-        
+
         return instance;
     }
     private static Game instance;

@@ -1,10 +1,8 @@
 package com.csakcintanyer.bme.projlab;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 
 public class UnstableBlock extends IceBlock
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( UnstableBlock.class.getName() );
     
     public UnstableBlock(int amountOfSnow, int stability)
     {
@@ -17,26 +15,29 @@ public class UnstableBlock extends IceBlock
     }
     
     // valaki rálépett erre az IceBlockra
-    public void accept(Character c)
+    public void accept(Entity c)
     {
-        LOGGER.fine("UnstableBlock accepting");
-        getCharacters().add(c);
+        ArrayList<Entity> entities = getEntities();
+        entities.add(c);
         
         // megnézzük, hogy átfordul-e az IceBlock
-        if (getCharacters().size() > getStability())
+        if (entities.size() > getStability())
         {
             // ha igen, akkor mindegyik karakternek meg kell hivni a fallIn() metódusát
-            for (Character character : getCharacters())
-            {
-                character.fallIn();
-            }
+            for (Entity entity : entities)
+                entity.fallIn();
         }
     }
     
     // valaki ellépett erről az IceBlockól
-    public void remove(Character c)
+    public void remove(Entity c)
     {
-        LOGGER.fine("UnstableBlock removing");
-        getCharacters().remove(c);
+        getEntities().remove(c);
+    }
+    
+    // kiíráshoz kell
+    public String toString()
+    {
+        return "unstableblock";
     }
 }
