@@ -162,8 +162,8 @@
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">544</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">312</XPD:ATTR>
-<XPD:ATTR name="Width" type="integer">90</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">43</XPD:ATTR>
+<XPD:ATTR name="Width" type="integer">110</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">56</XPD:ATTR>
 <XPD:REF name="Model">hbyVYWIPfUCtKLTA6iVNhQAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="khjb+Kxq1UOEkmV7HwFHFAAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="2zaw+Y938EC8tjwdHsWBsAAA">
@@ -248,7 +248,7 @@
 <XPD:OBJ name="OwnedViews[7]" type="UMLRealizationView" guid="P5dOCznS8EOaMjVoFn0HMgAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">584,312;547,118</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">592,312;548,118</XPD:ATTR>
 <XPD:REF name="Model">7lhd1g9ywUGzuuOXKTJf7wAA</XPD:REF>
 <XPD:REF name="Head">ktbClpKnYEiztSDgiEkSHAAA</XPD:REF>
 <XPD:REF name="Tail">A1j5nCquu0aOk+90u8dSvgAA</XPD:REF>
@@ -662,6 +662,12 @@
 <XPD:REF name="ClientDependencies[0]">7lhd1g9ywUGzuuOXKTJf7wAA</XPD:REF>
 <XPD:ATTR name="#TypedFeatures" type="integer">1</XPD:ATTR>
 <XPD:REF name="TypedFeatures[0]">NXeSn2PlyUu9qqpyn78KNAAA</XPD:REF>
+<XPD:ATTR name="#Attributes" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="gGdlBcRqt0acxIJbEYj2OQAA">
+<XPD:ATTR name="Name" type="string">beenChecked</XPD:ATTR>
+<XPD:ATTR name="TypeExpression" type="string">bool</XPD:ATTR>
+<XPD:REF name="Owner">hbyVYWIPfUCtKLTA6iVNhQAA</XPD:REF>
+</XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[5]" type="UMLClass" guid="VHDDUTqGVkaQkA3mF35y9AAA">
 <XPD:ATTR name="Name" type="string">IceMap</XPD:ATTR>
