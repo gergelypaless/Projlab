@@ -104,12 +104,18 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 <XPD:ATTR name="Left" type="integer">264</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">44</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">168</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">82</XPD:ATTR>
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 <XPD:ATTR name="Left" type="integer">152</XPD:ATTR>
@@ -117,6 +123,10 @@
 <XPD:ATTR name="Width" type="integer">143</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">69</XPD:ATTR>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 03f6324414059b53896458ae2dc78474e9a537c4
+>>>>>>> Stashed changes
 =======
 >>>>>>> 03f6324414059b53896458ae2dc78474e9a537c4
 >>>>>>> Stashed changes
@@ -148,13 +158,19 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <XPD:ATTR name="Points" type="Points">234,336;226,244</XPD:ATTR>
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 <XPD:ATTR name="Points" type="Points">318,212;338,125</XPD:ATTR>
 =======
 <XPD:ATTR name="Points" type="Points">234,336;226,244</XPD:ATTR>
 >>>>>>> 03f6324414059b53896458ae2dc78474e9a537c4
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 <XPD:REF name="Model">QIaRq6Shz0u7fFNpRV2+AQAA</XPD:REF>
 <XPD:REF name="Head">zBtmQB6uw0qPw8QAmhiF9gAA</XPD:REF>
@@ -296,12 +312,18 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 <XPD:ATTR name="Left" type="integer">732</XPD:ATTR>
 <XPD:ATTR name="Top" type="integer">188</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">152</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">69</XPD:ATTR>
+=======
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 <XPD:ATTR name="Left" type="integer">712</XPD:ATTR>
@@ -340,6 +362,10 @@
 <XPD:ATTR name="Width" type="integer">99</XPD:ATTR>
 <XPD:ATTR name="Height" type="integer">56</XPD:ATTR>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> 03f6324414059b53896458ae2dc78474e9a537c4
+>>>>>>> Stashed changes
 =======
 >>>>>>> 03f6324414059b53896458ae2dc78474e9a537c4
 >>>>>>> Stashed changes
@@ -368,6 +394,7 @@
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedViews[10]" type="UMLRealizationView" guid="+KM9ofDsNUONhi2gNR93+wAA">
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
@@ -451,6 +478,36 @@
 <XPD:OBJ name="OwnedViews[11]" type="UMLRealizationView" guid="Ia5yNvlXQ0Or5+mYHr5VlAAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
+=======
+<XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
+<XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">718,200;587,118</XPD:ATTR>
+<XPD:REF name="Model">HbCu0InsAECabRAGrauwJAAA</XPD:REF>
+<XPD:REF name="Head">ktbClpKnYEiztSDgiEkSHAAA</XPD:REF>
+<XPD:REF name="Tail">n9XyQCimEEOiwhwiOlVtaQAA</XPD:REF>
+<XPD:OBJ name="NameLabel" type="EdgeLabelView" guid="cxLEFU9tU0aOh/t1YcJEFgAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+<XPD:ATTR name="Alpha" type="real">1,5707963267949</XPD:ATTR>
+<XPD:ATTR name="Distance" type="real">15</XPD:ATTR>
+<XPD:REF name="Model">HbCu0InsAECabRAGrauwJAAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="StereotypeLabel" type="EdgeLabelView" guid="RlINnfSTwUmbisyAwxco3wAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+<XPD:ATTR name="Alpha" type="real">1,5707963267949</XPD:ATTR>
+<XPD:ATTR name="Distance" type="real">30</XPD:ATTR>
+<XPD:REF name="Model">HbCu0InsAECabRAGrauwJAAA</XPD:REF>
+</XPD:OBJ>
+<XPD:OBJ name="PropertyLabel" type="EdgeLabelView" guid="M/qvLXYUz02VnRMsX5GtEgAA">
+<XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
+<XPD:ATTR name="Alpha" type="real">-1,5707963267949</XPD:ATTR>
+<XPD:ATTR name="Distance" type="real">15</XPD:ATTR>
+<XPD:REF name="Model">HbCu0InsAECabRAGrauwJAAA</XPD:REF>
+</XPD:OBJ>
+</XPD:OBJ>
+<XPD:OBJ name="OwnedViews[11]" type="UMLRealizationView" guid="Ia5yNvlXQ0Or5+mYHr5VlAAA">
+<XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
+<XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
+>>>>>>> Stashed changes
 <XPD:ATTR name="Points" type="Points">740,94;599,90</XPD:ATTR>
 <XPD:REF name="Model">i9JfmmZQzkSTYGWNRn5JIgAA</XPD:REF>
 <XPD:REF name="Head">ktbClpKnYEiztSDgiEkSHAAA</XPD:REF>
@@ -558,7 +615,10 @@
 </XPD:OBJ>
 </XPD:OBJ>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 <<<<<<< HEAD
 <XPD:OBJ name="OwnedViews[12]" type="UMLClassView" guid="DzdhqAtAAkyfresORYIszwAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
@@ -645,6 +705,9 @@
 </XPD:OBJ>
 =======
 >>>>>>> 03f6324414059b53896458ae2dc78474e9a537c4
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 </XPD:OBJ>
 </XPD:OBJ>
