@@ -1,9 +1,45 @@
 package com.csakcintanyer.bme.projlab;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class IceMap implements Serializable
+public class IceMap implements Serializable, Drawable
 {
+    
+    public IceMap()
+    {
+        N = 7;
+        M = 7;
+        blocks = new ArrayList<>();
+        
+        for (int j = 0; j < M; ++j)
+        {
+            blocks.add(new ArrayList<>());
+            for (int i = 0; i < N; ++i)
+            {
+                int which = Game.get().random.nextInt(10);
+                if (which % 5 == 0)
+                {
+                    blocks.get(j).add(new EmptyBlock(Game.get().random.nextInt(3)));
+                }
+                else if (which % 3 == 0)
+                {
+                    IceBlock block = new UnstableBlock(Game.get().random.nextInt(3),1 + Game.get().random.nextInt(3));
+                    blocks.get(j).add(block);
+                    CollectableItem item = createItem(block);
+                    block.setItem(item);
+                }
+                else
+                {
+                    IceBlock block = new StableBlock(Game.get().random.nextInt(3));
+                    blocks.get(j).add(block);
+                    CollectableItem item = createItem(block);
+                    block.setItem(item);
+                }
+            }
+        }
+        setNeighboursOnTheMap();
+    }
     
     public IceMap(ArrayList<ArrayList<IceBlock>> blocks)
     {
@@ -38,16 +74,49 @@ public class IceMap implements Serializable
         }
     }
     
+    public void draw(int x, int y)
+    {
+        for (int j = 0; j < M; ++j)
+        {
+            for (int i = 0; i < N; ++i)
+            {
+                x = 20 + i * 50 + i * 5;
+                y = 120 + j * 50 + j * 5;
+                blocks.get(j).get(i).draw(x, y);
+            }
+        }
+    }
+    
+    private CollectableItem createItem(IceBlock iceBlock)
+    {
+        CollectableItem item = null;
+        switch (Game.get().random.nextInt(10))
+        {
+            case 0: item = new Bullet(iceBlock); break;
+            case 1: item = new Flare(iceBlock); break;
+            case 2: item = new FragileShovel(iceBlock); break;
+            case 3: item = new Gun(iceBlock); break;
+            case 4: item = new Rope(iceBlock); break;
+            case 5: item = new Shovel(iceBlock); break;
+            case 6: item = new Suit(iceBlock); break;
+            case 7: item = new Tent(iceBlock); break;
+            case 8: // food
+            default:
+        }
+        
+        return item;
+    }
+    
     // iceblock lekérdezése
     public ArrayList<ArrayList<IceBlock>> getBlocks()
     {
         return blocks;
     }
-
-    // a jégmezp N*M méretű
-    int N;
-    int M;
-
+    
+    // a jégmezo N*M méretű
+    int N; // szélesség
+    int M; // magasság
+    
     // blockok a jégmezőn
     private ArrayList<ArrayList<IceBlock>> blocks;
 }

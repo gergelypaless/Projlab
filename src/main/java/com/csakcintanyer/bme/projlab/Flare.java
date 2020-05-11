@@ -13,6 +13,12 @@ public class Flare extends CollectableItem
         c.setHasFlare();
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.flareIcon, x, y);
+    }
+    
     // kiíráshoz kell
     public String toString()
     {

@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class IceBlock implements Serializable
+public abstract class IceBlock implements Serializable, Drawable
 {
     
     //item nélküli konstruktor
@@ -112,7 +112,7 @@ public abstract class IceBlock implements Serializable
     }
     
     // hó mennyisége
-    private int amountOfSnow;
+    protected int amountOfSnow;
     
     // hány karaktert bír el
     private int stability;

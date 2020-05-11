@@ -24,6 +24,12 @@ public class Food extends CollectableItem
         }
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.foodIcon, x, y);
+    }
+    
     // kiíráshoz kell
     public String toString()
     {

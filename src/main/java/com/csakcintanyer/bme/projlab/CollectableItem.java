@@ -7,7 +7,7 @@ import java.io.Serializable;
  *A CollectableItem-eket nem lehet "felvenni" az inventoryba, ezek egyből felhasználódnak
  */
 
-public abstract class CollectableItem implements Serializable
+public abstract class CollectableItem implements Serializable, Drawable
 {
     public CollectableItem(IceBlock block)
     {

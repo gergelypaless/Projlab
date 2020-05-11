@@ -28,6 +28,18 @@ public class Bear extends Entity
 		return true; //sikeres lépés
 	}
 	
+	public void draw(int x, int y)
+	{
+		View view = View.get();
+		
+		int xmod = (x - 20) % 55;
+		int ymod = (y - 120) % 55;
+		x -= xmod;
+		y -= ymod;
+		
+		view.draw(view.bearIcon, x, y);
+	}
+	
 	// kiiráshoz kell
 	public String toString()
 	{

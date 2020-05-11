@@ -16,6 +16,12 @@ public class Bullet extends CollectableItem // csak gyűjthető
         c.setHasBullet();
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.bulletIcon, x, y);
+    }
+    
     // kiiráshoz kell
     public String toString()
     {

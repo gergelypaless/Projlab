@@ -20,6 +20,12 @@ public class FragileShovel extends CollectableItem implements UsableItem
 		return durability == 0; // eltört-e már az ásó és törölni kell-e
 	}
 	
+	public void draw(int x, int y)
+	{
+		View view = View.get();
+		view.draw(view.fragileShovelIcon, x, y);
+	}
+	
 	// kiíráshoz kell
 	public String toString()
 	{

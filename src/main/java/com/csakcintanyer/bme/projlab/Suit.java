@@ -14,6 +14,12 @@ public class Suit extends CollectableItem
         c.setHasSuit();
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.suitIcon, x, y);
+    }
+    
     // kiíráshoz kell
     public String toString()
     {

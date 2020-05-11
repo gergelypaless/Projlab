@@ -2,7 +2,7 @@ package com.csakcintanyer.bme.projlab;
 
 import java.io.Serializable;
 
-public abstract class Entity implements Serializable
+public abstract class Entity implements Serializable, Drawable
 {
 	
 	public abstract boolean move(Direction d);

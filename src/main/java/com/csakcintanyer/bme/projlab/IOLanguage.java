@@ -91,12 +91,14 @@ public class IOLanguage
 				String strBlock = inputElements[i];
 				int amountOfSnow = Integer.parseInt(String.valueOf(strBlock.charAt(1)));
 				int stability = Integer.parseInt(String.valueOf(strBlock.charAt(2)));
+				/*
 				if (strBlock.charAt(0) == 's')
 					blocks.get(j).add(new StableBlock(amountOfSnow, stability));
 				if (strBlock.charAt(0) == 'u')
 					blocks.get(j).add(new UnstableBlock(amountOfSnow, stability));
 				if (strBlock.charAt(0) == 'e')
 					blocks.get(j).add(new EmptyBlock(amountOfSnow, stability));
+				 */
 			}
 		}
 		iceMap = new IceMap(blocks);
@@ -342,7 +344,7 @@ public class IOLanguage
 				}
 			}
 		}
-		Game.get().init(iceMap, characters, bear);
+		//Game.get().init(iceMap, characters, bear);
 	}
 	
 	// játékállá szerializálása

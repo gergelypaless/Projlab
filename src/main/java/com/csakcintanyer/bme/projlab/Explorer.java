@@ -42,6 +42,12 @@ public class Explorer extends Character
         throw new IllegalArgumentException();
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.explorerIcon, x, y);
+    }
+    
     // kiíráshoz kell
     public String toString()
     {

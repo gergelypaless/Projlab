@@ -32,6 +32,12 @@ public class Gun extends CollectableItem implements UsableItem
         return false; // az ásót nem kell törölni az Inventory-ból
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.gunIcon, x, y);
+    }
+    
     // kiíráshoz kell
     public String toString()
     {

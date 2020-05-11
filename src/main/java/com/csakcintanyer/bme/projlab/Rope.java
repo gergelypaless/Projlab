@@ -36,6 +36,12 @@ public class Rope extends CollectableItem implements UsableItem
         return false; // a kötelet nem kell törölni használat után
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.ropeIcon, x, y);
+    }
+    
     // kiíráshoz kell
     public String toString()
     {

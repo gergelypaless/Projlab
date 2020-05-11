@@ -18,6 +18,12 @@ public class Tent extends CollectableItem implements UsableItem
 		return block.placeTent();
 	}
 	
+	public void draw(int x, int y)
+	{
+		View view = View.get();
+		view.draw(view.tentIcon, x, y);
+	}
+	
 	// kiíráshoz kell
 	public String toString()
 	{

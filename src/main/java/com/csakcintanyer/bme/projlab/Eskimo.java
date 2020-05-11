@@ -23,6 +23,12 @@ public class Eskimo extends Character
         return false; // sikertelen
     }
     
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.eskimoIcon, x, y);
+    }
+    
     // kiíráshoz kell
     public String toString()
     {
