@@ -24,7 +24,6 @@ public class MainWindow extends JFrame
 	
 	public void paint(Graphics g)
 	{
-		System.out.println("paint");
 		View.get().update();
 	}
 }
@@ -56,7 +55,6 @@ class AEventListener implements KeyListener
 	{
 		if (keyEvent.getKeyCode() == KeyEvent.VK_A)
 		{
-			System.out.println("repaint");
 			window.repaint();
 		}
 	}

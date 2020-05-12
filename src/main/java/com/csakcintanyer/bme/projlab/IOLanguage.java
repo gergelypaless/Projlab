@@ -28,7 +28,6 @@ public class IOLanguage
 			return "Direction.RIGHT";
 		if (d == Direction.LEFT)
 			return "Direction.LEFT";
-		
 		return "-----------";
 	}
 	
@@ -41,7 +40,6 @@ public class IOLanguage
 		{
 			if (input.equals(""))
 				continue;
-			
 			String[] elements = input.split(" ");
 			switch (elements[0])
 			{

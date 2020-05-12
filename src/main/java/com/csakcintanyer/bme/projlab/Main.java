@@ -17,7 +17,6 @@ public class Main
 		game.init();
 		game.start();
 	}
-
 }
 
 
