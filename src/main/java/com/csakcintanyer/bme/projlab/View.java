@@ -22,6 +22,7 @@ public class View
 	public int xOffset = 8;
 	
 	private MainWindow mainWindow;
+	private Graphics g;
 	
 	public ImageIcon backgroundIcon = new ImageIcon("Assets\\Background.png");
 	public ImageIcon layoutIcon = new ImageIcon("Assets\\Layout.png");
@@ -52,17 +53,26 @@ public class View
 	{
 		N = x; //szélesség
 		M = y; //magasság
-		mainWindow = new MainWindow();
-		mainWindow.setVisible(true);
+		
+		/*SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{*/
+				mainWindow = new MainWindow();
+				mainWindow.setVisible(true);
+			/*}
+		});*/
 	}
 	
 	public void repaint()
 	{
-		mainWindow.repaint();
+		mainWindow.getContentPane().repaint();
 	}
 	
-	public void update()
+	public void update(Graphics g)
 	{
+		this.g = g;
 		drawBackground();
 		drawIceMap();
 		DrawInventory();
@@ -72,7 +82,7 @@ public class View
 	private void drawBackground()
 	{
 		Image image = backgroundIcon.getImage();
-		mainWindow.getGraphics().drawImage(image, xOffset, yOffset, null);
+		g.drawImage(image, xOffset, yOffset, null);
 	}
 	
 	public void drawIceMap()
@@ -83,13 +93,13 @@ public class View
 	public void draw(ImageIcon icon, int x, int y)
 	{
 		Image image = icon.getImage();
-		mainWindow.getGraphics().drawImage(image, x + xOffset, y + yOffset, null);
+		g.drawImage(image, x + xOffset, y + yOffset, null);
 	}
 	
 	public void DrawInventory()
 	{
 		Image image = layoutIcon.getImage();
-		mainWindow.getGraphics().drawImage(image, 20 * 2 + 55 * Game.get().getIceMap().getBlocks().get(0).size() - 5 + xOffset, yOffset, null);
+		g.drawImage(image, 20 * 2 + 55 * Game.get().getIceMap().getBlocks().get(0).size() - 5 + xOffset, yOffset, null);
 	}
 	
 	public void DrawBlockProperties()

@@ -6,8 +6,6 @@ import java.awt.event.KeyListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class MainWindow extends JFrame
 {
@@ -24,8 +22,15 @@ public class MainWindow extends JFrame
 	
 	public void paint(Graphics g)
 	{
-		System.out.println("paint");
-		View.get().update();
+		Image windowImage = createImage(getWidth(), getHeight());
+		Graphics windowGraphics = windowImage.getGraphics();
+		paintToImage(windowGraphics);
+		g.drawImage(windowImage, 0, 0, this);
+	}
+	
+	private void paintToImage(Graphics g)
+	{
+		View.get().update(g);
 	}
 }
 
@@ -56,9 +61,9 @@ class AEventListener implements KeyListener
 	{
 		if (keyEvent.getKeyCode() == KeyEvent.VK_A)
 		{
-			System.out.println("repaint");
-			window.repaint();
+			SwingUtilities.updateComponentTreeUI(window);
 		}
 	}
 }
+
 
