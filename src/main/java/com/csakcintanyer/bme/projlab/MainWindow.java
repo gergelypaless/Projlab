@@ -12,25 +12,16 @@ public class MainWindow extends JFrame
 	public MainWindow()
 	{
 		super("MainWindow");
-		setSize(View.get().N*55 - 5 + 40 + 132 + View.get().xOffset + 8, View.get().M * 55 - 5 + 40 + 100 + View.get().yOffset + 5);
+		//                                                 + 16 ??                                            + 36??
+		setSize(20 * 2 + View.get().N * 55 - 5 + 132 + 16, 100 + View.get().M * 55 - 5 + 20 * 2 + 36);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		
+		setContentPane(new ContentPane());
+		setLocationRelativeTo(null);
+		
 		AEventListener listener = new AEventListener(this);
 		addKeyListener(listener);
-	}
-	
-	public void paint(Graphics g)
-	{
-		Image windowImage = createImage(getWidth(), getHeight());
-		Graphics windowGraphics = windowImage.getGraphics();
-		paintToImage(windowGraphics);
-		g.drawImage(windowImage, 0, 0, this);
-	}
-	
-	private void paintToImage(Graphics g)
-	{
-		View.get().update(g);
 	}
 }
 
@@ -63,6 +54,24 @@ class AEventListener implements KeyListener
 		{
 			window.repaint();
 		}
+	}
+}
+
+class ContentPane extends JPanel
+{
+	protected void paintComponent(Graphics g)
+	{
+		super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
+		
+		Image windowImage = createImage(getWidth(), getHeight());
+		Graphics windowGraphics = windowImage.getGraphics();
+		paintToImage(windowGraphics);
+		g.drawImage(windowImage, 0, 0, this);
+	}
+	
+	private void paintToImage(Graphics g)
+	{
+		View.get().update(g);
 	}
 }
 

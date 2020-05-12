@@ -18,9 +18,6 @@ public class View
 	
 	public int N, M;
 	
-	public int yOffset = 31;
-	public int xOffset = 8;
-	
 	private MainWindow mainWindow;
 	private Graphics g;
 	
@@ -54,15 +51,15 @@ public class View
 		N = x; //szélesség
 		M = y; //magasság
 		
-		/*SwingUtilities.invokeLater(new Runnable()
+		SwingUtilities.invokeLater(new Runnable()
 		{
 			@Override
 			public void run()
-			{*/
+			{
 				mainWindow = new MainWindow();
 				mainWindow.setVisible(true);
-			/*}
-		});*/
+			}
+		});
 	}
 	
 	public void repaint()
@@ -82,7 +79,7 @@ public class View
 	private void drawBackground()
 	{
 		Image image = backgroundIcon.getImage();
-		g.drawImage(image, xOffset, yOffset, null);
+		g.drawImage(image, 0, 0, null);
 	}
 	
 	public void drawIceMap()
@@ -93,13 +90,13 @@ public class View
 	public void draw(ImageIcon icon, int x, int y)
 	{
 		Image image = icon.getImage();
-		g.drawImage(image, x + xOffset, y + yOffset, null);
+		g.drawImage(image, x, y, null);
 	}
 	
 	public void DrawInventory()
 	{
 		Image image = layoutIcon.getImage();
-		g.drawImage(image, 20 * 2 + 55 * Game.get().getIceMap().getBlocks().get(0).size() - 5 + xOffset, yOffset, null);
+		g.drawImage(image, 20 * 2 + Game.get().getIceMap().getBlocks().get(0).size() * 55 - 5, 0, null);
 	}
 	
 	public void DrawBlockProperties()
