@@ -7,20 +7,20 @@ public class Game
 {
 
     private Game(){ }
-    
-    
+
+
     public void init()
     {
         // TODO: init game
-        
+
         map = new IceMap();
-        
+
         characters = new ArrayList<>();
         characters.add(new Eskimo(characters.size()));
         characters.add(new Eskimo(characters.size()));
         characters.add(new Explorer(characters.size()));
         characters.add(new Explorer(characters.size()));
-        
+
         ArrayList<ArrayList<IceBlock>> blocks = map.getBlocks();
         for (Character character : characters)
         {
@@ -34,7 +34,7 @@ public class Game
             character.setIceBlock(blocks.get(y).get(x));
             blocks.get(y).get(x).getEntities().add(character);
         }
-        
+
         bear = new Bear();
         int x = random.nextInt(map.N);
         int y = random.nextInt(map.M);
@@ -45,10 +45,10 @@ public class Game
         }
         bear.setIceBlock(blocks.get(y).get(x));
         blocks.get(y).get(x).getEntities().add(bear);
-        
+
         deterministic = true;
         snowInXTurns = 1000;
-        
+
         View.get().init(map.N, map.M);
     }
 
@@ -63,9 +63,9 @@ public class Game
         System.out.println("Snow in every " + snowInXTurns + " turns");
         this.snowInXTurns = snowInXTurns;
         turns = 0;
-        
-        
-       
+
+
+
     }
 
     // játék kezdése
@@ -79,8 +79,8 @@ public class Game
             while (!gameOver()) //amíg nincs vége a játéknak
             {
                 /*
-                * Ha determinisztkus módban vagyunk, akkor a beállítot érték szerint annyi körönként hóvihar
-                * */
+                 * Ha determinisztkus módban vagyunk, akkor a beállítot érték szerint annyi körönként hóvihar
+                 * */
                 if (deterministic && turns % snowInXTurns == 0)
                 {
                     snowStorm();
@@ -92,7 +92,7 @@ public class Game
                         snowStorm();
                     }
                 }
-                
+
                 if (gameOver()) break;
                 View.get().repaint();
                 nextRound(turns % characters.size()); // a következő játékos köre jön
@@ -130,7 +130,7 @@ public class Game
         currentlyMovingCharacter.setEnergy(4); // 4 energia a kör elején
 
         System.out.println("Player " + whichPlayer + "'s turn");
-        
+
         /**
          * parancsok feldolgozása
          * Addig nincs vége a játékos körének, amíg van energiája, nincs vége a játéknak vagy be nem fejezik a körét
@@ -140,9 +140,9 @@ public class Game
         {
             if (input.equals(""))
                 continue; // ignore
-    
+
             View.get().repaint();
-            
+
             String[] elements = input.split(" ");
             switch (elements[0])
             {
@@ -227,7 +227,7 @@ public class Game
         }
         System.out.println("Your turn is over");
     }
-    
+
     private boolean hasInput()
     {
         System.out.print(">>>> ");
@@ -316,7 +316,7 @@ public class Game
     {
         return map;
     }
-    
+
     public IceBlock getBearLocation()
     {
         return bear.getBlock();
@@ -340,9 +340,9 @@ public class Game
 
     private boolean deterministic; // determinisztikus a programunk?
     public int snowInXTurns; // minden hány körben van hóvihar
-    
+
     private String input;
-    
+
     public Random random = new Random();
 
     // a Game osztály a Singleton tervezési formát követi, hisz a program futása során csak egy, a játékot vezérlő

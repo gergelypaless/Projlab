@@ -36,11 +36,10 @@ public class View
 	public ImageIcon shovelIcon = new ImageIcon("Assets/Items/shovel.png");
 	public ImageIcon ropeIcon = new ImageIcon("Assets/Items/rope.png");
 	public ImageIcon suitIcon = new ImageIcon("Assets/Items/suit.png");
-	public ImageIcon foodIcon = new ImageIcon("Assets/Background.png");
+	public ImageIcon foodIcon = new ImageIcon("Assets/Items/food.png");
 	
 	public ImageIcon eskimoIcon = new ImageIcon("Assets/Characters/Eskimo1.png");
 	public ImageIcon explorerIcon = new ImageIcon("Assets/Characters/Explorer1.png");
-	
 	public ImageIcon bearIcon = new ImageIcon("Assets/Bear.png");
 	
 	public ImageIcon iglooIcon = new ImageIcon("Assets/Igloo.png");

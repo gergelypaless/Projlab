@@ -37,22 +37,19 @@ class AEventListener implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent keyEvent)
 	{
-	
+
 	}
-	
+
 	@Override
 	public void keyPressed(KeyEvent keyEvent)
 	{
-	
+
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent keyEvent)
 	{
-		if (keyEvent.getKeyCode() == KeyEvent.VK_A)
-		{
-			window.repaint();
-		}
+
 	}
 }
 

@@ -16,8 +16,8 @@ public class IOLanguage
 	private static int snowInXTurns = -1;
 	public static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 	private static Random rand = new Random();
-	
-	
+
+
 	public static String directionToString(Direction d)
 	{
 		if (d == Direction.DOWN)
@@ -30,7 +30,7 @@ public class IOLanguage
 			return "Direction.LEFT";
 		return "-----------";
 	}
-	
+
 	// reading from stdin
 	public static boolean ReadFromConsole() throws IOException
 	{
@@ -73,7 +73,7 @@ public class IOLanguage
 		Game.get().init(iceMap, characters, bear, snowInXTurns);
 		return true;
 	}
-	
+
 	// icemap létrehozása
 	public static void CreateMap(String[] elements) throws IOException
 	{
@@ -100,10 +100,10 @@ public class IOLanguage
 			}
 		}
 		iceMap = new IceMap(blocks);
-		
+
 		System.out.println("OK, map created");
 	}
-	
+
 	// medve létrehozása
 	public static void CreateBear(String[] elements)
 	{
@@ -126,10 +126,10 @@ public class IOLanguage
 		bear = new Bear();
 		bear.setIceBlock(block);
 		block.getEntities().add(bear);
-		
+
 		System.out.println("OK, bear created");
 	}
-	
+
 	// egy item létrehozása
 	public static void CreateItem(String[] elements)
 	{
@@ -149,10 +149,10 @@ public class IOLanguage
 			int y = Integer.parseInt(elements[3]);
 			block = iceMap.getBlocks().get(y).get(x);
 		}
-		
+
 		if (block.getItem() != null)
 			throw new IllegalArgumentException("this block already has an item on it");
-		
+
 		if (elements[1].equals("bullet"))
 			block.setItem(new Bullet(block));
 		if (elements[1].equals("flare"))
@@ -171,10 +171,10 @@ public class IOLanguage
 			block.setItem(new Suit(block));
 		if (elements[1].equals("tent"))
 			block.setItem(new Tent(block));
-		
+
 		System.out.println("OK, item created");
 	}
-	
+
 	// karakter létrehozása
 	public static void CreateCharacter(String[] elements)
 	{
@@ -185,7 +185,7 @@ public class IOLanguage
 				character = new Eskimo(characters.size());
 			else
 				character = new Explorer(characters.size());
-			
+
 			characters.add(character);
 		}
 		else // van karaktertípus
@@ -202,14 +202,14 @@ public class IOLanguage
 			}
 			else throw new IllegalArgumentException("wrong character type");
 		}
-		
+
 		if (iceMap == null)
 			throw new IllegalArgumentException("icemap was not initialized");
-		
+
 		IceBlock block;
 		if (elements.length <= 2) // nincs pozició specifikálva, csak típus volt
 		{
-			
+
 			do
 			{
 				int x = rand.nextInt(iceMap.getBlocks().get(0).size());
@@ -227,7 +227,7 @@ public class IOLanguage
 		block.getEntities().add(character);
 		System.out.println("OK, character created");
 	}
-	
+
 	// a medve rajta van a blockon?
 	private static boolean isBearOnIceBlock(IceBlock block)
 	{

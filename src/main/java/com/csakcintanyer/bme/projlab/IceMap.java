@@ -1,7 +1,6 @@
 package com.csakcintanyer.bme.projlab;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class IceMap implements Serializable, Drawable
 {
@@ -98,7 +97,7 @@ public class IceMap implements Serializable, Drawable
             case 5: item = new Shovel(iceBlock); break;
             case 6: item = new Suit(iceBlock); break;
             case 7: item = new Tent(iceBlock); break;
-            case 8: //food
+            case 8: item = new Food(iceBlock); break;
             default:
         }
         return item;
