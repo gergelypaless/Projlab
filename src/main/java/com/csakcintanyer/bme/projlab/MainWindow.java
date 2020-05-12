@@ -61,7 +61,8 @@ class AEventListener implements KeyListener
 	{
 		if (keyEvent.getKeyCode() == KeyEvent.VK_A)
 		{
-			SwingUtilities.updateComponentTreeUI(window);
+			System.out.println("repaint");
+			window.repaint();
 		}
 	}
 }

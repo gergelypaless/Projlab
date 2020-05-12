@@ -10,6 +10,7 @@ public class IceMap implements Serializable, Drawable
     {
         N = 10;
         M = 7;
+        gunCreated = false;
         blocks = new ArrayList<>();
         
         for (int j = 0; j < M; ++j)
@@ -43,7 +44,6 @@ public class IceMap implements Serializable, Drawable
     
     public IceMap(ArrayList<ArrayList<IceBlock>> blocks)
     {
-    
         this.M = blocks.size();
         this.N = blocks.get(0).size();
         this.blocks = blocks;
@@ -54,7 +54,6 @@ public class IceMap implements Serializable, Drawable
     // szomszédok beállítása
     public void setNeighboursOnTheMap()
     {
-        
         for (int y = 0; y < M; ++y)
         {
             for (int x = 0; x < N; ++x)
@@ -95,15 +94,14 @@ public class IceMap implements Serializable, Drawable
             case 0: item = new Bullet(iceBlock); break;
             case 1: item = new Flare(iceBlock); break;
             case 2: item = new FragileShovel(iceBlock); break;
-            case 3: item = new Gun(iceBlock); break;
+            case 3: if (!gunCreated){ gunCreated = true; item = new Gun(iceBlock); break; }
             case 4: item = new Rope(iceBlock); break;
             case 5: item = new Shovel(iceBlock); break;
             case 6: item = new Suit(iceBlock); break;
             case 7: item = new Tent(iceBlock); break;
-            case 8: // food
+            case 8: //food
             default:
         }
-        
         return item;
     }
     
@@ -116,6 +114,7 @@ public class IceMap implements Serializable, Drawable
     // a jégmezo N*M méretű
     int N; // szélesség
     int M; // magasság
+    boolean gunCreated;
     
     // blockok a jégmezőn
     private ArrayList<ArrayList<IceBlock>> blocks;
