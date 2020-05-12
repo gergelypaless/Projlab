@@ -19,17 +19,17 @@ public class MainWindow extends JFrame
 		pack();
 		setLocationRelativeTo(null);
 		
-		AEventListener listener = new AEventListener(this);
+		KeyEventListener listener = new KeyEventListener(this);
 		addKeyListener(listener);
 	}
 }
 
 
-class AEventListener implements KeyListener
+class KeyEventListener implements KeyListener
 {
 	JFrame window;
 	
-	public AEventListener(JFrame window)
+	public KeyEventListener(JFrame window)
 	{
 		this.window = window;
 	}
@@ -49,7 +49,8 @@ class AEventListener implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent keyEvent)
 	{
-
+		Game.get().UserAction(keyEvent);
+		window.repaint();
 	}
 }
 
