@@ -16,6 +16,7 @@ public class MainWindow extends JFrame
 		super("MainWindow");
 		setSize(View.get().N*55 - 5 + 40 + 132 + View.get().xOffset + 8, View.get().M * 55 - 5 + 40 + 100 + View.get().yOffset + 5);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		AEventListener listener = new AEventListener(this);
 		addKeyListener(listener);

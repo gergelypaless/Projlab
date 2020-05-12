@@ -8,7 +8,7 @@ public class IceMap implements Serializable, Drawable
     
     public IceMap()
     {
-        N = 15;
+        N = 10;
         M = 7;
         blocks = new ArrayList<>();
         
