@@ -15,7 +15,6 @@ public class View
 	}
 	private View() {}
 	
-	
 	public int N, M; // stores view space width and height
 	
 	private MainWindow mainWindow;
