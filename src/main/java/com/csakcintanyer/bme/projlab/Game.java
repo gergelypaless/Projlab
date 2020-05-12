@@ -13,8 +13,6 @@ public class Game
 
     public void init()
     {
-        // TODO: init game
-
         map = new IceMap();
 
         characters = new ArrayList<>();
@@ -51,25 +49,22 @@ public class Game
         selectedIceBlock = blocks.get(0).get(0);
 
         deterministic = true;
-        snowInXTurns = 1000;
+        snowInXTurns = 10;
 
         View.get().init(map.N, map.M);
     }
 
     // a jégmező, a játékosok és a medve beállítása determinisztikus módban
-    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear, int snowInXTurns)
+    public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear)
     {
         map = iceMap;
         this.characters = characters;
         this.bear = bear;
-        deterministic = snowInXTurns > 0;
-
-        System.out.println("Snow in every " + snowInXTurns + " turns");
-        this.snowInXTurns = snowInXTurns;
+        
+        deterministic = true;
+        snowInXTurns = 10;
+        
         turns = 0;
-
-
-
     }
 
     // játék kezdése
@@ -195,6 +190,15 @@ public class Game
                 System.out.println("Exiting...");
                 isLost = true;
                 return; // end of turn
+            case KeyEvent.VK_L:
+                try
+                {
+                    IOLanguage.LoadFile(IOLanguage.reader.readLine());
+                    endTurnEvent.set();
+                    // TODO: rossz a betöltés után, növeljük a turn-t és a bear is mozog
+                }catch (IOException e) { break; }
+                System.out.println("OK, game loaded");
+                break;
             case KeyEvent.VK_F1:
                 String path;
                 try

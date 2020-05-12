@@ -70,7 +70,7 @@ public class IOLanguage
 			}
 		}
 		System.out.println("OK, initialization ended");
-		Game.get().init(iceMap, characters, bear, snowInXTurns);
+		//Game.get().init(iceMap, characters, bear, snowInXTurns);
 		return true;
 	}
 
@@ -342,7 +342,7 @@ public class IOLanguage
 				}
 			}
 		}
-		//Game.get().init(iceMap, characters, bear);
+		Game.get().init(iceMap, characters, bear);
 	}
 	
 	// játékállá szerializálása
