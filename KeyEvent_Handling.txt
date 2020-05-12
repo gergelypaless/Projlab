@@ -1,0 +1,110 @@
+public void characterMove(Direction dir){
+        if (currentlyMovingCharacter.move(dir))
+        {
+            System.out.println("OK, character moved");
+            if (bear != null) // ha van medve
+            {
+                if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtáblán
+                {
+                    lose(); // vesztettünk
+                    return; // end of turn
+                }
+            }
+
+            if (currentlyMovingCharacter.isDrowning()) // ha fuldoklunk akkor vége a körünknek
+            {
+                System.out.println("You are drowning, your turn is over!");
+                return; // end of turn
+            }
+        }
+        else
+        {
+            System.out.println("You cannot move " + Direction.LEFT);
+        }
+    }
+
+    public void useItem(int index){
+        if (!currentlyMovingCharacter.getInventory().isEmpty()) // ha van item az inventoryban
+        {
+            if (currentlyMovingCharacter.useItem(index)) // hanyadik tárgyat
+                System.out.println("OK, item used");
+            else
+                System.out.println("Item was not used");
+        }
+    }
+
+    public void UserAction(KeyEvent keyEvent) throws IOException{
+        Direction dir;
+        switch (keyEvent.getKeyCode())
+        {
+            case KeyEvent.VK_ESCAPE:
+                System.out.println("Exiting...");
+                isLost = true;
+                return; // end of turn
+            case KeyEvent.VK_F1:
+                String path = IOLanguage.reader.readLine();
+                IOLanguage.SaveToFile(path);
+                System.out.println("OK, game saved");
+                break;
+            case KeyEvent.VK_A:
+                dir = Direction.LEFT;
+                characterMove(dir);
+                break;
+            case KeyEvent.VK_S:
+                dir = Direction.DOWN;
+                characterMove(dir);
+                break;
+            case KeyEvent.VK_D:
+                dir = Direction.RIGHT;
+                characterMove(dir);
+                break;
+            case KeyEvent.VK_W:
+                dir = Direction.UP;
+                characterMove(dir);
+                break;
+            case KeyEvent.VK_0:
+                    useItem(0);
+                    break;
+            case KeyEvent.VK_1:
+                useItem(1);
+                break;
+            case KeyEvent.VK_2:
+                useItem(2);
+                break;
+            case KeyEvent.VK_3:
+                useItem(3);
+                break;
+            case KeyEvent.VK_4:
+                useItem(4);
+                break;
+            case KeyEvent.VK_5:
+                useItem(5);
+                break;
+            case KeyEvent.VK_E:
+                    if (currentlyMovingCharacter.useAbility())
+                        System.out.println("OK, ability used");
+                    else
+                        System.out.println("Ability was not used");
+                break;
+            case KeyEvent.VK_P:
+                if (currentlyMovingCharacter.pickUp())
+                    System.out.println("OK, item picked up");
+                else
+                    System.out.println("Item was not picked up");
+                break;
+            case KeyEvent.VK_F2:
+                IOLanguage.PrintCharacter(currentlyMovingCharacter);
+                break;
+            case KeyEvent.VK_F3:
+                IOLanguage.PrintBlock(currentlyMovingCharacter.getBlock());
+                break;
+            case KeyEvent.VK_C:
+                if (currentlyMovingCharacter.clear())
+                    System.out.println("OK, iceblock cleared");
+                else
+                    System.out.println("Iceblock was not cleared");
+                break;
+            default:
+                throw new IllegalArgumentException("wrong command");
+        }
+    }
