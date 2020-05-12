@@ -96,7 +96,7 @@ public class View
 	public void DrawInventory()
 	{
 		Image image = layoutIcon.getImage();
-		g.drawImage(image, N - 132, 0, null);
+		g.drawImage(image, N - layoutIcon.getIconWidth(), 0, null);
 	}
 	
 	public void DrawBlockProperties()
