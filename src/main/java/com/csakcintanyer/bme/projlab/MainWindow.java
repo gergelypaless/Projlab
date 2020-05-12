@@ -61,7 +61,6 @@ class AEventListener implements KeyListener
 	{
 		if (keyEvent.getKeyCode() == KeyEvent.VK_A)
 		{
-			System.out.println("repaint");
 			window.repaint();
 		}
 	}
