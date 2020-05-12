@@ -32,10 +32,10 @@ public class Bear extends Entity
 	{
 		View view = View.get();
 		
+		// visszatoljuk a Iceblockhoz képesti 0,0-ba
 		int xmod = (x - 20) % 55;
-		int ymod = (y - 120) % 55;
 		x -= xmod;
-		y -= ymod;
+		y += 8;
 		
 		view.draw(view.bearIcon, x, y);
 	}

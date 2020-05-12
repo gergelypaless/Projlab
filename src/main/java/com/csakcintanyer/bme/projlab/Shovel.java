@@ -15,6 +15,9 @@ public class Shovel extends CollectableItem implements UsableItem
             block.changeAmountOfSnow(-2); // az ásóval 2 hóréteget tudunk eltakarítani
         else if (block.getSnow() == 1) // csak 1 réteg hó van rajta
             block.changeAmountOfSnow(-1);
+        else
+            throw new IllegalArgumentException("Cannot use shovel");
+        
         return false; // nem kell törölni a ásót használat után
     }
     

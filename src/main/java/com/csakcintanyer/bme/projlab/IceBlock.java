@@ -75,6 +75,11 @@ public abstract class IceBlock implements Serializable, Drawable
         return false;
     }
     
+    public void setChecked()
+    {
+        checked = true;
+    }
+    
     //eszkimó képességének használata váltja ki
     public boolean placeTent()
     {
@@ -116,6 +121,8 @@ public abstract class IceBlock implements Serializable, Drawable
     
     // hány karaktert bír el
     private int stability;
+    
+    private boolean checked = false;
     
     // karakterek az IceBlockon.
     private ArrayList<Entity> entities = new ArrayList<>();

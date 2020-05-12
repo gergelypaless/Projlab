@@ -12,7 +12,6 @@ public class Gun extends CollectableItem implements UsableItem
     // az item használata
     public boolean use(IceBlock block)
     {
-        
         boolean hasFlare = false, hasBullet = false;
         ArrayList<Entity> entities = block.getEntities();
         // megnézzük, hogy az ezen a blockon lévő játékosoknál van-e a Flare és a Bullet.
@@ -27,6 +26,10 @@ public class Gun extends CollectableItem implements UsableItem
         if (hasBullet && hasFlare && Game.get().getNumOfCharacters() == block.getEntities().size())
         {
             Game.get().win();
+        }
+        else
+        {
+            throw new IllegalArgumentException("Cannot use gun");
         }
         
         return false; // az ásót nem kell törölni az Inventory-ból

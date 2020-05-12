@@ -48,6 +48,11 @@ public class EmptyBlock extends IceBlock
         else
             view.draw(view.emptyIceBlockIcon, x, y);
         
+        if (Game.get().getSelectedIceBlock() == this)
+        {
+            view.drawSelection(x, y);
+        }
+        
         // character
         ArrayList<Entity> entities = getEntities();
         if (entities.size() == 1)

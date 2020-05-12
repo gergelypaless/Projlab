@@ -1,6 +1,7 @@
 package com.csakcintanyer.bme.projlab;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Rope extends CollectableItem implements UsableItem
 {
@@ -13,26 +14,35 @@ public class Rope extends CollectableItem implements UsableItem
     // Item használata
     public boolean use(IceBlock savingTo)
     {
-        
-        // lekérjük azt az IceBlockot ahonnan ki kell mentenünk valakit
-        IceBlock savingFrom = null;
-        try {
-            savingFrom = savingTo.getNeighbours().get(IOLanguage.GetDirection());
-        } catch (IOException e) { e.printStackTrace(); }
-        
-        // lekérjük az IceBlockról a karaktereket
-        ArrayList<Entity> characters = savingFrom.getEntities();
-        // kiválasztunk egyet, mondjuk a 0. helyen lévő karaktert
-        Entity characterInTrouble = characters.get(0);
-        // mozgatjuk a karaktert
-        savingFrom.remove(characterInTrouble);
-        savingTo.accept(characterInTrouble);
-        // beállítjuk a karakternek az új helyét
-        characterInTrouble.setIceBlock(savingTo);
+        IceBlock savingFrom = Game.get().getSelectedIceBlock();
+        HashMap<Direction, IceBlock> neighbours = block.getNeighbours();
+        if (neighbours.get(Direction.UP) == savingFrom ||
+                neighbours.get(Direction.DOWN) == savingFrom ||
+                neighbours.get(Direction.LEFT) == savingFrom ||
+                neighbours.get(Direction.RIGHT) == savingFrom)
+        {
+            // lekérjük az IceBlockról a karaktereket
+            ArrayList<Entity> characters = savingFrom.getEntities();
+            
+            if (characters.isEmpty())
+                throw new IllegalArgumentException("Cannot use rope");
+            // kiválasztunk egyet, mondjuk a 0. helyen lévő karaktert
+            Entity characterInTrouble = characters.get(0);
+            
+            // mozgatjuk a karaktert
+            savingFrom.remove(characterInTrouble);
+            savingTo.accept(characterInTrouble);
+            
+            // beállítjuk a karakternek az új helyét
+            characterInTrouble.setIceBlock(savingTo);
     
-        // meghívjhuk a save függvényt mivel a karakter megmenekült/nem fulladt meg
-        characterInTrouble.save();
-        
+            // meghívjhuk a save függvényt mivel a karakter megmenekült/nem fulladt meg
+            characterInTrouble.save();
+        }
+        else
+        {
+            throw new IllegalArgumentException("Cannot use rope");
+        }
         return false; // a kötelet nem kell törölni használat után
     }
     

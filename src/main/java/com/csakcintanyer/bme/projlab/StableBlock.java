@@ -67,10 +67,15 @@ public class StableBlock extends IceBlock
             if (item != null)
                 item.draw(x + 10, y + 10);
         }
+    
+        if (Game.get().getSelectedIceBlock() == this)
+        {
+            view.drawSelection(x, y);
+        }
         
-        // igloo/tent
+        // TODO: igloo kitakarhatja a medvét
         
-        // character
+        // enities
         ArrayList<Entity> entities = getEntities();
         if (entities.size() == 1)
         {

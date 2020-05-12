@@ -15,7 +15,10 @@ public class Tent extends CollectableItem implements UsableItem
 	
 	public boolean use(IceBlock block)
 	{
-		return block.placeTent();
+		if (!block.placeTent())
+			throw new IllegalArgumentException("Cannot place tent");
+		
+		return true;
 	}
 	
 	public void draw(int x, int y)

@@ -27,6 +27,9 @@ public class Eskimo extends Character
     {
         View view = View.get();
         view.draw(view.eskimoIcon, x, y);
+        
+        if (Game.get().getCurrentlyMovingCharacterID() == getID())
+            view.draw(view.littleArrow, x + 3, y - 7);
     }
     
     // kiíráshoz kell

@@ -2,9 +2,8 @@ package com.csakcintanyer.bme.projlab;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
-
-import static java.lang.System.currentTimeMillis;
 
 public class Game
 {
@@ -48,6 +47,8 @@ public class Game
         }
         bear.setIceBlock(blocks.get(y).get(x));
         blocks.get(y).get(x).getEntities().add(bear);
+        
+        selectedIceBlock = blocks.get(0).get(0);
 
         deterministic = true;
         snowInXTurns = 1000;
@@ -132,6 +133,7 @@ public class Game
         }
 
         currentlyMovingCharacter.setEnergy(4); // 4 energia a kör elején
+        resetSelectedIceBlock();
 
         System.out.println("Player " + whichPlayer + "'s turn");
         
@@ -158,7 +160,6 @@ public class Game
             {
                 System.out.println("You are drowning, your turn is over!");
                 endTurnEvent.set();
-                return; // end of turn
             }
         }
         else
@@ -175,6 +176,14 @@ public class Game
             else
                 System.out.println("Item was not used");
         }
+    }
+    
+    private void ChangeSelectedIceBlock(Direction dir)
+    {
+        HashMap<Direction, IceBlock> neighbours = selectedIceBlock.getNeighbours();
+        IceBlock iceBlock = neighbours.get(dir);
+        if (iceBlock != null)
+            selectedIceBlock = iceBlock;
     }
     
     public void UserAction(KeyEvent keyEvent)
@@ -255,6 +264,18 @@ public class Game
                 break;
             case KeyEvent.VK_ENTER:
                 endTurnEvent.set();
+                break;
+            case KeyEvent.VK_UP:
+                ChangeSelectedIceBlock(Direction.UP);
+                break;
+            case KeyEvent.VK_DOWN:
+                ChangeSelectedIceBlock(Direction.DOWN);
+                break;
+            case KeyEvent.VK_LEFT:
+                ChangeSelectedIceBlock(Direction.LEFT);
+                break;
+            case KeyEvent.VK_RIGHT:
+                ChangeSelectedIceBlock(Direction.RIGHT);
                 break;
             default:
         }
@@ -358,6 +379,21 @@ public class Game
     {
         return bear.getBlock();
     }
+    
+    public int getCurrentlyMovingCharacterID()
+    {
+        return currentlyMovingCharacter.getID();
+    }
+    
+    public IceBlock getSelectedIceBlock()
+    {
+        return selectedIceBlock;
+    }
+    
+    public void resetSelectedIceBlock()
+    {
+        selectedIceBlock = currentlyMovingCharacter.getBlock();
+    }
 
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
@@ -371,6 +407,7 @@ public class Game
 
     // éppen soron lévő játékos
     private Character currentlyMovingCharacter;
+    private IceBlock selectedIceBlock;
 
     // A medve
     private Bear bear = null;
@@ -379,9 +416,10 @@ public class Game
     public int snowInXTurns; // minden hány körben van hóvihar
 
     private String input;
-
+    
     public Random random = new Random();
     private AutoResetEvent endTurnEvent = new AutoResetEvent(false);
+    private AutoResetEvent directionSelectionEvent = new AutoResetEvent(false);
 
     // a Game osztály a Singleton tervezési formát követi, hisz a program futása során csak egy, a játékot vezérlő
     // osztálypéldány létezhet

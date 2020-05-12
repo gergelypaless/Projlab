@@ -98,13 +98,20 @@ public abstract class Character extends Entity
         if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
             return false;
 
-        // ha a UsableItem elhasználódik töröljuk az Inventory-ból
-        if (inventory.get(itemIdx).use(block))
-            inventory.remove(itemIdx);
-        
-        // egy Item használata egy munkába kerül.
-        changeEnergy(-1);
-        return true; // sikeres
+        try
+        {
+            // ha a UsableItem elhasználódik töröljuk az Inventory-ból
+            if (inventory.get(itemIdx).use(block))
+                inventory.remove(itemIdx);
+    
+            // egy Item használata egy munkába kerül.
+            changeEnergy(-1);
+            return true; // sikeres
+        } catch (IllegalArgumentException e)
+        {
+            System.out.println(e.toString());
+        }
+        return false;
     }
     
     //megváltoztatható vele a karakter aktuális energiájának száma

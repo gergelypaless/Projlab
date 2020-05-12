@@ -15,8 +15,19 @@ public class FragileShovel extends CollectableItem implements UsableItem
 	
 	public boolean use(IceBlock block)
 	{
-		block.changeAmountOfSnow(-2); // ásóval 2 réteg havat takarítunk
-		--durability; // törékeny ásó élete csökken
+		if (block.getSnow() > 1)
+		{
+			block.changeAmountOfSnow(-2); // az ásóval 2 hóréteget tudunk eltakarítani
+			--durability; // törékeny ásó élete csökken
+		}
+		else if (block.getSnow() == 1) // csak 1 réteg hó van rajta
+		{
+			block.changeAmountOfSnow(-1);
+			--durability; // törékeny ásó élete csökken
+		}
+		else
+			throw new IllegalArgumentException("Cannot use shovel");
+		
 		return durability == 0; // eltört-e már az ásó és törölni kell-e
 	}
 	

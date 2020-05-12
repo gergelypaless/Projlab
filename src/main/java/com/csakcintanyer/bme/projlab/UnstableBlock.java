@@ -48,6 +48,11 @@ public class UnstableBlock extends IceBlock
                 item.draw(x + 10, y + 10);
         }
     
+        if (Game.get().getSelectedIceBlock() == this)
+        {
+            view.drawSelection(x, y);
+        }
+    
         // character
         ArrayList<Entity> entities = getEntities();
         if (entities.size() == 1)

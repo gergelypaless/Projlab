@@ -1,6 +1,6 @@
 package com.csakcintanyer.bme.projlab;
 
-import java.io.IOException;
+import java.util.HashMap;
 
 
 public class Explorer extends Character
@@ -16,36 +16,31 @@ public class Explorer extends Character
     {
         if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
             return false;
-
-        try
-        {
-            System.out.println(checkStability(IOLanguage.GetDirection()));
-        }
-        catch (IllegalArgumentException | IOException e)
-        {
-            // Nem volt abban az irányban block
-            return false;
-        }
     
-        // a képesség használata egy munka
-        changeEnergy(-1);
-        return true; // sikeres használat
-    }
-
-    // a sarkkutató ellenőrzi egy adott irányba lévő jégtábla stabilitását
-    private int checkStability(Direction d) throws IllegalArgumentException
-    {
-        //lekérjük a szomszédos block stability értékét.
-        if (block.getNeighbours().get(d) != null)
-            return block.getNeighbours().get(d).getStability();
-         
-        throw new IllegalArgumentException();
+        IceBlock selectedBlock = Game.get().getSelectedIceBlock();
+        HashMap<Direction, IceBlock> neighbours = block.getNeighbours();
+        if (neighbours.get(Direction.UP) == selectedBlock ||
+            neighbours.get(Direction.DOWN) == selectedBlock ||
+            neighbours.get(Direction.LEFT) == selectedBlock ||
+            neighbours.get(Direction.RIGHT) == selectedBlock)
+        {
+            selectedBlock.setChecked();
+            System.out.println("Stability: " + selectedBlock.getStability());
+            
+            // a képesség használata egy munka
+            changeEnergy(-1);
+            return true;
+        }
+        return false;
     }
     
     public void draw(int x, int y)
     {
         View view = View.get();
         view.draw(view.explorerIcon, x, y);
+    
+        if (Game.get().getCurrentlyMovingCharacterID() == getID())
+            view.draw(view.littleArrow, x + 3, y - 7);
     }
     
     // kiíráshoz kell

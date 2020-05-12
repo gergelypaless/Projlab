@@ -44,6 +44,8 @@ public class View
 	public ImageIcon iglooIcon = new ImageIcon("Assets/Igloo.png");
 	public ImageIcon tentOnBlockIcon = new ImageIcon("Assets/TentOnBlock.png");
 	
+	public ImageIcon littleArrow = new ImageIcon("Assets/LittleArrow.png");
+	
 	public void init(int x, int y)
 	{
 		N = 20 * 2 + x * 55 - 5 + 132; //szélesség
@@ -95,6 +97,12 @@ public class View
 	{
 		Image image = layoutIcon.getImage();
 		g.drawImage(image, N - layoutIcon.getIconWidth(), 0, null);
+	}
+	
+	public void drawSelection(int x, int y)
+	{
+		g.setColor(Color.RED);
+		g.drawRect(x - 3, y - 3, 55, 55);
 	}
 	
 	public void DrawBlockProperties()
