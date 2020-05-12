@@ -12,12 +12,11 @@ public class MainWindow extends JFrame
 	public MainWindow()
 	{
 		super("MainWindow");
-		//                                                 + 16 ??                                            + 36??
-		setSize(20 * 2 + View.get().N * 55 - 5 + 132 + 16, 100 + View.get().M * 55 - 5 + 20 * 2 + 36);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		
 		setContentPane(new ContentPane());
+		pack();
 		setLocationRelativeTo(null);
 		
 		AEventListener listener = new AEventListener(this);
@@ -59,6 +58,11 @@ class AEventListener implements KeyListener
 
 class ContentPane extends JPanel
 {
+	public Dimension getPreferredSize()
+	{
+		return new Dimension(View.get().N, View.get().M);
+	}
+	
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.

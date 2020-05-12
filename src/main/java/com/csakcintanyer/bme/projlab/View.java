@@ -16,7 +16,7 @@ public class View
 	private View() {}
 	
 	
-	public int N, M;
+	public int N, M; // stores view space width and height
 	
 	private MainWindow mainWindow;
 	private Graphics g;
@@ -48,8 +48,8 @@ public class View
 	
 	public void init(int x, int y)
 	{
-		N = x; //szélesség
-		M = y; //magasság
+		N = 20 * 2 + x * 55 - 5 + 132; //szélesség
+		M = 100 + y * 55 - 5 + 20 * 2; //magasság
 		
 		SwingUtilities.invokeLater(new Runnable()
 		{
@@ -96,7 +96,7 @@ public class View
 	public void DrawInventory()
 	{
 		Image image = layoutIcon.getImage();
-		g.drawImage(image, 20 * 2 + Game.get().getIceMap().getBlocks().get(0).size() * 55 - 5, 0, null);
+		g.drawImage(image, N - 132, 0, null);
 	}
 	
 	public void DrawBlockProperties()
