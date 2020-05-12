@@ -16,9 +16,10 @@ public class View
 	private View() {}
 	
 	
-	int N, M;
+	public int N, M;
 	
-	int yOffset = 32;
+	public int yOffset = 31;
+	public int xOffset = 8;
 	
 	private MainWindow mainWindow;
 	
@@ -47,8 +48,10 @@ public class View
 	public ImageIcon iglooIcon = new ImageIcon("Assets\\Igloo.png");
 	public ImageIcon tentOnBlockIcon = new ImageIcon("Assets\\TentOnBlock.png");
 	
-	public void init()
+	public void init(int x, int y)
 	{
+		N = x; //szélesség
+		M = y; //magasság
 		mainWindow = new MainWindow();
 		mainWindow.setVisible(true);
 	}
@@ -69,7 +72,7 @@ public class View
 	private void drawBackground()
 	{
 		Image image = backgroundIcon.getImage();
-		mainWindow.getGraphics().drawImage(image, 0, yOffset, null);
+		mainWindow.getGraphics().drawImage(image, xOffset, yOffset, null);
 	}
 	
 	public void drawIceMap()
@@ -80,18 +83,17 @@ public class View
 	public void draw(ImageIcon icon, int x, int y)
 	{
 		Image image = icon.getImage();
-		mainWindow.getGraphics().drawImage(image, x, y + yOffset, null);
+		mainWindow.getGraphics().drawImage(image, x + xOffset, y + yOffset, null);
 	}
 	
 	public void DrawInventory()
 	{
 		Image image = layoutIcon.getImage();
-		mainWindow.getGraphics().drawImage(image, 20 * 2 + 55 * Game.get().getIceMap().getBlocks().get(0).size() - 5, yOffset, null);
+		mainWindow.getGraphics().drawImage(image, 20 * 2 + 55 * Game.get().getIceMap().getBlocks().get(0).size() - 5 + xOffset, yOffset, null);
 	}
 	
 	public void DrawBlockProperties()
 	{
 	
 	}
-	
 }

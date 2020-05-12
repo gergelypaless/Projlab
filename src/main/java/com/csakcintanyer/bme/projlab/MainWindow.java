@@ -1,6 +1,8 @@
 package com.csakcintanyer.bme.projlab;
 
-import javafx.scene.input.KeyCode;
+//import javafx.scene.input.KeyCode;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ public class MainWindow extends JFrame
 	public MainWindow()
 	{
 		super("MainWindow");
-		setSize(600, 600);
+		setSize(View.get().N*55 - 5 + 40 + 132 + View.get().xOffset + 8, View.get().M * 55 - 5 + 40 + 100 + View.get().yOffset + 5);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		AEventListener listener = new AEventListener(this);
@@ -51,7 +53,7 @@ class AEventListener implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent keyEvent)
 	{
-		if (keyEvent.getKeyCode() == KeyCode.A.getCode())
+		if (keyEvent.getKeyCode() == KeyEvent.VK_A)
 		{
 			System.out.println("repaint");
 			window.repaint();

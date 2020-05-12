@@ -49,7 +49,7 @@ public class Game
         deterministic = true;
         snowInXTurns = 1000;
         
-        View.get().init();
+        View.get().init(map.N, map.M);
     }
 
     // a jégmező, a játékosok és a medve beállítása determinisztikus módban
