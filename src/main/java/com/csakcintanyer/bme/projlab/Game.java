@@ -118,6 +118,7 @@ public class Game
     }
 
     // következő kör
+    // TODO: A tent nem tűnik el 1 kör után
     public void nextRound(int whichPlayer) throws InterruptedException
     {
         currentlyMovingCharacter = characters.get(whichPlayer); //meghatározzuk, hogy melyik játékos jön
