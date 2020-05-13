@@ -23,7 +23,7 @@ public class IceMap implements Serializable, Drawable
                 }
                 else if (which % 3 == 0)
                 {
-                    IceBlock block = new UnstableBlock(Game.get().random.nextInt(3),1 + Game.get().random.nextInt(3));
+                    IceBlock block = new UnstableBlock(Game.get().random.nextInt(3),1 + Game.get().random.nextInt(2));
                     blocks.get(j).add(block);
                     CollectableItem item = createItem(block);
                     block.setItem(item);

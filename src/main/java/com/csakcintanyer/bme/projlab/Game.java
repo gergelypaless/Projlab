@@ -26,7 +26,7 @@ public class Game
         {
             int x = random.nextInt(map.N);
             int y = random.nextInt(map.M);
-            while (blocks.get(y).get(x) instanceof EmptyBlock)
+            while (blocks.get(y).get(x).BlockIsFull()) //eddig unstable-re kerülhettek többen mint a limit alapból?
             {
                 x = random.nextInt(map.N);
                 y = random.nextInt(map.M);
@@ -38,7 +38,7 @@ public class Game
         bear = new Bear();
         int x = random.nextInt(map.N);
         int y = random.nextInt(map.M);
-        while (blocks.get(y).get(x) instanceof EmptyBlock)
+        while (blocks.get(y).get(x).BlockIsFull()) //no instanceof és talán a fenti bug javítása
         {
             x = random.nextInt(map.N);
             y = random.nextInt(map.M);
@@ -288,19 +288,6 @@ public class Game
         {
             endTurnEvent.set();
         }
-    }
-
-    private boolean hasInput()
-    {
-        System.out.print(">>>> ");
-        try
-        {
-            input = IOLanguage.reader.readLine();
-        } catch (IOException e)
-        {
-            return false;
-        }
-        return input.equals("end");
     }
 
     // a medvét mozgatása

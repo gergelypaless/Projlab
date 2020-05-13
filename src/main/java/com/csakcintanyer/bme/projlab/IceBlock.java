@@ -19,6 +19,10 @@ public abstract class IceBlock implements Serializable, Drawable
         this.stability = stability;
         this.item = item;
     }
+
+    public boolean BlockIsFull(){
+        return getEntities().size() + 1 > getStability();
+    }
     
     // item beállítása
     public void setItem(CollectableItem item)

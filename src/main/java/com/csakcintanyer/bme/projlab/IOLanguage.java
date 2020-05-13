@@ -141,7 +141,7 @@ public class IOLanguage
 				int x = rand.nextInt(iceMap.getBlocks().get(0).size());
 				int y = rand.nextInt(iceMap.getBlocks().size());
 				block = iceMap.getBlocks().get(y).get(x);
-			} while (block instanceof EmptyBlock || block.getItem() != null);
+			} while (block.getStability() == 0 || block.getItem() != null);
 		}
 		else // van pozíció
 		{
@@ -209,13 +209,12 @@ public class IOLanguage
 		IceBlock block;
 		if (elements.length <= 2) // nincs pozició specifikálva, csak típus volt
 		{
-
 			do
 			{
 				int x = rand.nextInt(iceMap.getBlocks().get(0).size());
 				int y = rand.nextInt(iceMap.getBlocks().size());
 				block = iceMap.getBlocks().get(y).get(x);
-			} while (block instanceof EmptyBlock || block.getStability() == block.getEntities().size() || isBearOnIceBlock(block));
+			} while (block.getStability() == 0 || block.getStability() == block.getEntities().size() || isBearOnIceBlock(block));
 		}
 		else
 		{
@@ -235,7 +234,7 @@ public class IOLanguage
 			return bear.getBlock() == block;
 		return false;
 	}
-	
+
 	public static Direction GetDirection() throws IOException
 	{
 		System.out.print("Direction: ");
