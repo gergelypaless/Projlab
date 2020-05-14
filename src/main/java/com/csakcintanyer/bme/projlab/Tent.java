@@ -2,11 +2,6 @@ package com.csakcintanyer.bme.projlab;
 
 public class Tent extends CollectableItem implements UsableItem
 {
-	public Tent(IceBlock block)
-	{
-		super(block);
-	}
-	
 	public void interactWithCharacter(Character c)
 	{
 		// a karakter felvesz egy sátrat

@@ -2,12 +2,6 @@ package com.csakcintanyer.bme.projlab;
 
 public class Shovel extends CollectableItem implements UsableItem
 {
-    
-    public Shovel(IceBlock block)
-    {
-        super(block);
-    }
-    
     // item használata
     public boolean use(IceBlock block)
     {

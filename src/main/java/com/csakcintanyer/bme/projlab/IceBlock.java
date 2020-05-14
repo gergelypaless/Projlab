@@ -20,8 +20,9 @@ public abstract class IceBlock implements Serializable, Drawable
         this.item = item;
     }
 
-    public boolean BlockIsFull(){
-        return getEntities().size() + 1 > getStability();
+    public boolean blockIsFull()
+    {
+        return getEntities().size() >= getStability();
     }
     
     // item beállítása
@@ -58,7 +59,6 @@ public abstract class IceBlock implements Serializable, Drawable
     }
     
     public abstract void accept(Entity c);
-    
     public abstract void remove(Entity c);
     
     // valaki fel akarja venni az Item-et ami ezen az IceBlockon van, visszaadjuk az IceBlockon lévő Itemet
@@ -79,6 +79,7 @@ public abstract class IceBlock implements Serializable, Drawable
         return false;
     }
     
+    // explorer's ability
     public void setChecked()
     {
         checked = true;
@@ -120,11 +121,13 @@ public abstract class IceBlock implements Serializable, Drawable
         return item;
     }
     
+    public void removeTent() { }
+    
     // hó mennyisége
     protected int amountOfSnow;
     
     // hány karaktert bír el
-    private int stability;
+    protected int stability;
     
     private boolean checked = false;
     

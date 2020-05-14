@@ -5,10 +5,9 @@ import java.util.HashMap;
 
 public class Rope extends CollectableItem implements UsableItem
 {
-    
     public Rope(IceBlock block)
     {
-        super(block);
+        this.block = block;
     }
     
     // Item használata
@@ -62,4 +61,6 @@ public class Rope extends CollectableItem implements UsableItem
     {
         c.addItem(this); // hizzáadjuk az inventoryhoz mivel UsableItem
     }
+    
+    private IceBlock block;
 }

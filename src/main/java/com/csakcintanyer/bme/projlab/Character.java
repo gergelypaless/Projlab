@@ -66,7 +66,8 @@ public abstract class Character extends Entity
         if (item == null) // ha nincs tárgy a jégtáblán nem sikerül
             return false;
         
-        try {
+        try
+		{
             // "értesítjük" az itemet, hogy felvettük
             item.interactWithCharacter(this); // kivételt dob ha nem lehet felvenni
         } catch (IllegalArgumentException e) {

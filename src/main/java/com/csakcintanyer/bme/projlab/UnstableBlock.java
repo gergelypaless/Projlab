@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class UnstableBlock extends IceBlock
 {
-    
     public UnstableBlock(int amountOfSnow, int stability)
     {
         super(amountOfSnow, stability);
@@ -15,13 +14,16 @@ public class UnstableBlock extends IceBlock
         ArrayList<Entity> entities = getEntities();
         entities.add(c);
         
-        // TODO: unstable block kicserélése empty blocká
         // megnézzük, hogy átfordul-e az IceBlock
         if (entities.size() > getStability())
         {
             // ha igen, akkor mindegyik karakternek meg kell hivni a fallIn() metódusát
             for (Entity entity : entities)
                 entity.fallIn();
+            
+            stability = 0;
+            amountOfSnow = 0;
+            setItem(null);
         }
     }
     
@@ -40,7 +42,10 @@ public class UnstableBlock extends IceBlock
             view.draw(view.snowyIceBlockIcon, x, y);
         else
         {
-            view.draw(view.icyIceBlockIcon, x, y);
+            if (stability == 0)
+                view.draw(view.emptyIceBlockIcon, x, y);
+            else
+                view.draw(view.icyIceBlockIcon, x, y);
     
             // item
             CollectableItem item = getItem();
@@ -72,6 +77,22 @@ public class UnstableBlock extends IceBlock
             view.draw(view.iglooIcon, x, y);
         else if (hasTent())
             view.draw(view.tentOnBlockIcon, x, y);
+    }
+    
+    public void changeAmountOfSnow(int value)
+    {
+        if (stability == 0)
+        {
+            if (getEntities().size() > 0)
+            {
+                amountOfSnow = 0;
+                return;
+            }
+        }
+    
+        amountOfSnow += value;
+        if (amountOfSnow < 0)
+            amountOfSnow = 0;
     }
     
     // kiíráshoz kell

@@ -51,6 +51,16 @@ public class StableBlock extends IceBlock
         return hasTent;
     }
     
+    public void removeTent()
+    {
+        hasTent = false;
+    }
+    
+    public boolean blockIsFull()
+    {
+        return false;
+    }
+    
     public void draw(int x, int y) // screen coordinates
     {
         View view  = View.get();

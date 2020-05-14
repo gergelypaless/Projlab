@@ -1,6 +1,7 @@
 package com.csakcintanyer.bme.projlab;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class IceMap implements Serializable, Drawable
 {
@@ -11,26 +12,27 @@ public class IceMap implements Serializable, Drawable
         gunCreated = false;
         blocks = new ArrayList<>();
         
+        Random random = Game.get().random;
         for (int j = 0; j < M; ++j)
         {
             blocks.add(new ArrayList<>());
             for (int i = 0; i < N; ++i)
             {
-                int which = Game.get().random.nextInt(10);
+                int which = random.nextInt(10);
                 if (which % 5 == 0)
                 {
-                    blocks.get(j).add(new EmptyBlock(Game.get().random.nextInt(3)));
+                    blocks.get(j).add(new EmptyBlock(random.nextInt(3)));
                 }
                 else if (which % 3 == 0)
                 {
-                    IceBlock block = new UnstableBlock(Game.get().random.nextInt(3),1 + Game.get().random.nextInt(2));
+                    IceBlock block = new StableBlock(random.nextInt(3));
                     blocks.get(j).add(block);
                     CollectableItem item = createItem(block);
                     block.setItem(item);
                 }
                 else
                 {
-                    IceBlock block = new StableBlock(Game.get().random.nextInt(3));
+                    IceBlock block = new UnstableBlock(random.nextInt(3),1 + random.nextInt(3));
                     blocks.get(j).add(block);
                     CollectableItem item = createItem(block);
                     block.setItem(item);
@@ -38,6 +40,10 @@ public class IceMap implements Serializable, Drawable
             }
         }
         setNeighboursOnTheMap();
+    
+        IceBlock block;
+        while ((block = blocks.get(random.nextInt(M)).get(random.nextInt(N))).getStability() == 0) ;
+        block.setItem(new Gun());
     }
     
     public IceMap(ArrayList<ArrayList<IceBlock>> blocks)
@@ -89,15 +95,14 @@ public class IceMap implements Serializable, Drawable
         CollectableItem item = null;
         switch (Game.get().random.nextInt(10))
         {
-            case 0: item = new Bullet(iceBlock); break;
-            case 1: item = new Flare(iceBlock); break;
-            case 2: item = new FragileShovel(iceBlock); break;
-            case 3: if (!gunCreated){ gunCreated = true; item = new Gun(iceBlock); break; }
+            case 0: item = new Bullet(); break;
+            case 1: item = new Flare(); break;
+            case 2: item = new FragileShovel(); break;
             case 4: item = new Rope(iceBlock); break;
-            case 5: item = new Shovel(iceBlock); break;
-            case 6: item = new Suit(iceBlock); break;
-            case 7: item = new Tent(iceBlock); break;
-            case 8: item = new Food(iceBlock); break;
+            case 5: item = new Shovel(); break;
+            case 6: item = new Suit(); break;
+            case 7: item = new Tent(); break;
+            case 8: item = new Food(); break;
             default:
         }
         return item;

@@ -3,12 +3,6 @@ import java.util.ArrayList;
 
 public class Gun extends CollectableItem implements UsableItem
 {
-    
-    public Gun(IceBlock block)
-    {
-        super(block);
-    }
-    
     // az item használata
     public boolean use(IceBlock block)
     {

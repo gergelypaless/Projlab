@@ -2,12 +2,6 @@ package com.csakcintanyer.bme.projlab;
 
 public class Food extends CollectableItem
 {
-    
-    public Food(IceBlock block)
-    {
-        super(block);
-    }
-    
     public void interactWithCharacter(Character c)
     {
         // csak akkor ha nem max healthünk van

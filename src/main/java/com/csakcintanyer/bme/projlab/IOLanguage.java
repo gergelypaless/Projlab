@@ -154,23 +154,23 @@ public class IOLanguage
 			throw new IllegalArgumentException("this block already has an item on it");
 
 		if (elements[1].equals("bullet"))
-			block.setItem(new Bullet(block));
+			block.setItem(new Bullet());
 		if (elements[1].equals("flare"))
-			block.setItem(new Flare(block));
+			block.setItem(new Flare());
 		if (elements[1].equals("food"))
-			block.setItem(new Food(block));
+			block.setItem(new Food());
 		if (elements[1].equals("fragileshovel"))
-			block.setItem(new FragileShovel(block));
+			block.setItem(new FragileShovel());
 		if (elements[1].equals("gun"))
-			block.setItem(new Gun(block));
+			block.setItem(new Gun());
 		if (elements[1].equals("rope"))
 			block.setItem(new Rope(block));
 		if (elements[1].equals("shovel"))
-			block.setItem(new Shovel(block));
+			block.setItem(new Shovel());
 		if (elements[1].equals("suit"))
-			block.setItem(new Suit(block));
+			block.setItem(new Suit());
 		if (elements[1].equals("tent"))
-			block.setItem(new Tent(block));
+			block.setItem(new Tent());
 
 		System.out.println("OK, item created");
 	}

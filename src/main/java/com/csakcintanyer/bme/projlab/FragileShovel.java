@@ -7,9 +7,8 @@ public class FragileShovel extends CollectableItem implements UsableItem
 		c.addItem(this);
 	}
 	
-	public FragileShovel(IceBlock block)
+	public FragileShovel()
 	{
-		super(block);
 		durability = 3; // 3-szor lehet ásni vele
 	}
 	

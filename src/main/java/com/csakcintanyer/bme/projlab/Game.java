@@ -7,9 +7,7 @@ import java.util.Random;
 
 public class Game
 {
-
     private Game(){ }
-
 
     public void init()
     {
@@ -26,7 +24,7 @@ public class Game
         {
             int x = random.nextInt(map.N);
             int y = random.nextInt(map.M);
-            while (blocks.get(y).get(x).BlockIsFull()) //eddig unstable-re kerülhettek többen mint a limit alapból?
+            while (blocks.get(y).get(x).blockIsFull())
             {
                 x = random.nextInt(map.N);
                 y = random.nextInt(map.M);
@@ -38,18 +36,16 @@ public class Game
         bear = new Bear();
         int x = random.nextInt(map.N);
         int y = random.nextInt(map.M);
-        while (blocks.get(y).get(x).BlockIsFull()) //no instanceof és talán a fenti bug javítása
+        while (blocks.get(y).get(x).blockIsFull() || blocks.get(y).get(x).getEntities().size() > 0)
         {
             x = random.nextInt(map.N);
             y = random.nextInt(map.M);
         }
         bear.setIceBlock(blocks.get(y).get(x));
         blocks.get(y).get(x).getEntities().add(bear);
-        
-        selectedIceBlock = blocks.get(0).get(0);
 
         deterministic = true;
-        snowInXTurns = 10;
+        snowInXTurns = 4;
 
         View.get().init(map.N, map.M);
     }
@@ -118,8 +114,7 @@ public class Game
     }
 
     // következő kör
-    // TODO: A tent nem tűnik el 1 kör után
-    public void nextRound(int whichPlayer) throws InterruptedException
+    private void nextRound(int whichPlayer) throws InterruptedException
     {
         currentlyMovingCharacter = characters.get(whichPlayer); //meghatározzuk, hogy melyik játékos jön
         if (currentlyMovingCharacter.isDrowning()) // ha ez a játékos még mindig vízben van (már 1 teljes kör óta)
@@ -139,7 +134,8 @@ public class Game
         System.out.println("Your turn is over");
     }
     
-    public void characterMove(Direction dir){
+    private void characterMove(Direction dir)
+    {
         if (currentlyMovingCharacter.move(dir))
         {
             System.out.println("OK, character moved");
@@ -164,7 +160,8 @@ public class Game
         }
     }
     
-    public void useItem(int index){
+    private void useItem(int index)
+    {
         if (!currentlyMovingCharacter.getInventory().isEmpty()) // ha van item az inventoryban
         {
             if (currentlyMovingCharacter.useItem(index)) // hanyadik tárgyat
@@ -184,6 +181,9 @@ public class Game
     
     public void UserAction(KeyEvent keyEvent)
     {
+        if (gameOver())
+            return;
+        
         Direction dir;
         switch (keyEvent.getKeyCode())
         {
@@ -340,7 +340,6 @@ public class Game
     // Hóvihar
     private void snowStorm()
     {
-
         System.out.println("Oh no, SNOWSTORM!!");
 
         // végigmegyünk a karaktereken, megnézük hogy igluban vannak-e, ha nem akkor egy élet minusz
@@ -356,7 +355,10 @@ public class Game
         {
             for (IceBlock iceBlock : block)
             {
-                iceBlock.changeAmountOfSnow(1);
+                if (random.nextInt(2) == 0)
+                    iceBlock.changeAmountOfSnow(1 + random.nextInt(2));
+                
+                iceBlock.removeTent();
             }
         }
     }
@@ -365,11 +367,6 @@ public class Game
     public IceMap getIceMap()
     {
         return map;
-    }
-
-    public IceBlock getBearLocation()
-    {
-        return bear.getBlock();
     }
     
     public int getCurrentlyMovingCharacterID()
@@ -406,8 +403,6 @@ public class Game
 
     private boolean deterministic; // determinisztikus a programunk?
     public int snowInXTurns; // minden hány körben van hóvihar
-
-    private String input;
     
     public Random random = new Random();
     private AutoResetEvent endTurnEvent = new AutoResetEvent(false);
