@@ -38,8 +38,14 @@ public class View
 	public ImageIcon foodIcon = new ImageIcon("Assets/Items/food.png");
 	
 	public ImageIcon eskimoIcon = new ImageIcon("Assets/Characters/Eskimo1.png");
+	public ImageIcon eskimoInWaterIcon = new ImageIcon("Assets/Characters/Eskimo1InWater.png");
 	public ImageIcon explorerIcon = new ImageIcon("Assets/Characters/Explorer1.png");
+	public ImageIcon explorerInWaterIcon = new ImageIcon("Assets/Characters/Explorer1InWater.png");
+
+	public ImageIcon drowningIcon = new ImageIcon("Assets/Drowning.png");
+
 	public ImageIcon bearIcon = new ImageIcon("Assets/Bear.png");
+	public ImageIcon bearInWaterIcon = new ImageIcon("Assets/BearInWater.png");
 	
 	public ImageIcon iglooIcon = new ImageIcon("Assets/Igloo.png");
 	public ImageIcon tentOnBlockIcon = new ImageIcon("Assets/TentOnBlock.png");

@@ -30,6 +30,7 @@ public class UnstableBlock extends IceBlock
     // valaki ellépett erről az IceBlockól
     public void remove(Entity c)
     {
+        c.isInWater = false;
         getEntities().remove(c);
     }
     

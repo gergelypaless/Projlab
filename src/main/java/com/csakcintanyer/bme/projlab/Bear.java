@@ -36,8 +36,9 @@ public class Bear extends Entity
 		int xmod = (x - 20) % 55;
 		x -= xmod;
 		y += 8;
-		
-		view.draw(view.bearIcon, x, y);
+
+		if(!isInWater) view.draw(view.bearIcon, x, y);
+		else view.draw(view.bearInWaterIcon, x, y);
 	}
 	
 	// kiiráshoz kell

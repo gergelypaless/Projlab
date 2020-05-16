@@ -116,6 +116,7 @@ public class Game
     // következő kör
     private void nextRound(int whichPlayer) throws InterruptedException
     {
+        // TODO: Ha a következőnek érkező karakter is beborul unstable blocknál, instant game-over van. Ezt meg kéne szüntetni.
         currentlyMovingCharacter = characters.get(whichPlayer); //meghatározzuk, hogy melyik játékos jön
         if (currentlyMovingCharacter.isDrowning()) // ha ez a játékos még mindig vízben van (már 1 teljes kör óta)
         {

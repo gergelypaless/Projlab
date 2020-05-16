@@ -26,7 +26,11 @@ public class Eskimo extends Character
     public void draw(int x, int y)
     {
         View view = View.get();
-        view.draw(view.eskimoIcon, x, y);
+        if(!isInWater) view.draw(view.eskimoIcon, x, y);
+        else {
+            view.draw(view.eskimoInWaterIcon, x, y+5);
+            if(isDrowning()) view.draw(view.drowningIcon, x, y-10);
+        }
         
         if (Game.get().getCurrentlyMovingCharacterID() == getID())
             view.draw(view.littleArrow, x + 3, y - 7);
