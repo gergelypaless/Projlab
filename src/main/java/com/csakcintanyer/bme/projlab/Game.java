@@ -45,7 +45,7 @@ public class Game
         blocks.get(y).get(x).getEntities().add(bear);
 
         deterministic = true;
-        snowInXTurns = 4;
+        snowInXTurns = 100;
 
         View.get().init(map.N, map.M);
     }
@@ -161,11 +161,14 @@ public class Game
         }
     }
     
-    private void useItem(int index)
+    private void useItem()
     {
         if (!currentlyMovingCharacter.getInventory().isEmpty()) // ha van item az inventoryban
         {
-            if (currentlyMovingCharacter.useItem(index)) // hanyadik tárgyat
+            if (selectedItemInInventory >= currentlyMovingCharacter.getInventory().size())
+                return;
+            
+            if (currentlyMovingCharacter.useItem(selectedItemInInventory)) // hanyadik tárgyat
                 System.out.println("OK, item used");
             else
                 System.out.println("Item was not used");
@@ -178,6 +181,32 @@ public class Game
         IceBlock iceBlock = neighbours.get(dir);
         if (iceBlock != null)
             selectedIceBlock = iceBlock;
+    }
+    
+    private void ChangeSelectedItemInInventory(Direction dir)
+    {
+        if (dir == Direction.DOWN)
+        {
+            selectedItemInInventory += 3;
+        }
+        else if (dir == Direction.LEFT)
+        {
+            selectedItemInInventory -= 1;
+        }
+        else if (dir == Direction.RIGHT)
+        {
+            selectedItemInInventory += 1;
+        }
+        else if (dir == Direction.UP)
+        {
+            selectedItemInInventory -= 3;
+        }
+        
+        if (selectedItemInInventory < 0)
+            selectedItemInInventory = 0;
+        else if (selectedItemInInventory > 5)
+            selectedItemInInventory = 5;
+        
     }
     
     public void UserAction(KeyEvent keyEvent)
@@ -226,23 +255,9 @@ public class Game
                 dir = Direction.UP;
                 characterMove(dir);
                 break;
-            case KeyEvent.VK_0:
-                useItem(0);
-                break;
-            case KeyEvent.VK_1:
-                useItem(1);
-                break;
-            case KeyEvent.VK_2:
-                useItem(2);
-                break;
-            case KeyEvent.VK_3:
-                useItem(3);
-                break;
-            case KeyEvent.VK_4:
-                useItem(4);
-                break;
-            case KeyEvent.VK_5:
-                useItem(5);
+            case KeyEvent.VK_ENTER:
+                if (!iceMapSelected)
+                    useItem();
                 break;
             case KeyEvent.VK_E:
                 if (currentlyMovingCharacter.useAbility())
@@ -268,20 +283,30 @@ public class Game
                 else
                     System.out.println("Iceblock was not cleared");
                 break;
-            case KeyEvent.VK_ENTER:
+            case KeyEvent.VK_Q:
                 endTurnEvent.set();
                 break;
             case KeyEvent.VK_UP:
-                ChangeSelectedIceBlock(Direction.UP);
+                if (iceMapSelected) ChangeSelectedIceBlock(Direction.UP);
+                else ChangeSelectedItemInInventory(Direction.UP);
                 break;
             case KeyEvent.VK_DOWN:
-                ChangeSelectedIceBlock(Direction.DOWN);
+                if (iceMapSelected) ChangeSelectedIceBlock(Direction.DOWN);
+                else ChangeSelectedItemInInventory(Direction.DOWN);
                 break;
             case KeyEvent.VK_LEFT:
-                ChangeSelectedIceBlock(Direction.LEFT);
+                if (iceMapSelected) ChangeSelectedIceBlock(Direction.LEFT);
+                else ChangeSelectedItemInInventory(Direction.LEFT);
                 break;
             case KeyEvent.VK_RIGHT:
-                ChangeSelectedIceBlock(Direction.RIGHT);
+                if (iceMapSelected) ChangeSelectedIceBlock(Direction.RIGHT);
+                else ChangeSelectedItemInInventory(Direction.RIGHT);
+                break;
+            case KeyEvent.VK_CONTROL:
+                iceMapSelected = !iceMapSelected;
+                break;
+            case KeyEvent.VK_I:
+                View.get().ShowControlsWindow();
                 break;
             default:
         }
@@ -370,9 +395,9 @@ public class Game
         return map;
     }
     
-    public int getCurrentlyMovingCharacterID()
+    public Character getCurrentlyMovingCharacter()
     {
-        return currentlyMovingCharacter.getID();
+        return currentlyMovingCharacter;
     }
     
     public IceBlock getSelectedIceBlock()
@@ -383,8 +408,14 @@ public class Game
     public void resetSelectedIceBlock()
     {
         selectedIceBlock = currentlyMovingCharacter.getBlock();
+        iceMapSelected = true;
     }
 
+    public int getSelectedItem()
+    {
+        return selectedItemInInventory;
+    }
+    
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
     private int turns; // az aktuális kör száma
@@ -398,6 +429,8 @@ public class Game
     // éppen soron lévő játékos
     private Character currentlyMovingCharacter;
     private IceBlock selectedIceBlock;
+    public boolean iceMapSelected = true;
+    private int selectedItemInInventory = 0;
 
     // A medve
     private Bear bear = null;

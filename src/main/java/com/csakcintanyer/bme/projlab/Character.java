@@ -58,7 +58,7 @@ public abstract class Character extends Entity
     // a játékos felvesz 1 tárgyat
     public boolean pickUp()
     {
-        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
+        if (energy == 0 || inventory.size() == 6) // ha nincs elég energiája a játékosnak akkor nem sikerül
             return false;
     
         // a blocktól visszakapunk egy itemet

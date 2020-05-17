@@ -16,8 +16,11 @@ public class View
 	private View() {}
 	
 	public int N, M; // stores view space width and height
+	private int inventoryX, inventoryY;
 	
-	private MainWindow mainWindow;
+	private GameWindow gameWindow;
+	private ControlsWindow controlsWindow;
+	private MenuWindow menuWindow;
 	private Graphics g;
 	
 	public ImageIcon backgroundIcon = new ImageIcon("Assets/Background.png");
@@ -52,25 +55,76 @@ public class View
 	
 	public ImageIcon littleArrow = new ImageIcon("Assets/LittleArrow.png");
 	
+	public ImageIcon health1Icon = new ImageIcon("Assets/Health1.png");
+	public ImageIcon health2Icon = new ImageIcon("Assets/Health2.png");
+	public ImageIcon health3Icon = new ImageIcon("Assets/Health3.png");
+	public ImageIcon health4Icon = new ImageIcon("Assets/Health4.png");
+	public ImageIcon health5Icon = new ImageIcon("Assets/Health5.png");
+	public ImageIcon hearthIcon = new ImageIcon("Assets/HearthIcon.png");
+	
+	public ImageIcon energyIcon = new ImageIcon("Assets/Energy.png");
+	
+	public ImageIcon bulletInInventoryIcon = new ImageIcon("Assets/BulletInInventory.png");
+	public ImageIcon flareInInventoryIcon = new ImageIcon("Assets/FlareInInventory.png");
+	public ImageIcon suitInInventoryIcon = new ImageIcon("Assets/SuitInInventory.png");
+	
+	public ImageIcon zeroIcon = new ImageIcon("Assets/SuitInInventory.png");
+	public ImageIcon oneIcon = new ImageIcon("Assets/FlareInInventory.png");
+	public ImageIcon twoIcon = new ImageIcon("Assets/BulletInInventory.png");
+	public ImageIcon threeIcon = new ImageIcon("Assets/Energy.png");
+	public ImageIcon infiniteIcon = new ImageIcon("Assets/TentOnBlock.png");
+	public ImageIcon unknownIcon = new ImageIcon("Assets/Bear.png");
+	
+	public ImageIcon controlsIcon = new ImageIcon("Assets/Bear.png");
+	
+	public ImageIcon pressIForControlsIcon = new ImageIcon("Assets/HelpText.png");
+	
+	
 	public void init(int x, int y)
 	{
 		N = 20 * 2 + x * 55 - 5 + 132; //szélesség
 		M = 100 + y * 55 - 5 + 20 * 2; //magasság
+		
+		inventoryX = N - layoutIcon.getIconWidth();
+		inventoryY = 0;
+		
 		
 		SwingUtilities.invokeLater(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				mainWindow = new MainWindow();
-				mainWindow.setVisible(true);
+				menuWindow = new MenuWindow();
+				menuWindow.setVisible(true);
+				
+				gameWindow = new GameWindow();
+				gameWindow.setVisible(false);
+				
+				controlsWindow = new ControlsWindow();
+				controlsWindow.setVisible(false);
 			}
 		});
 	}
 	
+	public void ShowControlsWindow()
+	{
+		controlsWindow.setVisible(true);
+	}
+	
+	public void ShowMenuWindow()
+	{
+		menuWindow.setVisible(true);
+	}
+	
+	public void ShowGameWindow()
+	{
+		gameWindow.setVisible(true);
+		menuWindow.setVisible(false);
+	}
+	
 	public void repaint()
 	{
-		mainWindow.getContentPane().repaint();
+		gameWindow.getContentPane().repaint();
 	}
 	
 	public void update(Graphics g)
@@ -78,8 +132,11 @@ public class View
 		this.g = g;
 		drawBackground();
 		drawIceMap();
-		DrawInventory();
-		DrawBlockProperties();
+		drawInventory();
+		drawBlockProperties();
+		
+		// press I text
+		g.drawImage(pressIForControlsIcon.getImage(), inventoryX + 1, inventoryY + 275, null);
 	}
 	
 	private void drawBackground()
@@ -99,20 +156,122 @@ public class View
 		g.drawImage(image, x, y, null);
 	}
 	
-	public void DrawInventory()
+	private void drawEnergyCells(int energy, int x, int y)
+	{
+		if (energy == 0)
+			return;
+		
+		g.drawImage(energyIcon.getImage(), x, y, null);
+		drawEnergyCells(energy - 1, x + 15, y);
+	}
+	
+	public void drawInventory()
 	{
 		Image image = layoutIcon.getImage();
-		g.drawImage(image, N - layoutIcon.getIconWidth(), 0, null);
+		g.drawImage(image, inventoryX, inventoryY, null);
+		
+		Character currentlyMovingCharacter = Game.get().getCurrentlyMovingCharacter();
+		
+		// character icon
+		if (currentlyMovingCharacter instanceof Eskimo)
+		{
+			image = eskimoIcon.getImage();
+		}
+		else if (currentlyMovingCharacter instanceof Explorer)
+		{
+			image = explorerIcon.getImage();
+		}
+		g.drawImage(image, inventoryX + 20, inventoryY + 13, null);
+		
+		// health
+		int health = currentlyMovingCharacter.getHealth();
+		switch (health)
+		{
+			case 0: image = null; break;
+			case 1: image = health1Icon.getImage(); break;
+			case 2: image = health2Icon.getImage(); break;
+			case 3: image = health3Icon.getImage();	break;
+			case 4: image = health4Icon.getImage(); break;
+			case 5: image = health5Icon.getImage(); break;
+			default: throw new IllegalArgumentException("Nem lehet ennyi élet");
+		}
+		g.drawImage(image, inventoryX + 53, inventoryY + 30, null);
+		
+		// hearth
+		image = hearthIcon.getImage();
+		g.drawImage(image, inventoryX + 46, inventoryY + 27, null);
+		
+		// energy
+		drawEnergyCells(currentlyMovingCharacter.getEnergy(), inventoryX + 64, inventoryY + 12);
+		
+		// not usable items
+		if (currentlyMovingCharacter.hasBullet())
+		{
+			image = bulletInInventoryIcon.getImage();
+			g.drawImage(image, inventoryX + 14, inventoryY + 64, null);
+		}
+		if (currentlyMovingCharacter.hasFlare())
+		{
+			image = flareInInventoryIcon.getImage();
+			g.drawImage(image, inventoryX + 50, inventoryY + 64, null);
+		}
+		if (currentlyMovingCharacter.hasSuit())
+		{
+			image = suitInInventoryIcon.getImage();
+			g.drawImage(image, inventoryX + 86, inventoryY + 64, null);
+		}
+		
+		// items in inventory
+		for (int i = 0; i < currentlyMovingCharacter.getInventory().size(); ++i)
+		{
+			CollectableItem collectableItem = (CollectableItem)currentlyMovingCharacter.getInventory().get(i);
+			collectableItem.draw(inventoryX + 16 + (i % 3) * 36, inventoryY + 126 + (i / 3) * 36);
+		}
+		if (!Game.get().iceMapSelected)
+		{
+			Graphics2D g2d = (Graphics2D)g;
+			g2d.setColor(Color.RED);
+			g2d.setStroke(new BasicStroke(1));
+			g2d.drawRect(inventoryX + 14 + (Game.get().getSelectedItem() % 3) * 36, inventoryY + 124 + (Game.get().getSelectedItem() / 3) * 36, 33, 33);
+		}
 	}
 	
 	public void drawSelection(int x, int y)
 	{
-		g.setColor(Color.RED);
-		g.drawRect(x - 3, y - 3, 55, 55);
+		if (Game.get().iceMapSelected)
+		{
+			Graphics2D g2d = (Graphics2D)g;
+			g2d.setColor(Color.RED);
+			g2d.setStroke(new BasicStroke(2));
+			g2d.drawRect(x - 3, y - 3, 55, 55);
+		}
 	}
 	
-	public void DrawBlockProperties()
+	public void drawBlockProperties()
 	{
-	
+		int xPos = 92;
+		int yPos = 220;
+		
+		IceBlock selected = Game.get().getSelectedIceBlock();
+		
+		Image image;
+		if (!selected.isChecked())
+		{
+			image = unknownIcon.getImage();
+			g.drawImage(image, inventoryX + xPos, inventoryY + yPos, null);
+			return;
+		}
+		
+		int stability = selected.getStability();
+		switch (stability)
+		{
+			case 0: image = zeroIcon.getImage(); break;
+			case 1: image = oneIcon.getImage(); break;
+			case 2: image = twoIcon.getImage(); break;
+			case 3: image = threeIcon.getImage(); break;
+			case -1: image = infiniteIcon.getImage(); break;
+			default: throw new IllegalArgumentException("Nem lehet ilyen stability");
+		}
+		g.drawImage(image, inventoryX + xPos, inventoryY + yPos, null);
 	}
 }

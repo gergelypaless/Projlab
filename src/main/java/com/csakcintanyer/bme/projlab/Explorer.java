@@ -43,7 +43,7 @@ public class Explorer extends Character
             if(isDrowning()) view.draw(view.drowningIcon, x, y-10);
         }
     
-        if (Game.get().getCurrentlyMovingCharacterID() == getID())
+        if (Game.get().getCurrentlyMovingCharacter() == this)
             view.draw(view.littleArrow, x + 3, y - 7);
     }
     

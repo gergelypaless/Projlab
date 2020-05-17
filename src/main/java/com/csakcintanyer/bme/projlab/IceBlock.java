@@ -85,6 +85,11 @@ public abstract class IceBlock implements Serializable, Drawable
         checked = true;
     }
     
+    public boolean isChecked()
+    {
+        return checked;
+    }
+    
     //eszkimó képességének használata váltja ki
     public boolean placeTent()
     {
