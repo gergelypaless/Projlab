@@ -231,24 +231,6 @@ public class Game
         Direction dir;
         switch (keyEvent.getKeyCode())
         {
-            case KeyEvent.VK_L:
-                try
-                {
-                    IOLanguage.LoadFile(IOLanguage.reader.readLine());
-                    endTurnEvent.set();
-                    // TODO: rossz a betöltés után, növeljük a turn-t és a bear is mozog
-                }catch (IOException e) { break; }
-                System.out.println("OK, game loaded");
-                break;
-            case KeyEvent.VK_F1:
-                String path;
-                try
-                {
-                    path = IOLanguage.reader.readLine();
-                } catch (IOException e) { break; }
-                IOLanguage.SaveToFile(path);
-                System.out.println("OK, game saved");
-                break;
             case KeyEvent.VK_A:
                 dir = Direction.LEFT;
                 characterMove(dir);

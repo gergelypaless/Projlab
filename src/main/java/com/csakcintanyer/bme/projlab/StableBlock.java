@@ -82,8 +82,6 @@ public class StableBlock extends IceBlock
         {
             view.drawSelection(x, y);
         }
-        
-        // TODO: igloo kitakarhatja a medvét
     
         // enities
         ArrayList<Entity> entities = getEntities();
