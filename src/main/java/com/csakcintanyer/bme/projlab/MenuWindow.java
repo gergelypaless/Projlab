@@ -76,13 +76,19 @@ class MenuKeyEventListener implements KeyListener
 			case KeyEvent.VK_ENTER:
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
 				{
-					window.setVisible(false);
+					Windows.get().inputWindow.setVisible(true);
+				
+					
+					
+					
+					Windows.get().menuWindow.setVisible(false);
 					
 					Game game = Game.get();
 					game.init();
 					
-					thread = new MyThread();
-					thread.start();
+					MenuKeyEventListener listener = (MenuKeyEventListener)Windows.get().menuWindow.getKeyListeners()[0];
+					listener.thread = new MyThread();
+					listener.thread.start();
 				}
 				
 				if (menuView.getCurrentMenuPoint()==View.get().loadgameIconColored.getImage())

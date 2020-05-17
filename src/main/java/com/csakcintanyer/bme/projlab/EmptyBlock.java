@@ -21,6 +21,7 @@ public class EmptyBlock extends IceBlock
     
     public void changeAmountOfSnow(int value)
     {
+        // ha áll valaki rajta akkor nem esik rá hó
         if (getEntities().size() > 0)
         {
             amountOfSnow = 0;
@@ -40,14 +41,16 @@ public class EmptyBlock extends IceBlock
     
     public void draw(int x, int y) // screen coordinates
     {
-        View view  = View.get();
+        View view = View.get();
         
-        // iceblock
+        // iceblock kirajzolása
+        // ha van rajta snow akkor más textúrát rajzolunk ki, és a rajta levő item sem jelenik meg
         if (getSnow() > 0)
             view.draw(view.snowyIceBlockIcon, x, y);
         else
             view.draw(view.emptyIceBlockIcon, x, y);
         
+        // ha ez a selectedIceBlock akkor egy selection négyzetet is kirajzolunk
         if (Game.get().getSelectedIceBlock() == this)
         {
             view.drawSelection(x, y);
@@ -56,24 +59,14 @@ public class EmptyBlock extends IceBlock
         // character
         ArrayList<Entity> entities = getEntities();
         Bear bear = null;
-        if (entities.size() == 1)
+        for (int i = 0; i < entities.size(); ++i)
         {
-            if (entities.get(0) instanceof Bear)
-                bear = (Bear)entities.get(0);
-            else
-                entities.get(0).draw(x + 5, y - 8);
-        }
-        else if (entities.size() > 1)
-        {
-            for (int i = 0; i < entities.size(); ++i)
+            if (entities.get(i) instanceof Bear)
             {
-                if (entities.get(i) instanceof Bear)
-                {
-                    bear = (Bear)entities.get(i);
-                    continue;
-                }
-                entities.get(i).draw(x + 5 + i * 10, y - 8);
+                bear = (Bear)entities.get(i);
+                continue;
             }
+            entities.get(i).draw(x + 5 + i * 10, y - 8);
         }
         
         // placables

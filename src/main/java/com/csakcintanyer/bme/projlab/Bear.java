@@ -28,9 +28,11 @@ public class Bear extends Entity
 		return true; //sikeres lépés
 	}
 	
-	public void draw(int x, int y)
+	// Bear kirajzolása
+	public void draw(int x, int y) // x és y itt a képernyő koordinátákban van megadva
 	{
 		View view = View.get();
+		// ha vizben van akkor mas texturat rajzolunk ki.
 		if(!isInWater) view.draw(view.bearIcon, x, y);
 		else view.draw(view.bearInWaterIcon, x, y);
 	}

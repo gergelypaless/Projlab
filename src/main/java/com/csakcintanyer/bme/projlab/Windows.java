@@ -28,6 +28,9 @@ public class Windows
 				
 				controlsWindow = new ControlsWindow();
 				controlsWindow.setVisible(false);
+				
+				inputWindow = new InputWindow();
+				inputWindow.setVisible(false);
 			}
 		});
 	}
@@ -35,5 +38,6 @@ public class Windows
 	public MenuWindow menuWindow;
 	public GameWindow gameWindow;
 	public ControlsWindow controlsWindow;
+	public InputWindow inputWindow;
 	
 }

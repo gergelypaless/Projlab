@@ -86,24 +86,14 @@ public class StableBlock extends IceBlock
         // enities
         ArrayList<Entity> entities = getEntities();
         Bear bear = null;
-        if (entities.size() == 1)
+        for (int i = 0; i < entities.size(); ++i)
         {
-            if (entities.get(0) instanceof Bear)
-                bear = (Bear)entities.get(0);
-            else
-                entities.get(0).draw(x + 5, y - 8);
-        }
-        else if (entities.size() > 1)
-        {
-            for (int i = 0; i < entities.size(); ++i)
+            if (entities.get(i) instanceof Bear)
             {
-                if (entities.get(i) instanceof Bear)
-                {
-                    bear = (Bear)entities.get(i);
-                    continue;
-                }
-                entities.get(i).draw(x + 5 + i * 10, y - 8);
+                bear = (Bear)entities.get(i);
+                continue;
             }
+            entities.get(i).draw(x + 5 + i * 10, y - 8);
         }
     
         // placables

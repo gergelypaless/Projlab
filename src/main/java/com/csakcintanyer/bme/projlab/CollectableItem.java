@@ -9,15 +9,6 @@ import java.io.Serializable;
 
 public abstract class CollectableItem implements Serializable, Drawable
 {
-    /*public CollectableItem(IceBlock block)
-    {
-        this.block = block;
-    }*/
-    
     // felvettünk egy itemet.
     public abstract void interactWithCharacter(Character c) throws IllegalArgumentException;
-    
-    // melyik blockon van
-    //protected IceBlock block;
-    
 }

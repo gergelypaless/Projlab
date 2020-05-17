@@ -10,6 +10,7 @@ public class Bullet extends CollectableItem // csak gyűjthető
         c.setHasBullet();
     }
     
+    // Bullet kirajzolása
     public void draw(int x, int y)
     {
         View view = View.get();
