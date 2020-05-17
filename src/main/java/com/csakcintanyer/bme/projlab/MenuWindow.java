@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.chrono.ThaiBuddhistEra;
 
 public class MenuWindow extends JFrame
 {
@@ -25,6 +26,7 @@ public class MenuWindow extends JFrame
 class MenuKeyEventListener implements KeyListener
 {
 	JFrame window;
+	public Thread thread;
 
 	public void MenuAction(KeyEvent keyEvent){
 		Container view = window.getContentPane();
@@ -54,9 +56,9 @@ class MenuKeyEventListener implements KeyListener
 			case KeyEvent.VK_S:
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
 				{
-				menuView.setCurrentMenuPoint(View.get().loadgameIconColored.getImage());
-				menuView.setCurrentMenuPointx(265);
-				menuView.setCurrentMenuPointy(500);
+					menuView.setCurrentMenuPoint(View.get().loadgameIconColored.getImage());
+					menuView.setCurrentMenuPointx(265);
+					menuView.setCurrentMenuPointy(500);
 				}
 				else if(menuView.getCurrentMenuPoint()==View.get().loadgameIconColored.getImage())
 				{
@@ -73,10 +75,27 @@ class MenuKeyEventListener implements KeyListener
 				break;
 			case KeyEvent.VK_ENTER:
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
-				View.get().ShowGameWindow();
-				if(menuView.getCurrentMenuPoint()==View.get().loadgameIconColored.getImage())
-					//todo IOLanguage.LoadFile();
-					if(menuView.getCurrentMenuPoint()==View.get().exitIconColored.getImage())
+				{
+					window.setVisible(false);
+					
+					Game game = Game.get();
+					game.init();
+					
+					thread = new MyThread();
+					thread.start();
+				}
+				
+				if (menuView.getCurrentMenuPoint()==View.get().loadgameIconColored.getImage())
+				{
+					window.setVisible(false);
+					IOLanguage.LoadFile("save.txt");
+					thread = new MyThread();
+					thread.start();
+				}
+				if (menuView.getCurrentMenuPoint()==View.get().exitIconColored.getImage())
+				{
+					System.exit(0);
+				}
 				break;
 		}
 	}
@@ -105,6 +124,19 @@ class MenuKeyEventListener implements KeyListener
 		window.repaint();
 	}
 }
+
+
+class MyThread extends Thread
+{
+	public MyThread() {}
+	
+	public void run()
+	{
+		View.get().repaint();
+		Game.get().start();
+	}
+}
+
 
 class MenuView extends JPanel
 {

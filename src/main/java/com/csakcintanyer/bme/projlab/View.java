@@ -18,9 +18,6 @@ public class View
 	public int N, M; // stores view space width and height
 	private int inventoryX, inventoryY;
 	
-	private GameWindow gameWindow;
-	private ControlsWindow controlsWindow;
-	private MenuWindow menuWindow;
 	private Graphics g;
 	
 	public ImageIcon backgroundIcon = new ImageIcon("Assets/Background.png");
@@ -98,43 +95,13 @@ public class View
 		inventoryX = N - layoutIcon.getIconWidth();
 		inventoryY = 0;
 		
-		
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				menuWindow = new MenuWindow();
-				menuWindow.setVisible(true);
-				
-				gameWindow = new GameWindow();
-				gameWindow.setVisible(false);
-				
-				controlsWindow = new ControlsWindow();
-				controlsWindow.setVisible(false);
-			}
-		});
-	}
-	
-	public void ShowControlsWindow()
-	{
-		controlsWindow.setVisible(true);
-	}
-	
-	public void ShowMenuWindow()
-	{
-		menuWindow.setVisible(true);
-	}
-	
-	public void ShowGameWindow()
-	{
-		gameWindow.setVisible(true);
-		menuWindow.setVisible(false);
+		Windows.get().gameWindow.init();
+		Windows.get().gameWindow.setVisible(true);
 	}
 	
 	public void repaint()
 	{
-		gameWindow.getContentPane().repaint();
+		Windows.get().gameWindow.getContentPane().repaint();
 	}
 	
 	public void update(Graphics g)

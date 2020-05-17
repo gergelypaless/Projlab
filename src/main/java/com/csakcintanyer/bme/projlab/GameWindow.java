@@ -13,15 +13,18 @@ public class GameWindow extends JFrame
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setResizable(false);
 		
-		setContentPane(new GameView());
-		pack();
-		setLocationRelativeTo(null);
-		
 		GameKeyEventListener listener = new GameKeyEventListener(this);
 		addKeyListener(listener);
 		
 		WindowCloseListener windowCloseListener = new WindowCloseListener();
 		addWindowListener(windowCloseListener);
+	}
+	
+	public void init()
+	{
+		setContentPane(new GameView());
+		pack();
+		setLocationRelativeTo(null);
 	}
 }
 
@@ -32,7 +35,21 @@ class WindowCloseListener implements ActionListener, WindowListener
 	
 	public void windowClosing(WindowEvent windowEvent)
 	{
-		View.get().ShowMenuWindow();
+		Windows.get().menuWindow.setVisible(true);
+		
+		// ending game
+		Game game = Game.get();
+		game.lose();
+		game.endTurn();
+		
+		MenuKeyEventListener listener = (MenuKeyEventListener)Windows.get().menuWindow.getKeyListeners()[0];
+		try
+		{
+			listener.thread.join();
+		} catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void windowClosed(WindowEvent windowEvent) {	}

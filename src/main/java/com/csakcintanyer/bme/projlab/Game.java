@@ -11,6 +11,12 @@ public class Game
 
     public void init()
     {
+        isLost = false;
+        isWin = false;
+        turns = 0;
+        iceMapSelected = true;
+        selectedItemInInventory = 0;
+        
         map = new IceMap();
 
         characters = new ArrayList<>();
@@ -48,19 +54,27 @@ public class Game
         snowInXTurns = 100;
 
         View.get().init(map.N, map.M);
+        View.get().repaint();
     }
 
     // a jégmező, a játékosok és a medve beállítása determinisztikus módban
     public void init(IceMap iceMap, ArrayList<Character> characters, Bear bear)
     {
+        isLost = false;
+        isWin = false;
+        turns = 0;
+        iceMapSelected = true;
+        selectedItemInInventory = 0;
+        
         map = iceMap;
         this.characters = characters;
         this.bear = bear;
         
         deterministic = true;
         snowInXTurns = 10;
-        
-        turns = 0;
+    
+        View.get().init(map.N, map.M);
+        View.get().repaint();
     }
 
     // játék kezdése
@@ -217,10 +231,6 @@ public class Game
         Direction dir;
         switch (keyEvent.getKeyCode())
         {
-            case KeyEvent.VK_ESCAPE:
-                System.out.println("Exiting...");
-                isLost = true;
-                return; // end of turn
             case KeyEvent.VK_L:
                 try
                 {
@@ -306,8 +316,10 @@ public class Game
                 iceMapSelected = !iceMapSelected;
                 break;
             case KeyEvent.VK_I:
-                View.get().ShowControlsWindow();
+                Windows.get().controlsWindow.setVisible(true);
                 break;
+            case KeyEvent.VK_B:
+                IOLanguage.SaveToFile("save.txt");
             default:
         }
         
@@ -416,6 +428,11 @@ public class Game
         return selectedItemInInventory;
     }
     
+    public void endTurn()
+    {
+        endTurnEvent.set();
+    }
+    
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?
     private int turns; // az aktuális kör száma
@@ -440,7 +457,6 @@ public class Game
     
     public Random random = new Random();
     private AutoResetEvent endTurnEvent = new AutoResetEvent(false);
-    private AutoResetEvent directionSelectionEvent = new AutoResetEvent(false);
 
     // a Game osztály a Singleton tervezési formát követi, hisz a program futása során csak egy, a játékot vezérlő
     // osztálypéldány létezhet
