@@ -25,6 +25,16 @@ public class View
 	
 	public ImageIcon backgroundIcon = new ImageIcon("Assets/Background.png");
 	public ImageIcon layoutIcon = new ImageIcon("Assets/Layout.png");
+
+	public ImageIcon menuIceBlockIcon = new ImageIcon("Assets/Menu/menuIceBlock.png");
+	public ImageIcon newgameIcon = new ImageIcon("Assets/Menu/newgame.png");
+	public ImageIcon loadgameIcon = new ImageIcon("Assets/Menu/loadgame.png");
+	public ImageIcon exitIcon = new ImageIcon("Assets/Menu/exit.png");
+	public ImageIcon newgameIconColored = new ImageIcon("Assets/Menu/newgameColored.png");
+	public ImageIcon loadgameIconColored = new ImageIcon("Assets/Menu/loadgameColored.png");
+	public ImageIcon exitIconColored = new ImageIcon("Assets/Menu/exitColored.png");
+	public ImageIcon menuBearIcon = new ImageIcon("Assets/Menu/menuBear.png");
+	public ImageIcon titleIcon = new ImageIcon("Assets/Menu/iceventure.png");
 	
 	public ImageIcon snowyIceBlockIcon = new ImageIcon("Assets/IceBlocks/SnowyIceBlock.png");
 	public ImageIcon icyIceBlockIcon = new ImageIcon("Assets/IceBlocks/IcyIceBlock.png");
@@ -138,7 +148,7 @@ public class View
 		// press I text
 		g.drawImage(pressIForControlsIcon.getImage(), inventoryX + 1, inventoryY + 275, null);
 	}
-	
+
 	private void drawBackground()
 	{
 		Image image = backgroundIcon.getImage();
