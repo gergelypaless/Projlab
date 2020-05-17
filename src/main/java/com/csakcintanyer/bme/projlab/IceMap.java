@@ -77,19 +77,22 @@ public class IceMap implements Serializable, Drawable
         }
     }
     
+    // icemap kirajzolása
     public void draw(int x, int y)
     {
         for (int j = 0; j < M; ++j)
         {
             for (int i = 0; i < N; ++i)
             {
+                // ablak koordinátákká alakítás
                 x = 20 + i * 50 + i * 5;
                 y = 120 + j * 50 + j * 5;
-                blocks.get(j).get(i).draw(x, y);
+                blocks.get(j).get(i).draw(x, y); // block kirajzolása
             }
         }
     }
     
+    // creating and returning an item
     private CollectableItem createItem(IceBlock iceBlock)
     {
         CollectableItem item = null;

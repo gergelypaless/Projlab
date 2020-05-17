@@ -20,6 +20,7 @@ public class Shovel extends CollectableItem implements UsableItem
         c.addItem(this); // hozzáadjuk a karakter inventoryjához mivel UsableItem
     }
     
+    // shovel kirajzolása
     public void draw(int x, int y)
     {
         View view = View.get();

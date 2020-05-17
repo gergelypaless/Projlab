@@ -28,6 +28,7 @@ public class EmptyBlock extends IceBlock
             return;
         }
         
+        // hó növelése
         amountOfSnow += value;
         if (amountOfSnow < 0)
             amountOfSnow = 0;
@@ -63,18 +64,19 @@ public class EmptyBlock extends IceBlock
         {
             if (entities.get(i) instanceof Bear)
             {
-                bear = (Bear)entities.get(i);
+                bear = (Bear)entities.get(i); // beart később rajzoljuk ki
                 continue;
             }
-            entities.get(i).draw(x + 5 + i * 10, y - 8);
+            entities.get(i).draw(x + 5 + i * 10, y - 8); // karakter kirajzolása, offset megadása
         }
         
         // placables
-        if (hasIgloo())
+        if (hasIgloo()) // van rajta igloo
             view.draw(view.iglooIcon, x, y);
-        else if (hasTent())
+        else if (hasTent()) // van rajta tent
             view.draw(view.tentOnBlockIcon, x, y);
     
+        // beart minden felett rajzoljuk ki, hogy az ingloo/tent ne takarja ki
         if (bear != null) bear.draw(x + 5, y);
     }
     

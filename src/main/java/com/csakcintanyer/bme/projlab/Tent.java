@@ -10,12 +10,13 @@ public class Tent extends CollectableItem implements UsableItem
 	
 	public boolean use(IceBlock block)
 	{
-		if (!block.placeTent())
+		if (!block.placeTent()) // ha van rajta tent akkor nem lehet lerakni
 			throw new IllegalArgumentException("Cannot place tent");
 		
 		return true;
 	}
 	
+	// tent kirajzolása
 	public void draw(int x, int y)
 	{
 		View view = View.get();

@@ -79,12 +79,13 @@ public abstract class IceBlock implements Serializable, Drawable
         return false;
     }
     
-    // explorer's ability
+    // set if an explorer was inspected this iceblock
     public void setChecked()
     {
         checked = true;
     }
     
+    // have somebody ever inspected this iceblock?
     public boolean isChecked()
     {
         return checked;

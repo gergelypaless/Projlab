@@ -18,6 +18,7 @@ public class Food extends CollectableItem
         }
     }
     
+    // food kirajzolása
     public void draw(int x, int y)
     {
         View view = View.get();

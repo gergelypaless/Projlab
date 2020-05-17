@@ -8,6 +8,7 @@ public class Suit extends CollectableItem
         c.setHasSuit();
     }
     
+    // suit kirajzolása
     public void draw(int x, int y)
     {
         View view = View.get();

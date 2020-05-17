@@ -23,15 +23,20 @@ public class Eskimo extends Character
         return false; // sikertelen
     }
     
+    // eskimo kirajzolása
     public void draw(int x, int y)
     {
         View view = View.get();
-        if(!isInWater) view.draw(view.eskimoIcon, x, y);
-        else {
+        if(!isInWater) // ha nincs vizben akkor normál textúra
+            view.draw(view.eskimoIcon, x, y);
+        else
+        {
+            // ha vizben van akkor vizben lévő textúra
             view.draw(view.eskimoInWaterIcon, x, y+5);
-            if(isDrowning()) view.draw(view.drowningIcon, x, y-10);
+            if(isDrowning()) view.draw(view.drowningIcon, x, y-10); // ha fuldoklik akkor egy felkiáltó jel felette
         }
         
+        // ha ez az éppen soron levő játékos akkor egy nyilacskát is kirajzolunk
         if (Game.get().getCurrentlyMovingCharacter() == this)
             view.draw(view.littleArrow, x + 3, y - 7);
     }
