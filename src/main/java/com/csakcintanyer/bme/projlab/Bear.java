@@ -31,12 +31,6 @@ public class Bear extends Entity
 	public void draw(int x, int y)
 	{
 		View view = View.get();
-		
-		// visszatoljuk a Iceblockhoz képesti 0,0-ba
-		int xmod = (x - 20) % 55;
-		x -= xmod;
-		y += 8;
-
 		if(!isInWater) view.draw(view.bearIcon, x, y);
 		else view.draw(view.bearInWaterIcon, x, y);
 	}

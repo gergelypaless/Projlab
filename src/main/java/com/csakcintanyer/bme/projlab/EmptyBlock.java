@@ -55,14 +55,23 @@ public class EmptyBlock extends IceBlock
         
         // character
         ArrayList<Entity> entities = getEntities();
+        Bear bear = null;
         if (entities.size() == 1)
         {
-            entities.get(0).draw(x + 5, y - 8);
+            if (entities.get(0) instanceof Bear)
+                bear = (Bear)entities.get(0);
+            else
+                entities.get(0).draw(x + 5, y - 8);
         }
         else if (entities.size() > 1)
         {
             for (int i = 0; i < entities.size(); ++i)
             {
+                if (entities.get(i) instanceof Bear)
+                {
+                    bear = (Bear)entities.get(i);
+                    continue;
+                }
                 entities.get(i).draw(x + 5 + i * 10, y - 8);
             }
         }
@@ -72,6 +81,8 @@ public class EmptyBlock extends IceBlock
             view.draw(view.iglooIcon, x, y);
         else if (hasTent())
             view.draw(view.tentOnBlockIcon, x, y);
+    
+        if (bear != null) bear.draw(x + 5, y);
     }
     
     // valaki ellépett erről az IceBlockól
