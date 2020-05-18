@@ -25,14 +25,18 @@ public class MenuWindow extends JFrame
 
 class MenuKeyEventListener implements KeyListener
 {
-	JFrame window;
-	public Thread thread;
+	JFrame window; //MenuWindow
+	public Thread thread; //GameThread
 
+
+	//menü irányítása
 	public void MenuAction(KeyEvent keyEvent){
 		Container view = window.getContentPane();
 		MenuView menuView = (MenuView)view;
 
 		switch (keyEvent.getKeyCode()){
+
+			//Up/W - menüpont felfele
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_W:
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
@@ -54,6 +58,8 @@ class MenuKeyEventListener implements KeyListener
 					menuView.setCurrentMenuPointy(500);
 				}
 				break;
+
+			//Down/S - menüpont lefele
 			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_S:
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
@@ -75,19 +81,25 @@ class MenuKeyEventListener implements KeyListener
 					menuView.setCurrentMenuPointy(380);
 				}
 				break;
+
+			//Enter - menüpont kiválasztása
 			case KeyEvent.VK_ENTER:
+				//Startgame - új játék indítása
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
 				{
 					Windows.get().inputWindow.setVisible(true);
 				}
-				
+
+				//Loadgame - pálya betöltés és játék indítása
 				if (menuView.getCurrentMenuPoint()==View.get().loadgameIconColored.getImage())
 				{
 					window.setVisible(false);
 					IOLanguage.LoadFile("save.txt");
-					thread = new MyThread();
+					thread = new GameThread();
 					thread.start();
 				}
+
+				//Exit - program bezárása
 				if (menuView.getCurrentMenuPoint()==View.get().exitIconColored.getImage())
 				{
 					System.exit(0);
@@ -121,10 +133,10 @@ class MenuKeyEventListener implements KeyListener
 	}
 }
 
-
-class MyThread extends Thread
+// játékmenetet futtató szál
+class GameThread extends Thread
 {
-	public MyThread() {}
+	public GameThread() {}
 	
 	public void run()
 	{
@@ -133,9 +145,11 @@ class MyThread extends Thread
 	}
 }
 
-
+//Menü kirajzolása
 class MenuView extends JPanel
 {
+
+	//Kiválasztott menüpont nyilvántartása
 	private Image currentMenuPoint = View.get().newgameIconColored.getImage();
 	private int currentMenuPointx = 285;
 	private int currentMenuPointy= 380;
@@ -164,7 +178,8 @@ class MenuView extends JPanel
 	public void draw(Image image,int x,int y, Graphics g){
 		g.drawImage(image, x, y, this);
 	}
-	
+
+	//Menü kirajzolása
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.

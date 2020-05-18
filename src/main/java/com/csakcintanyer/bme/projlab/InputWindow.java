@@ -26,7 +26,7 @@ public class InputWindow extends JFrame implements ActionListener
 		setLocationRelativeTo(null);
 		setBackground(new Color(87, 126, 183, 255));
 
-		//Text Fields
+		//Text Fields - pálya paramétereinek megadása
 
 		inputBoxP.setSize(400, 50);
 
@@ -46,7 +46,7 @@ public class InputWindow extends JFrame implements ActionListener
 		inputBoxP.add(inputN);
 		inputBoxP.setBackground(new Color(87, 126, 183, 255));
 
-		//Button
+		//Button - OK gomb az elfogadáshoz
 		JPanel readyButtonP = new JPanel();
 		JButton readyButton = new JButton("OK");
 		readyButton.setFocusPainted(false);
@@ -68,10 +68,15 @@ public class InputWindow extends JFrame implements ActionListener
 		this.add(readyButtonP, BorderLayout.EAST);
 	}
 
+	//Pálya inicializálás megadott paraméterekkel
 	@Override
 	public void actionPerformed(ActionEvent actionEvent) {
+
+		//Text fields to int
 		int M= Integer.parseInt(inputM.getText());
 		int N= Integer.parseInt(inputN.getText());
+
+		//megfelel a paraméter (3-15)?
 		if(N >15 || N<3|| M>15 || M<3 )
 			return;
 
@@ -82,7 +87,7 @@ public class InputWindow extends JFrame implements ActionListener
 		game.init(N, M);
 
 		MenuKeyEventListener listener = (MenuKeyEventListener)Windows.get().menuWindow.getKeyListeners()[0];
-		listener.thread = new MyThread();
+		listener.thread = new GameThread();
 		listener.thread.start();
 	}
 }
@@ -94,7 +99,6 @@ class InputView extends JPanel
 	{
 		return new Dimension(400, 50);
 	}
-
 
 	protected void paintComponent(Graphics g)
 	{
