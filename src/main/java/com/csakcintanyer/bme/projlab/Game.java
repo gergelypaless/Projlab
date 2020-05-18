@@ -73,6 +73,9 @@ public class Game
         deterministic = true;
         snowInXTurns = 10;
     
+        currentlyMovingCharacter = characters.get(0);
+        resetSelectedIceBlock();
+    
         View.get().init(map.N, map.M);
         View.get().repaint();
     }
