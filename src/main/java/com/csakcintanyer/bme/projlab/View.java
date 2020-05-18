@@ -114,7 +114,7 @@ public class View
 		drawIceMap();
 		drawInventory();
 		drawBlockProperties();
-		drawLose();
+		drawWin();
 
 		if(Game.get().isLost()) drawLose();
 		else if(Game.get().isWin()) drawWin();
@@ -136,12 +136,12 @@ public class View
 
 	public void drawWin() {
 		Image image = WinIcon.getImage();
-		g.drawImage(image, ((N*55-5)/2 + 20)-72, 50, null);
+		g.drawImage(image, ((N-132)/2)-72, 50, null);
 	}
 
 	public void drawLose() {
 		Image image = LoseIcon.getImage();
-		g.drawImage(image, ((N*55-5)/2 + 20)-92, 50, null);
+		g.drawImage(image, ((N-132)/2)-92, 50, null);
 	}
 	
 	public void draw(ImageIcon icon, int x, int y)
