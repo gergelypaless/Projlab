@@ -9,7 +9,7 @@ public class Game
 {
     private Game(){ }
 
-    public void init(int N, int M)
+    public void init(int N, int M) //Megadott méretek alapján készítjük el a játékot
     {
         isLost = false;
         isWin = false;
@@ -138,7 +138,8 @@ public class Game
         endTurnEvent.waitOne();
         endTurnEvent.reset();
     }
-    
+
+    //Karakter lép
     private void characterMove(Direction dir)
     {
         if (currentlyMovingCharacter.move(dir))
@@ -160,7 +161,8 @@ public class Game
             }
         }
     }
-    
+
+    //Item használata
     private void useItem()
     {
         if (!currentlyMovingCharacter.getInventory().isEmpty()) // ha van item az inventoryban
@@ -171,7 +173,8 @@ public class Game
             currentlyMovingCharacter.useItem(selectedItemInInventory);
         }
     }
-    
+
+    //Megváltoztatjuk az éppen kijelölt jégmezőt
     private void ChangeSelectedIceBlock(Direction dir)
     {
         HashMap<Direction, IceBlock> neighbours = selectedIceBlock.getNeighbours();
@@ -179,7 +182,8 @@ public class Game
         if (iceBlock != null)
             selectedIceBlock = iceBlock;
     }
-    
+
+    //Megváltoztatjuk az éppen kijelölt item-et
     private void ChangeSelectedItemInInventory(Direction dir)
     {
         if (dir == Direction.DOWN)
@@ -198,14 +202,16 @@ public class Game
         {
             selectedItemInInventory -= 3;
         }
-        
+
+        //6 helyünk van összesen, ezért csak ezek között lépegethetünk
         if (selectedItemInInventory < 0)
             selectedItemInInventory = 0;
         else if (selectedItemInInventory > 5)
             selectedItemInInventory = 5;
         
     }
-    
+
+    //A bejövő gombokat kezelő függvény
     public void UserAction(KeyEvent keyEvent)
     {
         if (gameOver())
@@ -214,55 +220,55 @@ public class Game
         Direction dir;
         switch (keyEvent.getKeyCode())
         {
-            case KeyEvent.VK_A:
+            case KeyEvent.VK_A: //Balra lépünk
                 dir = Direction.LEFT;
                 characterMove(dir);
                 break;
-            case KeyEvent.VK_S:
+            case KeyEvent.VK_S: //Lefelé lépünk
                 dir = Direction.DOWN;
                 characterMove(dir);
                 break;
-            case KeyEvent.VK_D:
+            case KeyEvent.VK_D: //Jobbra lépünk
                 dir = Direction.RIGHT;
                 characterMove(dir);
                 break;
-            case KeyEvent.VK_W:
+            case KeyEvent.VK_W: //Felfelé lépünk
                 dir = Direction.UP;
                 characterMove(dir);
                 break;
-            case KeyEvent.VK_ENTER:
+            case KeyEvent.VK_ENTER: //Enterrel használjuk a kijelölt Item-et
                 if (!iceMapSelected)
                     useItem();
                 break;
-            case KeyEvent.VK_E: currentlyMovingCharacter.useAbility(); break;
-            case KeyEvent.VK_P: currentlyMovingCharacter.pickUp(); break;
-            case KeyEvent.VK_C: currentlyMovingCharacter.clear(); break;
-            case KeyEvent.VK_Q:
+            case KeyEvent.VK_E: currentlyMovingCharacter.useAbility(); break; //Képesség használata
+            case KeyEvent.VK_P: currentlyMovingCharacter.pickUp(); break; //Item felvétele
+            case KeyEvent.VK_C: currentlyMovingCharacter.clear(); break; //1 hó eltakarítása kézzel
+            case KeyEvent.VK_Q: //Kör befejezése
                 endTurnEvent.set();
                 break;
-            case KeyEvent.VK_UP:
+            case KeyEvent.VK_UP: //kijelölő feljebb léptetése
                 if (iceMapSelected) ChangeSelectedIceBlock(Direction.UP);
                 else ChangeSelectedItemInInventory(Direction.UP);
                 break;
-            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_DOWN: //kijelölő lejjebb léptetése
                 if (iceMapSelected) ChangeSelectedIceBlock(Direction.DOWN);
                 else ChangeSelectedItemInInventory(Direction.DOWN);
                 break;
-            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_LEFT: //kijelölő balra léptetése
                 if (iceMapSelected) ChangeSelectedIceBlock(Direction.LEFT);
                 else ChangeSelectedItemInInventory(Direction.LEFT);
                 break;
-            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_RIGHT: //kijelölő jobbra léptetése
                 if (iceMapSelected) ChangeSelectedIceBlock(Direction.RIGHT);
                 else ChangeSelectedItemInInventory(Direction.RIGHT);
                 break;
-            case KeyEvent.VK_CONTROL:
+            case KeyEvent.VK_CONTROL: //kijelölő átváltása (Invertory és pálya között)
                 iceMapSelected = !iceMapSelected;
                 break;
-            case KeyEvent.VK_I:
+            case KeyEvent.VK_I: //Irányításokat bemutató ablak megnyitása
                 Windows.get().controlsWindow.setVisible(true);
                 break;
-            case KeyEvent.VK_B:
+            case KeyEvent.VK_B: //Játék mentése
                 IOLanguage.SaveToFile("save.txt");
             default:
         }
@@ -345,35 +351,42 @@ public class Game
     {
         return map;
     }
-    
+
+    //Éppen lépő karakter
     public Character getCurrentlyMovingCharacter()
     {
         return currentlyMovingCharacter;
     }
-    
+
+    //Éppen kijelölt jégtábla
     public IceBlock getSelectedIceBlock()
     {
         return selectedIceBlock;
     }
-    
+
+    //Éppen kijelölt jégtábla az lesz, amin az éppen lépő karakter áll
     public void resetSelectedIceBlock()
     {
         selectedIceBlock = currentlyMovingCharacter.getBlock();
         iceMapSelected = true;
     }
 
+    //Éppen kijelölt Item
     public int getSelectedItem()
     {
         return selectedItemInInventory;
     }
-    
+
+    //Kör vége
     public void endTurn()
     {
         endTurnEvent.set();
     }
 
+    //Vesztettünk-e
     public boolean isLost() { return isLost; }
 
+    //Nyertünk-e
     public boolean isWin() { return isWin; }
     
     private boolean isWin; // nyertünk-e?

@@ -2,7 +2,7 @@ package com.csakcintanyer.bme.projlab;
 
 import javax.swing.*;
 
-public class Windows
+public class Windows //Ablakokat kezelő class
 {
 	public static Windows get()
 	{
@@ -11,7 +11,7 @@ public class Windows
 		
 		return instance;
 	}
-	private static Windows instance;
+	private static Windows instance; //singleton
 	
 	private Windows()
 	{
@@ -20,16 +20,16 @@ public class Windows
 			@Override
 			public void run()
 			{
-				menuWindow = new MenuWindow();
+				menuWindow = new MenuWindow(); //Menü ablaka
 				menuWindow.setVisible(true);
 				
-				gameWindow = new GameWindow();
+				gameWindow = new GameWindow(); //Játék ablaka
 				gameWindow.setVisible(false);
 				
-				controlsWindow = new ControlsWindow();
+				controlsWindow = new ControlsWindow(); //Irányításokat mutató ablak
 				controlsWindow.setVisible(false);
 				
-				inputWindow = new InputWindow();
+				inputWindow = new InputWindow(); //Pályakészítő ablak
 				inputWindow.setVisible(false);
 			}
 		});
