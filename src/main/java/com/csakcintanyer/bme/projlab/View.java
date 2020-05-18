@@ -164,12 +164,8 @@ public class View
 		Image image = LoseIcon.getImage();
 		g.drawImage(image, ((N-132)/2)-92, 50, null);
 	}
-
-<<<<<<< HEAD
+	
 	// altalanos draw fuggveny. Az atadott kepet x,y koordinatara ezzel rajzoljuk ki.
-=======
-	//Altalanos draw fuggveny. Az atadott kepet az x,y koordinatara rajzolja ki
->>>>>>> Grafikus
 	public void draw(ImageIcon icon, int x, int y)
 	{
 		Image image = icon.getImage();
