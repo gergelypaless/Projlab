@@ -75,7 +75,7 @@ public class View
 	public ImageIcon flareInInventoryIcon = new ImageIcon("Assets/FlareInInventory.png");
 	public ImageIcon suitInInventoryIcon = new ImageIcon("Assets/SuitInInventory.png");
 	
-	public ImageIcon zeroIcon = new ImageIcon("Assets/Layout/SuitInInventory.png");
+	public ImageIcon zeroIcon = new ImageIcon("Assets/Layout/ZeroIcon.png");
 	public ImageIcon oneIcon = new ImageIcon("Assets/Layout/OneIcon.png");
 	public ImageIcon twoIcon = new ImageIcon("Assets/Layout/TwoIcon.png");
 	public ImageIcon threeIcon = new ImageIcon("Assets/Layout/ThreeIcon.png");
