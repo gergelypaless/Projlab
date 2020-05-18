@@ -25,12 +25,12 @@ public class InputWindow extends JFrame
 
 		JTextField inputM = new JTextField(2);
 		inputM.setBackground(new Color(255, 255, 255, 255));
-		inputM.setForeground(Color.white);
+		inputM.setForeground(Color.black);
 		inputM.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		JTextField inputN = new JTextField(2);
 		inputN.setBackground(new Color(255, 255, 255, 255));
-		inputN.setForeground(Color.white);
+		inputN.setForeground(Color.black);
 		inputN.setBorder(BorderFactory.createLineBorder(Color.black));
 		JLabel textX = new JLabel("X");
 
