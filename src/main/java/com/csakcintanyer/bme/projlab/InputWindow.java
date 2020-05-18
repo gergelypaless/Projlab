@@ -97,7 +97,7 @@ class InputView extends JPanel
 
 	public Dimension getPreferredSize()
 	{
-		return new Dimension(400, 50);
+		return new Dimension(450, 50);
 	}
 
 	protected void paintComponent(Graphics g)
