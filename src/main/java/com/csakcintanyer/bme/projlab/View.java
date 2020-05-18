@@ -21,7 +21,7 @@ public class View
 	private Graphics g;
 	
 	public ImageIcon backgroundIcon = new ImageIcon("Assets/Background.png");
-	public ImageIcon layoutIcon = new ImageIcon("Assets/Layout.png");
+	public ImageIcon layoutIcon = new ImageIcon("Assets/Layout/Layout.png");
 
 	public ImageIcon menuIceBlockIcon = new ImageIcon("Assets/Menu/menuIceBlock.png");
 	public ImageIcon newgameIcon = new ImageIcon("Assets/Menu/newgame.png");
@@ -75,14 +75,14 @@ public class View
 	public ImageIcon flareInInventoryIcon = new ImageIcon("Assets/FlareInInventory.png");
 	public ImageIcon suitInInventoryIcon = new ImageIcon("Assets/SuitInInventory.png");
 	
-	public ImageIcon zeroIcon = new ImageIcon("Assets/SuitInInventory.png");
-	public ImageIcon oneIcon = new ImageIcon("Assets/FlareInInventory.png");
-	public ImageIcon twoIcon = new ImageIcon("Assets/BulletInInventory.png");
-	public ImageIcon threeIcon = new ImageIcon("Assets/Energy.png");
-	public ImageIcon infiniteIcon = new ImageIcon("Assets/TentOnBlock.png");
-	public ImageIcon unknownIcon = new ImageIcon("Assets/Bear.png");
+	public ImageIcon zeroIcon = new ImageIcon("Assets/Layout/SuitInInventory.png");
+	public ImageIcon oneIcon = new ImageIcon("Assets/Layout/OneIcon.png");
+	public ImageIcon twoIcon = new ImageIcon("Assets/Layout/TwoIcon.png");
+	public ImageIcon threeIcon = new ImageIcon("Assets/Layout/ThreeIcon.png");
+	public ImageIcon infiniteIcon = new ImageIcon("Assets/Layout/InfiniteIcon.png");
+	public ImageIcon unknownIcon = new ImageIcon("Assets/Layout/UnknownIcon.png");
 	
-	public ImageIcon controlsIcon = new ImageIcon("Assets/Bear.png");
+	public ImageIcon controlsIcon = new ImageIcon("Assets/Controls.png");
 	
 	public ImageIcon pressIForControlsIcon = new ImageIcon("Assets/HelpText.png");
 	

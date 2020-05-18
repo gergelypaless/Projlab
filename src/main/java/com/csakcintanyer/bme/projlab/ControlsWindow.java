@@ -21,14 +21,14 @@ class ControlsView extends JPanel
 {
 	public Dimension getPreferredSize()
 	{
-		return new Dimension(200, 200);
+		return new Dimension(530, 484);
 	}
 	
 	protected void paintComponent(Graphics g)
 	{
 		super.paintComponent(g); //To change body of generated methods, choose Tools | Templates.
 		
-		Image image = View.get().bearIcon.getImage();
+		Image image = View.get().controlsIcon.getImage();
 		g.drawImage(image, 0, 0, this);
 	}
 	
