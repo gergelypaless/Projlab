@@ -120,6 +120,7 @@ public class Game
             {
                 System.out.println("Victory!"); //nyertünk
             }
+            View.get().repaint();
         } catch (InterruptedException e)
         {
             System.out.println("Ezt a program futása végén kéne lássuk csak");
@@ -408,6 +409,10 @@ public class Game
     {
         endTurnEvent.set();
     }
+
+    public boolean isLost() { return isLost; }
+
+    public boolean isWin() { return isWin; }
     
     private boolean isWin; // nyertünk-e?
     private boolean isLost; // vesztettünk-e?

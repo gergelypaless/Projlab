@@ -85,6 +85,9 @@ public class View
 	public ImageIcon controlsIcon = new ImageIcon("Assets/Controls.png");
 	
 	public ImageIcon pressIForControlsIcon = new ImageIcon("Assets/HelpText.png");
+
+	public ImageIcon LoseIcon = new ImageIcon("Assets/GameOver.png");
+	public ImageIcon WinIcon = new ImageIcon("Assets/WIN.png");
 	
 	
 	public void init(int x, int y)
@@ -111,7 +114,11 @@ public class View
 		drawIceMap();
 		drawInventory();
 		drawBlockProperties();
-		
+		drawLose();
+
+		if(Game.get().isLost()) drawLose();
+		else if(Game.get().isWin()) drawWin();
+
 		// press I text
 		g.drawImage(pressIForControlsIcon.getImage(), inventoryX + 1, inventoryY + 275, null);
 	}
@@ -125,6 +132,16 @@ public class View
 	public void drawIceMap()
 	{
 		Game.get().getIceMap().draw(0, 0);
+	}
+
+	public void drawWin() {
+		Image image = WinIcon.getImage();
+		g.drawImage(image, ((N*55-5)/2 + 20)-72, 50, null);
+	}
+
+	public void drawLose() {
+		Image image = LoseIcon.getImage();
+		g.drawImage(image, ((N*55-5)/2 + 20)-92, 50, null);
 	}
 	
 	public void draw(ImageIcon icon, int x, int y)
