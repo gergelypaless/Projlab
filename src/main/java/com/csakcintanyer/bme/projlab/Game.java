@@ -162,6 +162,7 @@ public class Game
                 if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtáblán
                 {
                     lose(); // vesztettünk
+                    endTurn();
                     return; // end of turn
                 }
             }
@@ -325,9 +326,6 @@ public class Game
             if (randNum == 3)
                 moved = bear.move(Direction.DOWN);
         } while (!moved);
-
-        System.out.println("Bear moved! Position: ");
-        IOLanguage.PrintBlock(bear.getBlock());
     }
 
     // ezt a függvényt kell meghívni, ha a győzelem feltétele teljesült

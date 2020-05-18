@@ -9,11 +9,9 @@ public class Food extends CollectableItem
         {
             // Foodot vettünk fel, ezért 1-el nő a testhőnk
             c.changeHealth(1);
-            System.out.println("Health increased by 1");
         }
         else
         {
-            System.out.println("You have maximum amount of health");
             throw new IllegalArgumentException();
         }
     }
