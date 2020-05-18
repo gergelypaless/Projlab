@@ -33,6 +33,7 @@ class MenuKeyEventListener implements KeyListener
 		MenuView menuView = (MenuView)view;
 
 		switch (keyEvent.getKeyCode()){
+			case KeyEvent.VK_UP:
 			case KeyEvent.VK_W:
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
 				{
@@ -53,6 +54,7 @@ class MenuKeyEventListener implements KeyListener
 					menuView.setCurrentMenuPointy(500);
 				}
 				break;
+			case KeyEvent.VK_DOWN:
 			case KeyEvent.VK_S:
 				if(menuView.getCurrentMenuPoint()==View.get().newgameIconColored.getImage())
 				{
@@ -84,7 +86,7 @@ class MenuKeyEventListener implements KeyListener
 					Windows.get().menuWindow.setVisible(false);
 					
 					Game game = Game.get();
-					game.init();
+					game.init(10, 10);
 					
 					MenuKeyEventListener listener = (MenuKeyEventListener)Windows.get().menuWindow.getKeyListeners()[0];
 					listener.thread = new MyThread();
