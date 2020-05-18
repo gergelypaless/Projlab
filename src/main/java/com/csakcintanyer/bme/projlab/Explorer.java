@@ -27,7 +27,6 @@ public class Explorer extends Character
             neighbours.get(Direction.RIGHT) == selectedBlock) // ha a selectedBlock melletti van kijelölve
         {
             selectedBlock.setChecked(); // ez az iceblock már meg lett nézve egy explorer által
-            System.out.println("Stability: " + selectedBlock.getStability());
             
             // a képesség használata egy munka
             changeEnergy(-1);

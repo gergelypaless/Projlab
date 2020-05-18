@@ -114,7 +114,6 @@ public class View
 		drawIceMap();
 		drawInventory();
 		drawBlockProperties();
-		drawWin();
 
 		if(Game.get().isLost()) drawLose();
 		else if(Game.get().isWin()) drawWin();

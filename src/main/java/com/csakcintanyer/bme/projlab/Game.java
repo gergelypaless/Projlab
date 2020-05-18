@@ -115,19 +115,9 @@ public class Game
                 turns++;
             }
 
-            if (isLost)
-            {
-                System.out.println("Game over!"); //vesztettünk
-            }
-            if (isWin)
-            {
-                System.out.println("Victory!"); //nyertünk
-            }
             View.get().repaint();
         } catch (InterruptedException e)
         {
-            System.out.println("Ezt a program futása végén kéne lássuk csak");
-            //e.printStackTrace();
         }
     }
 
@@ -144,20 +134,16 @@ public class Game
 
         currentlyMovingCharacter.setEnergy(4); // 4 energia a kör elején
         resetSelectedIceBlock();
-
-        System.out.println("Player " + whichPlayer + "'s turn");
         
         endTurnEvent.waitOne();
         endTurnEvent.reset();
-        
-        System.out.println("Your turn is over");
     }
     
     private void characterMove(Direction dir)
     {
         if (currentlyMovingCharacter.move(dir))
         {
-            System.out.println("OK, character moved");
+            
             if (bear != null) // ha van medve
             {
                 if (bear.getBlock() == currentlyMovingCharacter.getBlock()) // ha medve van a jégtáblán
@@ -170,13 +156,8 @@ public class Game
             
             if (currentlyMovingCharacter.isDrowning()) // ha fuldoklunk akkor vége a körünknek
             {
-                System.out.println("You are drowning, your turn is over!");
                 endTurnEvent.set();
             }
-        }
-        else
-        {
-            System.out.println("You cannot move " + dir);
         }
     }
     
@@ -187,10 +168,7 @@ public class Game
             if (selectedItemInInventory >= currentlyMovingCharacter.getInventory().size())
                 return;
             
-            if (currentlyMovingCharacter.useItem(selectedItemInInventory)) // hanyadik tárgyat
-                System.out.println("OK, item used");
-            else
-                System.out.println("Item was not used");
+            currentlyMovingCharacter.useItem(selectedItemInInventory);
         }
     }
     
@@ -256,24 +234,9 @@ public class Game
                 if (!iceMapSelected)
                     useItem();
                 break;
-            case KeyEvent.VK_E:
-                if (currentlyMovingCharacter.useAbility())
-                    System.out.println("OK, ability used");
-                else
-                    System.out.println("Ability was not used");
-                break;
-            case KeyEvent.VK_P:
-                if (currentlyMovingCharacter.pickUp())
-                    System.out.println("OK, item picked up");
-                else
-                    System.out.println("Item was not picked up");
-                break;
-            case KeyEvent.VK_C:
-                if (currentlyMovingCharacter.clear())
-                    System.out.println("OK, iceblock cleared");
-                else
-                    System.out.println("Iceblock was not cleared");
-                break;
+            case KeyEvent.VK_E: currentlyMovingCharacter.useAbility(); break;
+            case KeyEvent.VK_P: currentlyMovingCharacter.pickUp(); break;
+            case KeyEvent.VK_C: currentlyMovingCharacter.clear(); break;
             case KeyEvent.VK_Q:
                 endTurnEvent.set();
                 break;
@@ -356,8 +319,6 @@ public class Game
     // Hóvihar
     private void snowStorm()
     {
-        System.out.println("Oh no, SNOWSTORM!!");
-
         // végigmegyünk a karaktereken, megnézük hogy igluban vannak-e, ha nem akkor egy élet minusz
         for (Character c : characters)
         {
