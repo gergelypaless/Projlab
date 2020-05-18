@@ -5,10 +5,10 @@ import java.util.Random;
 
 public class IceMap implements Serializable, Drawable
 {
-    public IceMap()
+    public IceMap(int N, int M)
     {
-        N = 5;
-        M = 5;
+        this.N = N;
+        this.M = M;
         gunCreated = false;
         blocks = new ArrayList<>();
         

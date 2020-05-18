@@ -9,7 +9,7 @@ public class Game
 {
     private Game(){ }
 
-    public void init()
+    public void init(int N, int M)
     {
         isLost = false;
         isWin = false;
@@ -17,7 +17,7 @@ public class Game
         iceMapSelected = true;
         selectedItemInInventory = 0;
         
-        map = new IceMap();
+        map = new IceMap(N, M);
 
         characters = new ArrayList<>();
         characters.add(new Eskimo(characters.size()));
