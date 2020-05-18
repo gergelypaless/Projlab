@@ -2,9 +2,17 @@ package com.csakcintanyer.bme.projlab;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class InputWindow extends JFrame
+public class InputWindow extends JFrame implements ActionListener
 {
+
+	//Text Fields
+	JPanel inputBoxP= new JPanel();
+	JTextField inputM;
+	JTextField inputN;
+
 	public InputWindow()
 	{
 		// init
@@ -18,17 +26,16 @@ public class InputWindow extends JFrame
 		setLocationRelativeTo(null);
 		setBackground(new Color(87, 126, 183, 255));
 
-
 		//Text Fields
-		JPanel inputBoxP= new JPanel();
+
 		inputBoxP.setSize(400, 50);
 
-		JTextField inputM = new JTextField(2);
+		inputM = new JTextField(2);
 		inputM.setBackground(new Color(255, 255, 255, 255));
 		inputM.setForeground(Color.black);
 		inputM.setBorder(BorderFactory.createLineBorder(Color.black));
 
-		JTextField inputN = new JTextField(2);
+		inputN = new JTextField(2);
 		inputN.setBackground(new Color(255, 255, 255, 255));
 		inputN.setForeground(Color.black);
 		inputN.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -45,6 +52,7 @@ public class InputWindow extends JFrame
 		readyButton.setFocusPainted(false);
 		readyButton.setContentAreaFilled(false);
 		readyButton.setForeground(Color.white);
+		readyButton.addActionListener(this);
 		readyButtonP.add(readyButton);
 		readyButtonP.setBackground(new Color(87, 126, 183, 255));
 
@@ -60,6 +68,23 @@ public class InputWindow extends JFrame
 		this.add(readyButtonP, BorderLayout.EAST);
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent actionEvent) {
+		int M= Integer.parseInt(inputM.getText());
+		int N= Integer.parseInt(inputN.getText());
+		if(N >15 || N<3|| M>15 || M<3 )
+			return;
+
+		setVisible(false);
+		Windows.get().menuWindow.setVisible(false);
+
+		Game game = Game.get();
+		game.init(N, M);
+
+		MenuKeyEventListener listener = (MenuKeyEventListener)Windows.get().menuWindow.getKeyListeners()[0];
+		listener.thread = new MyThread();
+		listener.thread.start();
+	}
 }
 
 class InputView extends JPanel
