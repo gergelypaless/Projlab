@@ -9,7 +9,7 @@ public class GameWindow extends JFrame
 {
 	public GameWindow()
 	{
-		super("MainWindow");
+		super("IceVenture");
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setResizable(false);
 		
