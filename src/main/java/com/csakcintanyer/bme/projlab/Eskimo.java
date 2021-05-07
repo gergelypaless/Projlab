@@ -1,48 +1,49 @@
 package com.csakcintanyer.bme.projlab;
 
-import java.util.logging.Logger;
-
 public class Eskimo extends Character
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger(Eskimo.class.getName());
-    
-    public Eskimo()
-    {
-        super(0); // ősosztály kosntruktora
-    }
     
     public Eskimo(int ID)
     {
         super(ID);
-        LOGGER.finest("Eskimo constructor");
+        maxHealth = health = 5; // 5 testhője van
     }
     
-    //képesség használatát szolgáló függvény
-    public void useAbility()
+    //képesség használatát szolgáló függvény (Épít 1 db iglut)
+    public boolean useAbility()
     {
-        LOGGER.fine("Using character's ability");
-    
-        // a képesség használata egy munkába kerül
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
+        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
+            return false;
         
-        // Eskimo képessége iglook lerakása
-        placeIgloo();
+        if (block.placeIgloo()) // ha sikeresen építet egy iglut
+        {
+            changeEnergy(-1); // 1 munkába került
+            return true; // jelezzük, hogy sikeres
+        }
+        return false; // sikertelen
     }
     
-    //maga a képesség függvénye
-    private boolean placeIgloo()
+    // eskimo kirajzolása
+    public void draw(int x, int y)
     {
-        LOGGER.fine("Placing igloo");
-        // visszaad egy igaz/hamis értéket, ez alapján lehet eldönteni, hogy tudunk-e lerakni itt igloo-t
-        return block.placeIgloo();
+        View view = View.get();
+        if(!isInWater) // ha nincs vizben akkor normál textúra
+            view.draw(view.eskimoIcon, x, y);
+        else
+        {
+            // ha vizben van akkor vizben lévő textúra
+            view.draw(view.eskimoInWaterIcon, x, y+5);
+            if(isDrowning()) view.draw(view.drowningIcon, x, y-10); // ha fuldoklik akkor egy felkiáltó jel felette
+        }
+        
+        // ha ez az éppen soron levő játékos akkor egy nyilacskát is kirajzolunk
+        if (Game.get().getCurrentlyMovingCharacter() == this)
+            view.draw(view.littleArrow, x + 3, y - 7);
     }
     
-    //a karakter aktuális életének megváltoztatására alkalmas függvény
-    public void changeHealth(int value)
+    // kiíráshoz kell
+    public String toString()
     {
-        LOGGER.fine("Changing health by: " + value);
-        health += value;
+        return "eskimo";
     }
 }

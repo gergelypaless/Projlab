@@ -1,69 +1,60 @@
 package com.csakcintanyer.bme.projlab;
 
+import java.util.HashMap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.logging.Logger;
 
 public class Explorer extends Character
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Explorer.class.getName() );
-    
-    public Explorer()
-    {
-        super(0);
-    }
-    
     public Explorer(int ID)
     {
         super(ID);
-        LOGGER.finest("Explorer constructor");
+        maxHealth = health = 4; // 4 testhője van
     }
     
     // az Explorer képessége, hogy meg tudja nézni egy szomszédos block hány karaktert bír el.
-    public void useAbility()
+    public boolean useAbility()
     {
-        LOGGER.fine("Using character's ability");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String input;
-        // megkérdezzük, hogy melyik irányba kell használni a képességét
-        System.out.println("What direction should i use my ability? (up/down/left/right)");
-        try
-        {
-            input = reader.readLine();
-
-            // lekérjük a megfelelő IceBlock stability értékét
-            if (input.equals("up"))
-                checkStability(Direction.UP);
-            if (input.equals("down"))
-                checkStability(Direction.DOWN);
-            if (input.equals("left"))
-                checkStability(Direction.LEFT);
-            if (input.equals("right"))
-                checkStability(Direction.RIGHT);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        if (energy == 0) // ha nincs elég energiája a játékosnak akkor nem sikerül
+            return false;
         
-        // a képesség használata egy munka
-        energy--;
-        LOGGER.fine("Energy decreased to " + energy);
+        // lekerjuk a selectedBlockot.
+        IceBlock selectedBlock = Game.get().getSelectedIceBlock();
+        // lekérjük a szomszédait
+        HashMap<Direction, IceBlock> neighbours = block.getNeighbours();
+        if (neighbours.get(Direction.UP) == selectedBlock ||
+            neighbours.get(Direction.DOWN) == selectedBlock ||
+            neighbours.get(Direction.LEFT) == selectedBlock ||
+            neighbours.get(Direction.RIGHT) == selectedBlock) // ha a selectedBlock melletti van kijelölve
+        {
+            selectedBlock.setChecked(); // ez az iceblock már meg lett nézve egy explorer által
+            
+            // a képesség használata egy munka
+            changeEnergy(-1);
+            return true; // sikeres
+        }
+        return false;
     }
     
-    private int checkStability(Direction d)
+    // explorer kirajzolása
+    public void draw(int x, int y)
     {
-        LOGGER.finest("Explorer checking stability");
-        
-        //lekérjük a szomszédos block stability értékét.
-        return block.getNeighbours().get(d).getStability();
+        View view = View.get();
+        // ha nincs vizben akkor más textúra
+        if(!isInWater) view.draw(view.explorerIcon, x, y);
+        else {
+            // ha vizben van akkor InWaterIcon
+            view.draw(view.explorerInWaterIcon, x, y+5);
+            if(isDrowning()) view.draw(view.drowningIcon, x, y-10); // ha fuldoklik akkor drawingIcon
+        }
+    
+        // ha ez a currently moving character akkor egy nyilacskát is kirajzolunk
+        if (Game.get().getCurrentlyMovingCharacter() == this)
+            view.draw(view.littleArrow, x + 3, y - 7);
     }
-  //a karakter aktuális életének megváltoztatására alkalmas függvény
-    public void changeHealth(int value)
+    
+    // kiíráshoz kell
+    public String toString()
     {
-        LOGGER.fine("Changing health by " + value);
+        return "explorer";
     }
 }

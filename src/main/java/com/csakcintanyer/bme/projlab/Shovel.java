@@ -1,22 +1,36 @@
 package com.csakcintanyer.bme.projlab;
-import java.util.logging.Logger;
 
-public class Shovel implements CollectableItem, UsableItem
+public class Shovel extends CollectableItem implements UsableItem
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( Shovel.class.getName() );
-
     // item használata
-    public void use(IceBlock block)
+    public boolean use(IceBlock block)
     {
-        LOGGER.fine("Using Shovel");
-        block.changeAmountOfSnow(-2); // az ásóval 2 hóréteget tudunk eltakarítani
+        if (block.getSnow() > 1)
+            block.changeAmountOfSnow(-2); // az ásóval 2 hóréteget tudunk eltakarítani
+        else if (block.getSnow() == 1) // csak 1 réteg hó van rajta
+            block.changeAmountOfSnow(-1);
+        else
+            throw new IllegalArgumentException("Cannot use shovel");
+        
+        return false; // nem kell törölni a ásót használat után
     }
     
     public void interactWithCharacter(Character c)
     {
-        LOGGER.fine("Picked up Shovel");
-        c.changeEnergy(-1); // Item használata egy munka.
         c.addItem(this); // hozzáadjuk a karakter inventoryjához mivel UsableItem
     }
+    
+    // shovel kirajzolása
+    public void draw(int x, int y)
+    {
+        View view = View.get();
+        view.draw(view.shovelIcon, x, y);
+    }
+    
+    // kiíráshoz kell
+    public String toString()
+    {
+        return "shovel";
+    }
+    
 }

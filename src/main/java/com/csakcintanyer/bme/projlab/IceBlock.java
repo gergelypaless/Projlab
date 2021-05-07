@@ -1,21 +1,15 @@
 package com.csakcintanyer.bme.projlab;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
-public abstract class IceBlock
+public abstract class IceBlock implements Serializable, Drawable
 {
-    // Logger osztálypéldány: ennek a segítségével formázzuk a kimenetet
-    private static final Logger LOGGER = Logger.getLogger( IceBlock.class.getName() );
     
     //item nélküli konstruktor
     public IceBlock(int amountOfSnow, int stability)
     {
         this(amountOfSnow, stability, null);
-        LOGGER.finest("IceBlock constructor");
     }
     
     //itemes konstruktor
@@ -25,10 +19,21 @@ public abstract class IceBlock
         this.stability = stability;
         this.item = item;
     }
+
+    public boolean blockIsFull()
+    {
+        return getEntities().size() >= getStability();
+    }
+    
+    // item beállítása
+    public void setItem(CollectableItem item)
+    {
+        this.item = item;
+    }
+    
     //szomszédok beállításáért felelős függvény
     public void setNeighbour(Direction d, IceBlock block)
     {
-        LOGGER.finer("Setting neighbour in Direction: " + d.toString());
         // szomszédos IceBlock beállítása a megfelelő irányban, egy HashMap<Direction, IceBlock>-ot használva
         neighbours.put(d, block);
     }
@@ -42,110 +47,98 @@ public abstract class IceBlock
     //Stability gettere
     public int getStability()
     {
-        LOGGER.finest("Stability getter");
-        return 4; // ez a stability változót kéne visszaadja, de az egyszerűség kedvéért most egy fix értéket írtunk be
+        return stability; // ez a stability változót kéne visszaadja, de az egyszerűség kedvéért most egy fix értéket írtunk be
     }
 
     // hóréteg változtatása bizonyos értékkel
-    public void changeAmountOfSnow(int i)
+    public void changeAmountOfSnow(int value)
     {
-        LOGGER.fine("Changing amount of snow by " + i);
+        amountOfSnow += value;
+        if (amountOfSnow < 0)
+            amountOfSnow = 0;
     }
     
-    public abstract void accept(Character c);
-    
-    public abstract void remove(Character c);
+    public abstract void accept(Entity c);
+    public abstract void remove(Entity c);
     
     // valaki fel akarja venni az Item-et ami ezen az IceBlockon van, visszaadjuk az IceBlockon lévő Itemet
     public CollectableItem removeItem()
     {
-        LOGGER.fine("Removing Item from IceBlock");
-    
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String input;
-        // megkérdezzük, hogy milyen Item-et szeretne felvenni. Ez a könnyű tesztelhetőség érdekében kell.
-        System.out.println("Which item to pick up (suit, flare, food, shovel, bullet, gun, rope)");
-        try
-        {
-            input = reader.readLine();
-            if (input.equals("suit"))
-            {
-            	//búvárruha?
-                return new Suit();
-            }
-            else if (input.equals("flare"))
-            {
-            	//jelzőfény?
-                return new Flare();
-            }
-            else if (input.equals("food"))
-            {
-            	//étel?
-                return new Food();
-            }
-            else if (input.equals("shovel"))
-            {
-            	//ásó?
-                return new Shovel();
-            }
-            else if (input.equals("bullet"))
-            {
-            	//töltény?
-                return new Bullet();
-            }
-            else if (input.equals("gun"))
-            {
-            	//fegyver?
-                return new Gun();
-            }
-            else if (input.equals("rope"))
-            {
-            	//kötél?
-                return new Rope();
-            }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
+        if (amountOfSnow > 0) // ha hó borítja nem veszünk fel semmit
+            return null;
+
+        CollectableItem itemToReturn = item;
+        item = null; // miután valaki felveszi a tárgyat, nem lesz többé a jégtáblában
+        return itemToReturn; // visszaadjuk a jégtáblában lévő tárgyat
     }
+    
     //eszkimó képességének használata váltja ki
     public boolean placeIgloo()
     {
-        LOGGER.fine("Can we place igloo on this IceBlock?");
         // csak StableBlock-ra lehet igloo-t tenni, így csak az fog igazat visszaadni
+        return false;
+    }
+    
+    // set if an explorer was inspected this iceblock
+    public void setChecked()
+    {
+        checked = true;
+    }
+    
+    // have somebody ever inspected this iceblock?
+    public boolean isChecked()
+    {
+        return checked;
+    }
+    
+    //eszkimó képességének használata váltja ki
+    public boolean placeTent()
+    {
         return false;
     }
     
     // van-e az IceBlockon igloo
     public boolean hasIgloo()
     {
-        LOGGER.finest("Has igloo getter");
+        return false;
+    }
+    
+    // van-e az IceBlockon igloo
+    public boolean hasTent()
+    {
         return false;
     }
     
     //a blokkon lévő karakterek listájának lekérésére szolgáló függvény
-    public ArrayList<Character> getCharacters()
+    public ArrayList<Entity> getEntities()
     {
-        LOGGER.finest("IceBlock Characters getter");
-        return characters;
+        return entities;
     }
     
     //a szomszédos mezők visszaadása
     public HashMap<Direction, IceBlock> getNeighbours()
     {
-        LOGGER.finest("Neighbours getter");
         return neighbours;
     }
     
+    // item lekérdezése
+    public CollectableItem getItem()
+    {
+        return item;
+    }
+    
+    public void removeTent() { }
+    
     // hó mennyisége
-    private int amountOfSnow;
+    protected int amountOfSnow;
     
     // hány karaktert bír el
-    private int stability;
+    protected int stability;
+    
+    private boolean checked = false;
     
     // karakterek az IceBlockon.
-    private ArrayList<Character> characters = new ArrayList<>();
+    private ArrayList<Entity> entities = new ArrayList<>();
     
     // Item az IceBlockon
     private CollectableItem item;
